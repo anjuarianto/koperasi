@@ -1,0 +1,59 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Kasir extends CI_Controller {
+
+    public function __construct() {
+        parent:: __construct();
+
+        $this->load->model('Model_kasir');
+    }
+
+    public function index() {
+        echo '<a href="'.base_url().'kasir/penjualan">Penjualan</a>';
+        
+    }
+
+    public function bayar() {
+        $id_anggota = $this->input->post('id_anggota');
+        $harga_total_barang = $this->input->post('harga_total_barang');
+        $kembalian = $this->input->post('kembalian');
+        $jenis_pembayaran = $this->input->post('jenis_pembayaran');
+        $nominal_uang = $this->input->post('nominal_uang');
+        $t = time();
+        $id_barang = $this->input->post('id_barang');
+        $jumlah_barang = $this->input->post('jumlah_barang');
+
+        $penjualan = array(
+            'id_anggota'    => $id_anggota,
+            'harga_total_barang'    => $harga_total_barang,
+            'kembalian'     => $kembalian,
+            'jenis_pembayaran'     => $jenis_pembayaran,
+            'nominal_uang'     => $nominal_uang,
+            'tanggal_penjualan' => date("Y-m-d",$t)
+        );
+        $this->Model_kasir->tambah_penjualan($penjualan);
+        $last_id = $this->db->insert_id();
+        for($i=0;$i<count($id_barang);$i++) {
+            $detail_penjualan = array(
+                'id_penjualan' => $last_id,
+                'id_barang' => $id_barang[$i],
+                'jumlah_barang' => $jumlah_barang[$i]
+            );
+            $this->Model_kasir->tambah_detail_penjualan($detail_penjualan);
+            $result = $this->Model_kasir->get_stok($id_barang[$i]);
+            $updateStok = $result['stok_barang'] - $jumlah_barang[$i];
+            $data = array('stok_barang' => $updateStok);
+            $this->Model_kasir->update_stok($id_barang[$i], $data);
+        }
+        redirect('kasir/penjualan');    
+        
+    }
+
+    public function penjualan() {
+        $data["barang"] = $this->Model_kasir->barang();
+        $data["anggota"] = $this->Model_kasir->anggota();
+        $this->load->view('kasir/penjualan', $data);
+    }
+
+}

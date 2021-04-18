@@ -1,0 +1,141 @@
+body {
+  font-size: .875rem;
+  background-color: #ecececaf
+}
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 48px;
+  bottom: 0;
+  left: 0;
+  background-color: white !important;
+  z-index: 100; /* Behind the navbar */
+  padding: 0;
+  box-shadow: -10px 0px 10px 5px #aaaaaa;
+}
+
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #59718b;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 30px;
+}
+
+.sidebar .nav-link.active {
+  font-weight: 500;
+  border-left: 4px solid rgb(118, 147, 241);;
+}
+
+.sidebar .nav-item:hover {
+  background-color: #dbdbdb;
+}
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+/*
+ * Navbar
+ */
+
+.top-nav {
+  margin: auto;
+  list-style-type: none;
+  
+}
+
+.img-user {
+  width: 24px;
+  border-radius: 50%;
+}
+
+.user-link, .user-link:hover {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 1rem;
+  background-color: white;
+  color: black !important;
+  font-weight: bold;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+/*
+ * Utilities
+ */
+
+.border-top { border-top: 1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+.judul-dashboard {
+  background-color: white;
+}
+
+.konten {
+  margin-top: 2rem;  
+}
+
+.white-card {
+  background: white;
+}
+
+.card-head {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: white;
+  font-weight: bolder;
+}
+
+.card-head h6 {
+  padding-left: 0.8rem;
+}
+
+.white-card p {
+  font-size : 3rem;
+  padding-left: 0.8rem;
+  padding-top: 0.8rem;
+}
