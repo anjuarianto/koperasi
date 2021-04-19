@@ -6,10 +6,15 @@ class Gudang extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('Model_gudang');
+		cek_login();
 	}
 
 	public function index() {
-		$this->load->view('gudang/dashboard');
+		$data['stok'] = $this->Model_gudang->jumlah_total_stok();
+		$data['jumlah_transaksi'] = $this->Model_gudang->jumlah_transaksi();
+		$data['supplier'] = count($this->Model_gudang->supplier());
+		$data['barang'] = count($this->Model_gudang->barang());
+		$this->load->view('gudang/dashboard',$data);
 	}
 
 	public function barang() {

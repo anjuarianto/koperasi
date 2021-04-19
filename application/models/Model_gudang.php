@@ -3,6 +3,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_gudang extends CI_Model {
 
+	// Dashboard Gudang
+
+	public function jumlah_total_stok() {
+		$this->db->select('sum(stok_barang) as jumlah_stok');
+		$this->db->from('tbl_stok');
+		$query = $this->db->get();
+
+		$result = $query->row_array();
+		return $result['jumlah_stok'];
+	}
+
+	public function jumlah_transaksi() {
+		$this->db->select('count(id_pembelian) as jumlah_transaksi');
+		$this->db->from('tbl_pembelian');
+		$query = $this->db->get()->row_array();
+		return $query['jumlah_transaksi'];
+	}
+
 	public function barang()
 	{
 		$this->db->select('*');
