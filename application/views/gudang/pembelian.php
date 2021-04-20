@@ -1,26 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Daftar Pembelian</title>
-	<link rel="stylesheet" href="<?=base_url()?>assets/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-	<link href="<?=base_url()?>assets/dashboard.css" rel="stylesheet">
-</head>
-
-<body>
-	<?php $this->load->view('gudang/nav_gudang');?>
-	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-	<div class="container bg-white pt-3 pb-3 shadow-sm">
-		<h1 class="text-center m-4">Daftar Pembelian</h1>
+<!-- header -->
+<?php $this->load->view('gudang/header'); ?>
+<!-- end header -->
+<div class="container-fluid mb-4 p-3 shadow bg-white">
+	<h1 class="h3 text-primary"><?=$judul;?></h1>
+</div>
+		
+				<div class="card shadow mb-4">
+	<div class="card-header py-3">
+		<h6 class="m-0 font-weight-bold text-primary">Tabel Barang</h6>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
 		<button class="btn btn-primary mt-2 mb-4" data-toggle="modal" data-target="#modalInputPembelian"><strong>+
 				Tambah
 				Pembelian</strong></button>
-		<table class="table table-bordered" id="example" style="width:100%">
-			<thead class="thead-light">
+			<table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
+				aria-describedby="dataTable_info" style="width: 100%;">
+				<thead class="thead-light">
 				<tr>
 					<th>Tanggal Pembelian</th>
 					<th>Total Harga Pembelian</th>
@@ -36,10 +32,11 @@
 				</tr>
 				<?php endforeach; ?>
 			</tbody>
-		</table>
+			</table>
+		</div>
 	</div>
-				</main>
-
+</div>
+				
 	<!-- Modal Tambah Pembelian -->
 
 	<div class="modal fade bd-example-modal-lg" id="modalInputPembelian" tabindex="-1" role="dialog"
@@ -135,23 +132,7 @@
 		</div>
 	</div>
 	
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-	</script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-		integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
-	</script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-		integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
-	</script>
-	<!-- DataTable -->
-	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
-	<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-<script>
-	feather.replace()
-
-</script>
+	
 	<script>
 	let inputPost = [];
 	let idDetail = 0;
@@ -249,6 +230,6 @@
 		});
 
 	</script>
-</body>
 
-</html>
+
+<?php $this->load->view('gudang/footer');

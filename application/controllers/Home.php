@@ -5,11 +5,19 @@ class Home extends CI_Controller {
 	public function __construct() {
         parent::__construct();
         $this->load->model('Auth_model', 'auth');
+		// if($this->session->has_userdata('login_session')) {
+		// 	redirect('home');
+		// }
+		
     }
 
 	public function index()
 	{
 		$this->load->view('home');
+	}
+
+	public function tes() {
+		echo $this->session->userdata('login_session')['username'];
 	}
 
 	public function login() {
@@ -30,9 +38,11 @@ class Home extends CI_Controller {
 					'level' => $user_db['level'],
 					'timestamp' => time()
 				);
-				$this->session->set_userdata($userdata);
+				$this->session->set_userdata('login_session', $userdata);
 				if($user_db['level'] == 2) {
 					redirect('gudang');
+				} else if($user_db['level'] == 3) {
+					redirect('kasir');
 				}
 				
 			} else {
@@ -49,7 +59,9 @@ class Home extends CI_Controller {
 
 	public function logout()
     {
-        $this->session->sess_destroy();
-        redirect('home');
+		$this->session->unset_userdata('login_session');
+		$this->session->sess_destroy();
+		redirect('home');	
+        
     }
 }

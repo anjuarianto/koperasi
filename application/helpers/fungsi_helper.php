@@ -3,11 +3,20 @@
 function cek_login()
 {
     $ci = get_instance();
-    if (!$ci->session->has_userdata('username')) {
+    if (!$ci->session->has_userdata('login_session')) {
         set_pesan('Silahkan login.');
         redirect('home');
     }
 }
+
+function redirect_auth()
+{
+    $ci = get_instance();
+    if ($ci->session->userdata('level') == '2') {
+        redirect('home');
+    }
+}
+
 
 function is_admin()
 {

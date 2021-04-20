@@ -10,6 +10,7 @@ class Gudang extends CI_Controller {
 	}
 
 	public function index() {
+		$data['judul'] = 'Dashboard | Gudang';
 		$data['stok'] = $this->Model_gudang->jumlah_total_stok();
 		$data['jumlah_transaksi'] = $this->Model_gudang->jumlah_transaksi();
 		$data['supplier'] = count($this->Model_gudang->supplier());
@@ -18,7 +19,7 @@ class Gudang extends CI_Controller {
 	}
 
 	public function barang() {
-		
+		$data['judul'] = 'Daftar Barang | Gudang';
 		$data['barang'] = $this->Model_gudang->detail_barang();
 		$data['supplier'] = $this->Model_gudang->supplier();
 		$data["script"] = "";
@@ -71,14 +72,18 @@ class Gudang extends CI_Controller {
 	}
 
 	public function supplier() {
+		$data['judul'] = 'Daftar Supplier | Gudang';
 		if($this->uri->segment(3)) {
+			
 			$data["script"] = "$('#modalInputSupplier').modal('show');";
 			$data["supplier"] = $this->Model_gudang->supplier();
 			$this->load->view('gudang/supplier', $data);
-		} 
+		} else {
 			$data["script"] = "";
 			$data["supplier"] = $this->Model_gudang->supplier();
 			$this->load->view('gudang/supplier', $data);
+		}
+			
 		
 		
 	}
@@ -113,6 +118,7 @@ class Gudang extends CI_Controller {
 	}
 
 	public function pembelian() {
+		$data['judul'] = 'Daftar Pembelian | Gudang';
 
 		$data["pembelian"] = $this->Model_gudang->pembelian();
 		$data["supplier"] = $this->Model_gudang->supplier();
