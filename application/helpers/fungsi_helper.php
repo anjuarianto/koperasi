@@ -9,14 +9,21 @@ function cek_login()
     }
 }
 
-function redirect_auth()
+function is_operator()
 {
     $ci = get_instance();
-    if ($ci->session->userdata('level') == '2') {
-        redirect('home');
+    if ($ci->session->userdata('login_session')['level'] != '2') {
+        redirect('errors/notfound');
     }
 }
 
+function is_kasir()
+{
+    $ci = get_instance();
+    if ($ci->session->userdata('login_session')['level'] != '3') {
+        redirect('errors/notfound');
+    }
+}
 
 function is_admin()
 {

@@ -12,7 +12,7 @@ class Gudang extends CI_Controller {
     public function uang_keluar() {
 
         $data = $this->Model_keuangan->uang_keluar();
-        print_r($data)
+        print_r($data);
         // $this->load->view('keuangan/keluar');
     }
 

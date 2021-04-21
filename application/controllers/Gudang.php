@@ -7,6 +7,7 @@ class Gudang extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Model_gudang');
 		cek_login();
+		is_operator();
 	}
 
 	public function index() {
@@ -40,7 +41,6 @@ class Gudang extends CI_Controller {
 		$this->form_validation->set_message('required', '{field} tidak boleh kosong');
 		
 		// validation end
-
 		// variable declaration start
 
 		$nama_barang = $this->input->post('nama_barang');

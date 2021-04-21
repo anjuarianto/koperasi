@@ -5,13 +5,13 @@ class Kasir extends CI_Controller {
 
     public function __construct() {
         parent:: __construct();
-
         $this->load->model('Model_kasir');
+        cek_login();
     }
 
     public function index() {
-        echo '<a href="'.base_url().'kasir/penjualan">Penjualan</a>';
-        
+        $data['judul'] = 'Dashboard | Kasir';
+        $this->load->view('kasir/dashboard', $data);
     }
 
     public function bayar() {
@@ -46,14 +46,20 @@ class Kasir extends CI_Controller {
             $data = array('stok_barang' => $updateStok);
             $this->Model_kasir->update_stok($id_barang[$i], $data);
         }
-        redirect('kasir/penjualan');    
-        
+        redirect('kasir/penjualan');
     }
 
     public function penjualan() {
-        $data["barang"] = $this->Model_kasir->barang();
-        $data["anggota"] = $this->Model_kasir->anggota();
+        $data['judul'] = "Daftar Penjualan | Kasir";
+        $data['penjualan'] = $this->Model_kasir->penjualan();
         $this->load->view('kasir/penjualan', $data);
+    }
+
+    public function barang() {
+        $data['judul'] = "Daftar Barang";
+        // $data['stok'] = $this->Model_kasir->jumlah_total_stok();
+        $data['barang'] = $this->Model_kasir->detail_barang();
+        $this->load->view('kasir/barang', $data);
     }
 
 }
