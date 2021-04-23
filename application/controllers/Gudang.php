@@ -22,7 +22,6 @@ class Gudang extends CI_Controller {
 	public function barang() {
 		$data['judul'] = 'Daftar Barang | Gudang';
 		$data['barang'] = $this->Model_gudang->detail_barang();
-		$data['supplier'] = $this->Model_gudang->supplier();
 		$data["script"] = "";
 		$this->load->view('gudang/barang', $data);
 		
@@ -41,6 +40,7 @@ class Gudang extends CI_Controller {
 		$this->form_validation->set_message('required', '{field} tidak boleh kosong');
 		
 		// validation end
+		
 		// variable declaration start
 
 		$nama_barang = $this->input->post('nama_barang');
@@ -58,8 +58,6 @@ class Gudang extends CI_Controller {
 				"harga_beli"	=> $harga_beli,
 				"harga_jual"	=> $harga_jual
 			);
-		
-			
 			$this->Model_gudang->tambah_barang($data);
 			redirect('gudang/barang');
 		} else {

@@ -39,10 +39,14 @@ class Home extends CI_Controller {
 					'timestamp' => time()
 				);
 				$this->session->set_userdata('login_session', $userdata);
+
+				// redirect user ke dashboard sesuai role
 				if($user_db['level'] == 2) {
 					redirect('gudang');
 				} else if($user_db['level'] == 3) {
 					redirect('kasir');
+				} else if($user_db['level'] == 4) {
+					redirect('keuangan');
 				}
 				
 			} else {

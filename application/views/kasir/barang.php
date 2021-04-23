@@ -2,14 +2,15 @@
 <?php $this->load->view('kasir/header');?>
 <!-- end header -->
 
+<div class="container-fluid mb-4 p-3 shadow bg-white">
+	<h1 class="h3 text-primary"><?=$judul;?></h1>
+</div>
 <div class="card shadow mb-4">
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-primary">Tabel Barang</h6>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-		<button class="btn btn-primary mt-2 mb-4" data-toggle="modal" data-target="#modalInputBarang"><strong>+
-				Tambah Barang</strong></button>
 			<table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">

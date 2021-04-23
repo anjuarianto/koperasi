@@ -1,21 +1,21 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Gudang extends CI_Model {
-
-    public function __construct(){
-        parent::__construct();
-        $this->load->model('Model_keuangan');
-    }
+class Model_keuangan extends CI_Model {
     
     
-    public function uang_keluar() {
+    public function pengeluaran() {
         $query = $this->db->get('tbl_pembelian');
         return $query->result();
     }
 
-    public function uang_masuk() {
+    public function pemasukan() {
         $query = $this->db->get('tbl_penjualan');
+        return $query->result();
+    }
+
+    public function anggota() {
+        $query = $this->db->get('tbl_anggota');
         return $query->result();
     }
 

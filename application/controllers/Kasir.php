@@ -6,11 +6,14 @@ class Kasir extends CI_Controller {
     public function __construct() {
         parent:: __construct();
         $this->load->model('Model_kasir');
-        cek_login();
+        is_kasir();
     }
 
     public function index() {
         $data['judul'] = 'Dashboard | Kasir';
+		$data['stok'] = $this->Model_kasir->jumlah_total_stok();
+		$data['jumlah_transaksi'] = $this->Model_kasir->jumlah_transaksi();
+		$data['barang'] = count($this->Model_kasir->barang());
         $this->load->view('kasir/dashboard', $data);
     }
 
@@ -56,8 +59,7 @@ class Kasir extends CI_Controller {
     }
 
     public function barang() {
-        $data['judul'] = "Daftar Barang";
-        // $data['stok'] = $this->Model_kasir->jumlah_total_stok();
+        $data['judul'] = "Daftar Barang | Kasir";
         $data['barang'] = $this->Model_kasir->detail_barang();
         $this->load->view('kasir/barang', $data);
     }

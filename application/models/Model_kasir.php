@@ -59,6 +59,13 @@ class Model_kasir extends CI_Model {
         $this->db->update('tbl_stok', $data);
     }
 
+    public function jumlah_transaksi() {
+		$this->db->select('count(id_pembelian) as jumlah_transaksi');
+		$this->db->from('tbl_pembelian');
+		$query = $this->db->get()->row_array();
+		return $query['jumlah_transaksi'];
+	}
+
     public function get_stok($id_barang) {
         $this->db->select('stok_barang');
         $this->db->from('tbl_stok');

@@ -1,12 +1,6 @@
-<!-- Start header -->
-<?php $this->load->view('kasir/header');?>
-<!-- End header -->
-
-<!-- Main content -->
-<div class="container-fluid mb-4 p-3 shadow bg-white">
-	<h1 class="h3 text-primary"><?=$judul;?></h1>
-</div>
-
+<!-- Start Header -->
+<?php $this->load->view('admin/header'); ?>
+<!-- End Header -->
 <div class="card shadow mb-4">
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-primary">Tabel Daftar Penjualan</h6>
@@ -37,6 +31,6 @@
 </div>
 <!-- End Main content -->
 
-<!-- Start footer -->
-<?php $this->load->view('kasir/footer');?>
-<!-- End footer -->
+<!-- Start Footer -->
+<?php $this->load->view('admin/footer'); ?>
+<!-- End Footer -->
