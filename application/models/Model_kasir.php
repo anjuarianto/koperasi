@@ -25,7 +25,6 @@ class Model_kasir extends CI_Model {
         $this->db->select('sum(stok_barang) as jumlah_stok');
 		$this->db->from('tbl_stok');
 		$query = $this->db->get();
-
 		$result = $query->row_array();
 		return $result['jumlah_stok'];
     }
@@ -37,7 +36,10 @@ class Model_kasir extends CI_Model {
     }
 
     public function anggota() {
-        $query = $this->db->get('tbl_anggota');
+        $this->db->select('u.kode_anggota, u.nama, u.id_user');
+        $this->db->from('tbl_user as u');
+        $this->db->where('u.level', 5);
+        $query = $this->db->get();
         return $query->result();
     }
 
@@ -60,8 +62,8 @@ class Model_kasir extends CI_Model {
     }
 
     public function jumlah_transaksi() {
-		$this->db->select('count(id_pembelian) as jumlah_transaksi');
-		$this->db->from('tbl_pembelian');
+		$this->db->select('count(id_penjualan) as jumlah_transaksi');
+		$this->db->from('tbl_penjualan');
 		$query = $this->db->get()->row_array();
 		return $query['jumlah_transaksi'];
 	}

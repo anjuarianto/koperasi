@@ -67,6 +67,11 @@
 					<i class="fas fa-fw fa-truck"></i>
 					<span>Supplier</span></a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="<?=base_url()?>gudang/stok">
+					<i class="fas fa-fw fa-layer-group"></i>
+					<span>Stok</span></a>
+			</li>
 
 
 
@@ -171,7 +176,7 @@
 						<li class="nav-item dropdown no-arrow">
 							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$this->session->userdata('login_session')['username'];?></span>
+								<span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$this->session->userdata('login_session')['name'];?></span>
 								<img class="img-profile rounded-circle" src="<?=base_url()?>assets/img/user.png">
 							</a>
 							<!-- Dropdown - User Information -->

@@ -21,7 +21,7 @@
 					<?php foreach ($anggota as $a) : ?>
 					<tr>
 						<td><?=$a->kode_anggota;?></td>
-						<td><?=$a->nama_anggota;?></td>
+						<td><?=$a->nama;?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>

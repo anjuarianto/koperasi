@@ -9,17 +9,18 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-		<button class="btn btn-primary mt-2 mb-4" data-toggle="modal" data-target="#modalInputSupplier"><strong>+
-				Tambah
-				User</strong></button>
+			<button class="btn btn-primary mt-2 mb-4 btn-icon-split btn-sm" data-toggle="modal"
+				data-target="#modalInputUser"><strong><span class="icon text-white-50">
+						<i class="fas fa-plus"></i>
+					</span><span class="text">Tambah User</span></strong></button>
 			<table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
-                        <th>#</th>
+						<th>#</th>
 						<th>Username</th>
 						<th>Nama User</th>
-                        <th>Role</th>
+						<th>Role</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -29,7 +30,7 @@
 						<td><?=$u->username;?></td>
 						<td><?=$u->nama;?></td>
 						<td>
-                        <?php if($u->level == '1') {
+							<?php if($u->level == '1') {
                             echo "Admin";
                         } else if($u->level == '2') {
                             echo "Operator";
@@ -41,7 +42,7 @@
                             echo "Anggota Koperasi";
                         }
                         ?>
-                        </td>
+						</td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -53,7 +54,7 @@
 
 <!-- Modal Form Input Barang -->
 
-<div class="modal fade" id="modalInputSupplier" tabindex="-1" role="dialog" aria-labelledby="modalInputSupplier"
+<div class="modal fade" id="modalInputUser" tabindex="-1" role="dialog" aria-labelledby="modalInputSupplier"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable" role="document">
 		<div class="modal-content">
@@ -66,17 +67,42 @@
 			<div class="modal-body">
 				<form action="<?=base_url()?>gudang/aksi_tambah_supplier" method="post">
 					<div class="form-group">
-						<label for="nama_supplier">Nama Supplier</label>
-						<input type="text" class="form-control" name="nama_supplier" id="nama_supplier"
-							placeholder="Nama Supplier" class="form-control" value="<?=set_value('nama_supplier')?>">
-						<span style="font-size: 10px; color: red"><?=form_error('nama_supplier')?></span>
+						<label for="nama">Nama</label>
+						<input type="text" class="form-control" name="nama" id="nama" placeholder="Nama Lengkap"
+							class="form-control" value="<?=set_value('nama')?>">
+						<span style="font-size: 10px; color: red"><?=form_error('nama')?></span>
 					</div>
 					<div class="form-group">
-						<label for="alamat">Alamat</label>
-						<textarea type="textarea" name="alamat" id="alamat" placeholder="Alamat" class="form-control"
-							value="<?=set_value('alamat')?>" rows="5"></textarea>
-						<span style="font-size: 10px; color: red"><?=form_error('alamat')?></span>
+						<label for="username">Username</label>
+						<input type="text" class="form-control" name="username" id="username" placeholder="Username"
+							class="form-control" value="<?=set_value('username')?>">
+						<span style="font-size: 10px; color: red"><?=form_error('username')?></span>
 					</div>
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="text" class="form-control" name="email" id="email" placeholder="Email"
+							class="form-control" value="<?=set_value('email')?>">
+						<span style="font-size: 10px; color: red"><?=form_error('email')?></span>
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" class="form-control" name="password" id="password" placeholder="Password"
+							class="form-control" value="<?=set_value('password')?>">
+						<span style="font-size: 10px; color: red"><?=form_error('password')?></span>
+					</div>
+					<div class="form-group">
+						<label for="satuan">Satuan</label>
+						<input type="text" class="form-control" name="satuan" id="satuan" placeholder="Satuan"
+							class="form-control" value="<?=set_value('satuan')?>">
+						<span style="font-size: 10px; color: red"><?=form_error('satuan')?></span>
+					</div>
+					<div class="form-group">
+						<label for="jabatan">Jabatan</label>
+						<input type="text" class="form-control" name="jabatan" id="jabatan" placeholder="Jabatan"
+							class="form-control" value="<?=set_value('jabatan')?>">
+						<span style="font-size: 10px; color: red"><?=form_error('jabatan')?></span>
+					</div>
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

@@ -17,6 +17,22 @@ class Kasir extends CI_Controller {
         $this->load->view('kasir/dashboard', $data);
     }
 
+    public function transaksi() {
+        $data['judul'] = 'Tampilan Kasir | Kasir';
+        $data['barang'] = $this->Model_kasir->barang();
+        $data['anggota'] = $this->Model_kasir->anggota();
+        $this->load->view('kasir/transaksi', $data);
+    }
+    
+    /*
+    ///////////////////////////
+    Ini cuma testing yaaaa
+    ///////////////////////////
+    */
+    public function testing() {
+        $this->load->view('kasir/testing');
+    }
+
     public function bayar() {
         $id_anggota = $this->input->post('id_anggota');
         $harga_total_barang = $this->input->post('harga_total_barang');

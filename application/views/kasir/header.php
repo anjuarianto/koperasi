@@ -62,6 +62,11 @@
 					<i class="fas fa-fw fa-folder"></i>
 					<span>Barang</span></a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="<?=base_url()?>kasir/voucher">
+					<i class="fas fa-fw fa-credit-card"></i>
+					<span>Voucher</span></a>
+			</li>
 
 			<!-- Divider -->
 			<hr class="sidebar-divider">
@@ -78,10 +83,17 @@
 					<span>Penjualan</span></a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>kasir/kasir">
+				<a class="nav-link" href="<?=base_url()?>kasir/transaksi">
 					<i class="fas fa-fw fa-hand-holding-usd"></i>
 					<span>Tampilan Kasir</span></a>
 			</li>
+			<!-- ///////////////////// Ini cuma testing ///////////////////////////// -->
+			<li class="nav-item">
+				<a class="nav-link" href="<?=base_url()?>kasir/testing">
+					<i class="fas fa-fw fa-hand-holding-usd"></i>
+					<span>Testing</span></a>
+			</li>
+			<!-- //////////////////////////////////////////////////////////////////// -->
 
 			<!-- Divider -->
 			<hr class="sidebar-divider">
@@ -169,7 +181,7 @@
 						<li class="nav-item dropdown no-arrow">
 							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$this->session->userdata('login_session')['username'];?></span>
+								<span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$this->session->userdata('login_session')['name'];?></span>
 								<img class="img-profile rounded-circle" src="<?=base_url()?>assets/img/user.png">
 							</a>
 							<!-- Dropdown - User Information -->

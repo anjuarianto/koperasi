@@ -7,6 +7,7 @@ class Admin extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Model_admin');
+        is_admin();
     }
 
     // get function 
@@ -48,13 +49,13 @@ class Admin extends CI_Controller {
 
     public function pemasukan() {
         $data['judul'] = 'Daftar Pemasukan | Admin';
-        $data['penjualan'] = $this->Model_gudang->pemasukan();
+        $data['penjualan'] = $this->Model_admin->pemasukan();
         $this->load->view('admin/pemasukan', $data);
     }
 
     public function pengeluaran() {
         $data['judul'] = 'Daftar Penjualan | Admin';
-        $data['pembelian'] = $this->Model_gudang->pengeluaran();
+        $data['pembelian'] = $this->Model_admin->pengeluaran();
         $this->load->view('admin/pengeluaran', $data);
     }
 

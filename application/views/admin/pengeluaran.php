@@ -3,20 +3,12 @@
 <!-- End Header -->
 
 <!-- Start Content -->
-
-<div class="container-fluid mb-4 p-3 shadow bg-white">
-	<h1 class="h3 text-primary"><?=$judul;?></h1>
-</div>
-		
 <div class="card shadow mb-4">
 	<div class="card-header py-3">
-		<h6 class="m-0 font-weight-bold text-primary">Tabel Barang</h6>
+		<h6 class="m-0 font-weight-bold text-primary">Tabel Pembelian</h6>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-		<button class="btn btn-primary mt-2 mb-4" data-toggle="modal" data-target="#modalInputPembelian"><strong>+
-				Tambah
-				Pembelian</strong></button>
 			<table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
@@ -134,105 +126,6 @@
 			</div>
 		</div>
 	</div>
-	
-	
-	<script>
-	let inputPost = [];
-	let idDetail = 0;
-		
-		function validasi() {
-			const formBody = document.getElementById("formPembelian");
-			let hargaGlobal = 0;
-			const tanggalPembelian = document.getElementById("tanggal_pembelian").value;
-			inputPost.forEach(e => {
-				formBody.innerHTML += `
-                <input type="hidden" name="id_barang[]" value="${e.idBarang}" />
-                <input type="hidden" name="jumlah_barang[]" value="${e.jumlahBarang}" />
-				<input type="hidden" name="tanggal_expired[]" value="${e.tanggalExpired}"/>
-                <input type="hidden" name="harga_total_barang[]" value="${e.totalHarga}" />
-
-            `;
-			})
-			inputPost.forEach(element => {
-				hargaGlobal += element.totalHarga
-			})
-			formBody.innerHTML += `
-				<input type="hidden" name="tanggal_pembelian" value="${tanggalPembelian}"/>
-                <input type="hidden" name="total_harga_pembelian" value="${hargaGlobal}"/>
-            `;
-		}
-		function printHargaGlobal() {
-			const formatter = new Intl.NumberFormat(['ban', 'id']);
-			let hargaGlobal = 0;
-			inputPost.forEach(element => {
-				hargaGlobal += element.totalHarga
-			})
-			
-			document.getElementById("total-harga").innerHTML = "Rp " + formatter.format(hargaGlobal);
-		}
-        function functionTambahBarang() {
-            const idBarangVal = document.getElementById("nama_barang").value;
-            const jumlahBarang = document.getElementById("jumlah_barang").value;
-			const tanggalExpired = document.getElementById("tanggal_expired").value;
-            const tbodyEl = document.getElementById('table-body-detail');
-            const arrayBarang = <?=json_encode($barang)?>;
-            
-            const resBarang = arrayBarang.find(data => data.id_barang == idBarangVal);
-            const totalHarga = jumlahBarang*resBarang.harga_beli;
-            const formatter = new Intl.NumberFormat(['ban', 'id']);
-			
-            var objek = {idDetail:idDetail, idBarang:idBarangVal, jumlahBarang:jumlahBarang, totalHarga:totalHarga, tanggalExpired:tanggalExpired};
-			inputPost.push(objek)
-            tbodyEl.innerHTML += `
-                <tr>
-                    <td>${resBarang.nama_barang}</td>
-                    <td>Rp ${formatter.format(resBarang.harga_beli)}</td>
-                    <td>${jumlahBarang}</td>
-                    <td>Rp ${formatter.format(totalHarga)}</td>
-					<td><button class="btn btn-outline-light btn-danger btn-sm" onclick="functionHapus(this, ${idDetail})" type="button">x</button></td>
-                </tr>
-            `;
-			printHargaGlobal();
-			idDetail++
-			
-        }
-
-		function functionHapus(e, id) {
-			e.closest("tr").remove()
-			var indexHapus = inputPost.indexOf(inputPost.find(data => data.idDetail == id));
-			inputPost.splice(indexHapus, 1)
-			
-			printHargaGlobal();
-		}
-		
-
-		document.getElementById("nama_supplier").addEventListener('change', function (e) {
-			var namaBarang = document.getElementById("nama_barang");
-			var length = namaBarang.options.length;
-			for (var i = 1; i < length; i++) {
-				namaBarang.remove(1);
-			}
-			var idSupplier = document.getElementById("nama_supplier").value;
-			var arrayBarang = <?=json_encode($barang)?> ;
-
-			arrayBarang.forEach(element => {
-				if (idSupplier == element["id_supplier"]) {
-					var option = document.createElement("option");
-					option.text = element["nama_barang"];
-					option.value = element["id_barang"];
-					namaBarang.add(option);
-				}
-
-			})
-
-		})
-		$(document).ready(function () {
-			$('#example').DataTable(); 
-			<?=$script?>
-
-		});
-
-	</script>
 
 <!-- End Content -->
 

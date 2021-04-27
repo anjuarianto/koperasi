@@ -15,7 +15,10 @@ class Model_keuangan extends CI_Model {
     }
 
     public function anggota() {
-        $query = $this->db->get('tbl_anggota');
+        $this->db->select('u.nama, u.kode_anggota');
+        $this->db->from('tbl_user as u');
+        $this->db->where('u.level = 5');
+        $query = $this->db->get();
         return $query->result();
     }
 

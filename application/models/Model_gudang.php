@@ -5,6 +5,7 @@ class Model_gudang extends CI_Model {
 
 	// Dashboard Gudang
 
+	
 	public function jumlah_total_stok() {
 		$this->db->select('sum(stok_barang) as jumlah_stok');
 		$this->db->from('tbl_stok');
@@ -28,6 +29,14 @@ class Model_gudang extends CI_Model {
 		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier');
 		$query = $this->db->get();
         return $query->result();
+	}
+
+	public function stok_barang() {
+		$this->db->select('b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, s.tanggal_return');
+		$this->db->from('tbl_stok as s');
+		$this->db->join('tbl_barang as b', 'b.id_barang = s.id_barang', 'left');
+		$query = $this->db->get();
+		return $query->result();
 	}
 
 	public function detail_barang() {

@@ -25,18 +25,19 @@ function is_kasir()
     }
 }
 
+function is_keuangan() {
+    $ci = get_instance();
+    if ($ci->session->userdata('login_session')['level'] != '4') {
+        redirect('errors/notfound');
+    } 
+}
+
 function is_admin()
 {
     $ci = get_instance();
-    $role = $ci->session->userdata('login_session')['role'];
-
-    $status = true;
-
-    if ($role != 'admin') {
-        $status = false;
+    if($ci->session->userdata('login_session')['level'] != '1') {
+        redirect('errors/notfound');
     }
-
-    return $status;
 }
 
 function set_pesan($pesan, $tipe = true)

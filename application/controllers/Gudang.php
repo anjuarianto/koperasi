@@ -19,6 +19,12 @@ class Gudang extends CI_Controller {
 		$this->load->view('gudang/dashboard',$data);
 	}
 
+	public function stok() {
+		$data['judul'] = 'Daftar Stok | Gudang';
+		$data['stok'] = $this->Model_gudang->stok_barang();
+		$this->load->view('gudang/stok', $data);
+	}
+
 	public function barang() {
 		$data['judul'] = 'Daftar Barang | Gudang';
 		$data['barang'] = $this->Model_gudang->detail_barang();

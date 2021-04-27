@@ -9,9 +9,9 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-		<button class="btn btn-primary mt-2 mb-4" data-toggle="modal" data-target="#modalInputSupplier"><strong>+
-				Tambah
-				Supplier</strong></button>
+		<button class="btn btn-primary mt-2 mb-4 btn-icon-split btn-sm" data-toggle="modal" data-target="#modalInputSupplier"><strong><span class="icon text-white-50">
+						<i class="fas fa-plus"></i>
+					</span><span class="text">Tambah Supplier</span></strong></button>
 			<table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">

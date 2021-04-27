@@ -11,9 +11,9 @@
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 				<tr>
-					<th>Tanggal Pembelian</th>
-					<th>Total Harga Pembelian</th>
-					<th>Detail Pembelian</th>
+					<th>Tanggal Penjualan</th>
+					<th>Total Harga Penjualan</th>
+					<th>Detail Penjualan</th>
 				</tr>
 			</thead>
 			<tbody>

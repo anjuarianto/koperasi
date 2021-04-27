@@ -1,40 +1,39 @@
-<!-- Start Header -->
-<?php $this->load->view('admin/header'); ?>
-<!-- End Header -->
+<?php $this->load->view('gudang/header'); ?>
 
-<!-- Start Content -->
 
+<!-- Start content -->
+
+<div class="container-fluid mb-4 p-3 shadow bg-white">
+	<h1 class="h3 text-primary"><?=$judul;?></h1>
+</div>
 <!-- datatable -->
 <div class="card shadow mb-4">
 	<div class="card-header py-3">
-		<h6 class="m-0 font-weight-bold text-primary">Tabel Barang</h6>
+		<h6 class="m-0 font-weight-bold text-primary">Tabel Stok</h6>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-		<button class="btn btn-primary mt-2 mb-4 btn-icon-split btn-sm" data-toggle="modal" data-target="#modalInputBarang"><strong><span class="icon text-white-50">
-						<i class="fas fa-plus"></i>
-					</span><span class="text">Tambah Barang</span></strong></button>
 			<table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
 						<th>Nama Barang</th>
-						<th>Nama Supplier</th>
-						<th>Kode Barang</th>
-						<th>Harga Beli</th>
-						<th>Harga Jual</th>
-						<th>Stok</th>
+						<th>Stok Barang</th>
+						<th>Tanggal Pembelian</th>
+						<th>Tanggal Expired</th>
+						<th>Tanggal Return</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($barang as $b) : ?>
+					<?php foreach ($stok as $s) : ?>
 					<tr>
-						<td><?=$b->nama_barang;?></td>
-						<td><?=$b->nama_supplier;?></td>
-						<td><?=$b->kode_barang;?></td>
-						<td>Rp. <?=$b->harga_beli;?></td>
-						<td>Rp. <?=$b->harga_jual;?></td>
-						<td><?=$b->total_stok == null ? 0 : $b->total_stok?></td>
+						<td><?=$s->nama_barang;?></td>
+						<td><?=$s->stok_barang;?></td>
+						<td><?=$s->tanggal_pembelian;?></td>
+						<td><?=$s->tanggal_expired;?></td>
+						<td><?=$s->tanggal_return;?></td>
+						<td></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -122,8 +121,6 @@
 </div>
 
 
-<!-- End Content -->
+<!-- End content -->
 
-<!-- Start Footer -->
-<?php $this->load->view('admin/footer'); ?>
-<!-- End Footer -->
+<?php $this->load->view('gudang/footer'); ?>

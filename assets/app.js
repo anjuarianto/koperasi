@@ -34,13 +34,12 @@ function cariAnggota() {
     const anggota = arrayAnggota.find(data => data.kode_anggota == kodeAnggota);
 
     document.getElementById('detail-kode-anggota').innerHTML = anggota.kode_anggota;
-    document.getElementById('detail-nama-anggota').innerHTML = anggota.nama_anggota;
+    document.getElementById('detail-nama-anggota').innerHTML = anggota.nama;
    
 }
 
 function functionTambahBarang() {
-    const kodeBarang = document.getElementById("kode_barang").value;
-    const jumlahBarang = document.getElementById("jumlah_barang").value;
+    const kodeBarang = document.getElementById("kode_barang").value;    
     
     
     const resBarang = arrayBarang.find(data => data.kode_barang == kodeBarang);
@@ -73,16 +72,3 @@ function printHargaGlobal() {
     document.getElementById("harga-total-barang").innerHTML = "Rp " + formatter.format(hargaGlobal);
 }
 
-
-// document.getElementById("btn-cari-anggota").addEventListener("click", function() {
-//     cariAnggota();
-    
-// });
-// document.getElementById("btn").addEventListener("click", function() {
-//     cariAnggota();
-    
-// });
-// document.getElementById("btn-tambah").addEventListener("click", function() {
-//     functionTambahBarang();
-    
-// });
