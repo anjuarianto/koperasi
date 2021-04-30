@@ -58,16 +58,16 @@
 					<div class="row">
 						<div class="col">
 							<div class="form-group">
-								<input value="<?= set_value('email'); ?>" type="text" name="email"
-									class="form-control form-control-user" placeholder="Email">
-								<?= form_error('email', '<small class="text-danger">', '</small>'); ?>
+								<input value="<?= set_value('satuan'); ?>" type="text" name="satuan"
+									class="form-control form-control-user" placeholder="Satuan">
+								<?= form_error('satuan', '<small class="text-danger">', '</small>'); ?>
 							</div>
 						</div>
 						<div class="col">
 							<div class="form-group">
-								<input value="<?= set_value('no_telp'); ?>" type="text" name="no_telp"
-									class="form-control form-control-user" placeholder="Telepon">
-								<?= form_error('no_telp', '<small class="text-danger">', '</small>'); ?>
+								<input value="<?= set_value('jabatan'); ?>" type="text" name="jabatan"
+									class="form-control form-control-user" placeholder="Jabatan">
+								<?= form_error('jabatan', '<small class="text-danger">', '</small>'); ?>
 							</div>
 						</div>
 					</div>

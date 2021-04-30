@@ -79,14 +79,14 @@
 					<h4 class="text-white">Koperasi Kopassus</h4>
 					<div class="img-login text-center mb-4 mt-5"><img src="<?=base_url()?>assets/img/user.png" alt=""
 							class="shadow-sm"></div>
-					<div class="form-group"><input type="text" name="username" id="username" placeholder="Username"
+					<div class="form-group"><input type="text" name="kode_anggota" id="kode_anggota" placeholder="Kode Anggota/Username"
 							class="form-control form-control-user mb-3"></div>
 					<div class="form-group mb-0"><input type="password" name="password" id="password" placeholder="Password"
 							class="form-control form-control-user "></div>
 					<div style="color:red" class="mb-2 visible small text-left">
 						<p><?=$this->session->flashdata('pesan');?></p>
 					</div><input type="submit" value="Login" class="btn p-2 btn-sm btn-login text-white btn-block mb-3"><a
-						class="text-white" href="<?=base_url()?>home/register">Belum punya akun? <br>Minta daftarkan Admin ! </a>
+						class="text-white" href="<?=base_url()?>home/register">Daftar Disini! </a>
 			</div>
 		</div>
 		</form>

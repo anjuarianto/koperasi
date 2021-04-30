@@ -36,12 +36,27 @@ class Keuangan extends CI_Controller {
 
     public function shu() {
         $data['judul'] = 'Pembagian SHU | Keuangan';
-        $this->load->view('keuangan/shu');
+        $data['anggota'] = $this->Model_keuangan->shu();  
+        $this->load->view('keuangan/shu', $data);
     }
 
     public function laba_rugi() {
         $data['judul'] = 'Daftar Pengeluaran | Keuangan';
         $this->load->view('keuangan/laba_rugi');
+    }
+
+
+    public function input_shu($id) {
+        $nilai_shu = $this->input->post('nilai_shu');
+        
+        $data = array(
+            'nilai_shu' => $nilai_shu,
+            'id_user'    => $id,
+            'periode' =>   date('Y')
+        );
+        $this->Model_keuangan->input_shu($data);
+        redirect('keuangan/shu');
+        
     }
 
     

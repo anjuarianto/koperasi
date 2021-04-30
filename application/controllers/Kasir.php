@@ -23,35 +23,33 @@ class Kasir extends CI_Controller {
         $data['anggota'] = $this->Model_kasir->anggota();
         $this->load->view('kasir/transaksi', $data);
     }
-    
-    /*
-    ///////////////////////////
-    Ini cuma testing yaaaa
-    ///////////////////////////
-    */
-    public function testing() {
-        $this->load->view('kasir/testing');
-    }
 
     public function bayar() {
-        $id_anggota = $this->input->post('id_anggota');
-        $harga_total_barang = $this->input->post('harga_total_barang');
-        $kembalian = $this->input->post('kembalian');
+
+        $kode_anggota = $this->input->post('kode_anggota');
         $jenis_pembayaran = $this->input->post('jenis_pembayaran');
         $nominal_uang = $this->input->post('nominal_uang');
-        $t = time();
         $id_barang = $this->input->post('id_barang');
         $jumlah_barang = $this->input->post('jumlah_barang');
+    
+        $harga_total_barang = 0;
+        // hitung harga total barang
+        for($i=0;$i<count($id_barang);$i++) {
+            $harga_total_barang += $this->Model_kasir->barang_id($id_barang[$i])['harga_jual'];
+        };
+        
+        $kembalian = $nominal_uang - $harga_total_barang;
 
         $penjualan = array(
-            'id_anggota'    => $id_anggota,
+            'kode_anggota'    => $kode_anggota,
             'harga_total_barang'    => $harga_total_barang,
-            'kembalian'     => $kembalian,
             'jenis_pembayaran'     => $jenis_pembayaran,
             'nominal_uang'     => $nominal_uang,
-            'tanggal_penjualan' => date("Y-m-d",$t)
+            'kembalian'        => $kembalian
         );
+       
         $this->Model_kasir->tambah_penjualan($penjualan);
+
         $last_id = $this->db->insert_id();
         for($i=0;$i<count($id_barang);$i++) {
             $detail_penjualan = array(
@@ -59,12 +57,16 @@ class Kasir extends CI_Controller {
                 'id_barang' => $id_barang[$i],
                 'jumlah_barang' => $jumlah_barang[$i]
             );
+
+            
+
             $this->Model_kasir->tambah_detail_penjualan($detail_penjualan);
             $result = $this->Model_kasir->get_stok($id_barang[$i]);
             $updateStok = $result['stok_barang'] - $jumlah_barang[$i];
             $data = array('stok_barang' => $updateStok);
             $this->Model_kasir->update_stok($id_barang[$i], $data);
         }
+        
         redirect('kasir/penjualan');
     }
 

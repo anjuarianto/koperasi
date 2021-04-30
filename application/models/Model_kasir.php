@@ -10,6 +10,14 @@ class Model_kasir extends CI_Model {
         return $query->result();
     }
 
+    public function barang_id($id) {
+        $this->db->select('*');
+		$this->db->from('tbl_barang');
+        $this->db->where('id_barang', $id);
+		$query = $this->db->get();
+        return $query->row_array();
+    }
+
     public function detail_barang() {
 		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, kode_barang, harga_beli, harga_jual, diskon, sum(st.stok_barang) as total_stok');
 		$this->db->from('tbl_barang as b');

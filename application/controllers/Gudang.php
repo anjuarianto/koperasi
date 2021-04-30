@@ -174,5 +174,14 @@ class Gudang extends CI_Controller {
 		}
 		redirect('gudang/pembelian');
 	}
+
+	function return_barang($id) {
+		$tanggal_return = date('Y-m-d');
+		$data = array(
+			'tanggal_return'	=> $tanggal_return
+		);
+		$this->Model_gudang->return_barang($id, $data);
+		// redirect('gudang/stok');
+	}
     
 }

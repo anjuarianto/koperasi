@@ -32,7 +32,7 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function stok_barang() {
-		$this->db->select('b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, s.tanggal_return');
+		$this->db->select('s.id_stok, b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, s.tanggal_return');
 		$this->db->from('tbl_stok as s');
 		$this->db->join('tbl_barang as b', 'b.id_barang = s.id_barang', 'left');
 		$query = $this->db->get();
@@ -102,5 +102,10 @@ class Model_gudang extends CI_Model {
 
 	public function tambah_stok($data) {
 		$this->db->insert('tbl_stok', $data);
+	}
+
+	public function return_barang($id, $data) {
+		$this->db->where('id_stok', $id);
+		$this->db->update('tbl_stok', $data);
 	}
 }

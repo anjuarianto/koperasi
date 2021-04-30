@@ -33,7 +33,7 @@
 						<td><?=$s->tanggal_pembelian;?></td>
 						<td><?=$s->tanggal_expired;?></td>
 						<td><?=$s->tanggal_return;?></td>
-						<td></td>
+						<td><?=$s->tanggal_return == null ? '<a href="'.base_url().'gudang/return_barang/'.$s->id_stok.'" class="btn btn-danger  btn-sm text-center">Return</a>' : '' ?>  </td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>

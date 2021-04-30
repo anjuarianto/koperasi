@@ -1,74 +1,90 @@
-let inputPost = [];
-let idDetail = 0;
-
-function validasi() {
-    const formBody = document.getElementById("form-body-detail");
-    const kodeAnggota = document.getElementById('kode_anggota').value;
-    const idAnggota = arrayAnggota.find(data => data.kode_anggota == kodeAnggota).id_anggota;
-    const jenisPembayaran = document.getElementById('jenis_pembayaran').value;
-    const nominalUang = document.getElementById('nominal_uang').value;
-    
-    
-    let hargaGlobal = 0;
-    inputPost.forEach(e => {
-        formBody.innerHTML += `
-        <input type="hidden" name="id_barang[]" value="${e.idBarang}" />
-        <input type="hidden" name="jumlah_barang[]" value="${e.jumlahBarang}" />
-
-    `;
-    })
-    inputPost.forEach(element => {
-        hargaGlobal += element.totalHarga
-    })
-    const kembalian = nominalUang - hargaGlobal;
-    formBody.innerHTML += `
-        <input type="hidden" name="harga_total_barang" value="${hargaGlobal}"/>
-        <input type="hidden" name="id_anggota" value="${idAnggota}"/>
-        <input type="hidden" name="jenis_pembayaran" value="${jenisPembayaran}"/>
-        <input type="hidden" name="nominal_uang" value="${nominalUang}"/>
-        <input type="hidden" name="kembalian" value="${kembalian}"/>
-    `;
-}
 function cariAnggota() {
     const kodeAnggota = document.getElementById('kode_anggota').value;
     const anggota = arrayAnggota.find(data => data.kode_anggota == kodeAnggota);
+    const formBody = document.getElementById("form-body-detail");
+    const input = document.createElement('INPUT');
+  
 
+    input.setAttribute('type', 'hidden');
+    input.setAttribute('name', 'kode_anggota');
+    input.setAttribute('value', anggota.kode_anggota);
+    formBody.appendChild(input);
     document.getElementById('detail-kode-anggota').innerHTML = anggota.kode_anggota;
     document.getElementById('detail-nama-anggota').innerHTML = anggota.nama;
-   
 }
 
+
+
 function functionTambahBarang() {
-    const kodeBarang = document.getElementById("kode_barang").value;    
-    
-    
+    const kodeBarang = document.getElementById("kode_barang").value;
     const resBarang = arrayBarang.find(data => data.kode_barang == kodeBarang);
-    const totalHarga = jumlahBarang*resBarang.harga_beli;
     const formatter = new Intl.NumberFormat(['ban', 'id']);
-    
-    var objek = {idDetail:idDetail, idBarang:resBarang.id_barang, jumlahBarang:jumlahBarang, totalHarga:totalHarga};
-    inputPost.push(objek)
-    tbodyEl = document.getElementById('detail-barang')
-    tbodyEl.innerHTML += `
-        <tr>
-            <td>${resBarang.nama_barang}</td>
-            <td>Rp ${formatter.format(resBarang.harga_beli)}</td>
-            <td>${jumlahBarang}</td>
-            <td>Rp ${formatter.format(totalHarga)}</td>
-        </tr>
-    `;
+
+
+    addHiddenInput(resBarang.id_barang);
+
+    const tbodyEl = document.getElementById('detail-barang');
+    const trEl = document.createElement("TR");
+    trEl.setAttribute('data-id-barang', resBarang.id_barang);
+    tbodyEl.appendChild(trEl);
+    for(i=0;i<4;i++) {
+        if(i==0) {
+            var td = document.createElement("TD");
+            td.innerHTML = resBarang.nama_barang;
+            trEl.appendChild(td);
+            
+        } else if (i==1) {
+            var td = document.createElement("TD");
+            td.innerHTML = 'Rp. ' + formatter.format(resBarang.harga_jual);
+            trEl.appendChild(td);
+        } else if (i==2) {
+            var td = document.createElement("TD");
+            td.innerHTML = '<input type="number" class="form-control form-control-sm" name="jumlah_barang[]" onchange="ubahJumlah(this)" onkeyup="ubahJumlah(this)" value="1">';
+            trEl.appendChild(td);
+        } else if(i==3) {
+            var td = document.createElement("TD");
+            td.innerHTML = 'Rp. ' + formatter.format(resBarang.harga_jual);
+            trEl.appendChild(td);
+        }
+    }
     printHargaGlobal();
-    
+}
+
+function ubahJumlah(value) {
+    const formatter = new Intl.NumberFormat(['ban', 'id']);
+    const row = value.parentElement.parentElement;
+    const valQty = row.cells[2].children[0].value;
+    const idBarang = row.getAttribute("data-id-barang");
+    const resBarang = arrayBarang.find(data => data.id_barang == idBarang);
+    const hargaBarang = resBarang.harga_jual;
+    row.cells[3].innerHTML = 'Rp. ' + formatter.format(hargaBarang*valQty);
+    printHargaGlobal();
+
 }
 
 
 function printHargaGlobal() {
     const formatter = new Intl.NumberFormat(['ban', 'id']);
-    let hargaGlobal = 0;
-    inputPost.forEach(element => {
-        hargaGlobal += element.totalHarga
-    })
-    
-    document.getElementById("harga-total-barang").innerHTML = "Rp " + formatter.format(hargaGlobal);
+    const hargaTotalBarang = document.getElementById('harga-total-barang');
+    var resHargaTotal = 0;
+    const tRow = document.getElementById('detail-barang').children;
+    for(i=0;i<tRow.length;i++) {
+        var totalHarga = tRow[i].children[3].innerText;
+        var res = parseInt(totalHarga.replace(/\D/g, ""));
+        resHargaTotal += res;
+    }
+
+    hargaTotalBarang.innerHTML = 'Rp. ' + formatter.format(resHargaTotal);
 }
 
+function addHiddenInput(idBarang) {
+    const formBody = document.getElementById("form-body-detail");
+    const input = document.createElement('INPUT');
+    const nameInput = 'contoh input';
+    const valueInput = 'value input';
+
+    input.setAttribute('type', 'hidden');
+    input.setAttribute('name', 'id_barang[]');
+    input.setAttribute('value', idBarang);
+    formBody.appendChild(input);
+}
