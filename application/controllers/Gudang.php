@@ -183,5 +183,10 @@ class Gudang extends CI_Controller {
 		$this->Model_gudang->return_barang($id, $data);
 		// redirect('gudang/stok');
 	}
+
+	function data_barang() {
+		$data = $this->Model_gudang->detail_barang();
+		echo json_encode($data);
+	}
     
 }

@@ -12,8 +12,8 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-		<button class="btn btn-primary mt-2 mb-4" data-toggle="modal" data-target="#modalInputBarang"><strong>+
-				Tambah Barang</strong></button>
+			<button class="btn btn-primary mt-2 mb-4" data-toggle="modal" data-target="#modalInputBarang"><strong>+
+					Tambah Barang</strong></button>
 			<table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
@@ -47,7 +47,6 @@
 
 
 <!-- Modal Form Input Barang -->
-
 <div class="modal fade" id="modalInputBarang" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -85,7 +84,7 @@
 					</div>
 					<div class="form-group">
 						<label for="kode_barang">Kode Barang</label>
-						<input type="text" name="kode_barang" id="kode_barang" placeholder="Kode Barang"
+						<input type="text" name="kode_barang" placeholder="Kode Barang"
 							class="form-control" value="<?=set_value('kode_barang')?>" required>
 						<span style="font-size: 10px; color: red"><?=form_error('kode_barang')?></span>
 					</div>
@@ -95,7 +94,7 @@
 							<div class="input-group-prepend">
 								<div class="input-group-text">Rp</div>
 							</div>
-							<input type="text" name="harga_beli" id="harga_beli" placeholder="Harga Beli"
+							<input type="text" name="harga_beli" placeholder="Harga Beli"
 								class="form-control" value="<?=set_value('harga_beli')?>" required>
 						</div>
 						<span style="font-size: 10px; color: red"><?=form_error('harga_beli')?></span>
@@ -106,7 +105,7 @@
 							<div class="input-group-prepend">
 								<div class="input-group-text">Rp</div>
 							</div>
-							<input type="text" name="harga_jual" id="harga_jual" placeholder="Harga Jual"
+							<input type="text" name="harga_jual" placeholder="Harga Jual"
 								class="form-control" required>
 						</div>
 						<span style="font-size: 10px; color: red"><?=form_error('harga_jual')?></span>
@@ -120,5 +119,71 @@
 		</div>
 	</div>
 </div>
+
+
+<!-- Modal Detail Barang -->
+<div class="modal fade" id="modalDetailBarang" tabindex="-1" role="dialog" aria-labelledby="modalDetailBarang"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Detail Barang</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="" method="post">
+					<input type="hidden" id="id_barang" name="id_barang" value="<?=set_value('id_barang')?>">
+					<div class="form-group <?=form_error('nama_barang') ? 'has-error' : null ?>">
+						<label for="nama_barang">Nama Barang</label>
+						<input type="text" name="nama_barang" id="nama_barang" placeholder="Nama Barang..."
+							class="form-control" value="<?=set_value('nama_barang')?>" required>
+						<span style="font-size: 10px; color: red"><?=form_error('nama_barang')?></span>
+					</div>
+					<div class="form-group">
+						<label for="nama_barang">Foto Barang</label>
+						<input type="file" name="foto_barang" id="foto_barang" placeholder="Foto Barang.."
+							class="form-control" value="" accept=".png, .jpg, .jpeg">
+						<span style="font-size: 10px; color: red"><?=form_error('foto_barang')?></span>
+					</div>
+					<div class="form-group">
+						<label for="nama_barang">Harga Beli</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">Rp</div>
+							</div>
+							<input type="text" name="harga_beli" id="harga_beli" placeholder="Harga Beli.."
+								class="form-control" value="<?=set_value('harga_beli')?>" required>
+						</div>
+						<span style="font-size: 10px; color: red"><?=form_error('harga_beli')?></span>
+					</div>
+					<div class="form-group">
+						<label for="nama_barang">Harga Jual</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">Rp</div>
+							</div>
+							<input type="text" name="harga_jual" id="harga_jual" placeholder="Harga Jual.."
+								class="form-control" value="<?=set_value('harga_jual')?>" required>
+						</div>
+						<span style="font-size: 10px; color: red"><?=form_error('harga_jual')?></span>
+					</div>
+					<div class="form-group">
+						<label for="nama_barang">Stok</label>
+						<input type="text" name="stok" id="stok" placeholder="Stok" class="form-control"
+							value="<?=set_value('stok')?>" required>
+						<span style="font-size: 10px; color: red"><?=form_error('stok')?></span>
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+				<input type="submit" class="btn btn-primary" value="Simpan!">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <?php $this->load->view('gudang/footer');
