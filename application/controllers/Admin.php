@@ -38,6 +38,7 @@ class Admin extends CI_Controller {
 
     public function voucher() {
         $data['judul'] = 'Daftar Voucher | Admin';
+        $data['voucher'] = $this->Model_admin->voucher();
         $this->load->view('admin/voucher', $data);
     }
 
@@ -57,6 +58,16 @@ class Admin extends CI_Controller {
         $data['judul'] = 'Daftar Penjualan | Admin';
         $data['pembelian'] = $this->Model_admin->pengeluaran();
         $this->load->view('admin/pengeluaran', $data);
+    }
+
+    public function input_voucher() {
+        $data = array(
+            'nama_voucher' => $this->input->post('nama_voucher'),
+            'nilai_voucher' => $this->input->post('nilai_voucher')
+        );
+
+        $this->Model_admin->input_voucher($data);
+        redirect('admin/voucher');
     }
 
      

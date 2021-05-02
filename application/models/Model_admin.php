@@ -48,4 +48,8 @@ class Model_admin extends CI_Model {
         return $query->result();
     }
 
+    public function input_voucher($data) {
+        $this->db->insert('tbl_voucher', $data);
+    }
+
 }

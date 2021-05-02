@@ -74,6 +74,7 @@ class Home extends CI_Controller {
 					'kode_anggota'  => $user_db['kode_anggota'],
 					'level' => $user_db['level'],
 					'name'  => $user_db['nama'],
+					'id_user' => $user_db['id_user'],
 					'timestamp' => time()
 				);
 				$this->session->set_userdata('login_session', $userdata);
