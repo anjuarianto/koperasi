@@ -49,7 +49,8 @@ class Kasir extends CI_Controller {
             'harga_total_barang'    => $harga_total_barang,
             'jenis_pembayaran'     => $jenis_pembayaran,
             'nominal_uang'     => $nominal_uang,
-            'kembalian'        => $kembalian
+            'kembalian'        => $kembalian,
+            'user'  => $this->session->userdata('login_session')['id_user']
         );
        
         $this->Model_kasir->tambah_penjualan($penjualan);
@@ -71,7 +72,7 @@ class Kasir extends CI_Controller {
             $this->Model_kasir->update_stok($id_barang[$i], $data);
         }
         
-        redirect('kasir/penjualan');
+        redirect('kasir');
     }
 
     public function penjualan() {
@@ -95,5 +96,20 @@ class Kasir extends CI_Controller {
 		$data = $this->Model_kasir->barang_id($id);
 		echo json_encode($data);
 	}
+
+    public function anggota_kode($input) {
+        $data = $this->Model_kasir->anggota_kode($input);
+        echo json_encode($data);
+    }
+
+    public function barang_all() {
+        $data = $this->Model_kasir->barang_all();
+        echo json_encode($data);
+    }
+
+    public function anggota_all() {
+        $data = $this->Model_kasir->anggota_all();
+        echo json_encode($data);
+    }
 
 }

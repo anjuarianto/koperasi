@@ -92,4 +92,27 @@ class Model_kasir extends CI_Model {
 		$query = $this->db->get();
 		return $query->row();
     }
+
+    public function anggota_kode($kode_anggota) {
+        $this->db->select('u.*');
+        $this->db->from('tbl_user as u');
+        $this->db->where('u.level', 5);
+        $this->db->where('kode_anggota', $kode_anggota);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    public function barang_all() {
+        $query = $this->db->get('tbl_barang');
+        return $query->result();
+        
+    }
+
+    public function anggota_all() {
+        $this->db->select('u.*');
+        $this->db->from('tbl_user as u');
+        $this->db->where('u.level', 5);
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

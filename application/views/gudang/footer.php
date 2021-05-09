@@ -96,7 +96,6 @@
 		}
 	);
 	$(document).ready(function () {
-
 		$('#input_barang').typeahead({
 			source: function (query, process) {
 				states = [];

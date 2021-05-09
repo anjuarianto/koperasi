@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 02, 2021 at 05:24 PM
+-- Generation Time: May 09, 2021 at 10:27 AM
 -- Server version: 10.4.18-MariaDB
--- PHP Version: 7.4.16
+-- PHP Version: 7.4.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,27 +33,26 @@ CREATE TABLE `tbl_barang` (
   `id_supplier` int(10) NOT NULL,
   `kode_barang` varchar(50) NOT NULL,
   `harga_beli` int(20) NOT NULL,
-  `harga_jual` int(20) NOT NULL,
-  `diskon` int(20) NOT NULL
+  `harga_jual` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_barang`
 --
 
-INSERT INTO `tbl_barang` (`id_barang`, `nama_barang`, `id_supplier`, `kode_barang`, `harga_beli`, `harga_jual`, `diskon`) VALUES
-(1, 'Sunlight Pencuci Piring Lime 510Ml', 1, '20105104', 8000, 9000, 0),
-(2, 'Nescafe Gold Original Special Edition 100G', 2, '5328910', 140000, 150000, 0),
-(3, 'Milo Minuman Serbuk Cokelat 4X22g', 2, '20105103', 9000, 10000, 0),
-(17, 'Indomie Goreng', 12, '456123', 2000, 3000, 0),
-(18, 'Indome Ayam Bawang', 12, '134652', 2200, 2500, 0),
-(19, 'Indomie Rasa Rendang', 12, '461352', 2000, 2500, 0),
-(20, 'Indomilk 150ml', 12, '436152', 5000, 6000, 0),
-(21, 'Sunsilk Botol', 1, '794685', 7000, 8000, 0),
-(22, 'Surya 16 ', 11, '789789', 23000, 25000, 0),
-(23, 'Surya 12', 11, '456456', 15000, 18000, 0),
-(24, 'Sampoerna Mild 16', 17, '159753', 24000, 26000, 0),
-(25, 'Anggur Merah', 15, '756145', 50000, 60000, 0);
+INSERT INTO `tbl_barang` (`id_barang`, `nama_barang`, `id_supplier`, `kode_barang`, `harga_beli`, `harga_jual`) VALUES
+(1, 'Sunlight Pencuci Piring Lime 510Ml', 1, '20105104', 8000, 9000),
+(2, 'Nescafe Gold Original Special Edition 100G', 2, '5328910', 140000, 150000),
+(3, 'Milo Minuman Serbuk Cokelat 4X22g', 2, '20105103', 9000, 10000),
+(17, 'Indomie Goreng', 12, '456123', 2000, 3000),
+(18, 'Indome Ayam Bawang', 12, '134652', 2200, 2500),
+(19, 'Indomie Rasa Rendang', 12, '461352', 2000, 2500),
+(20, 'Indomilk 150ml', 12, '436152', 5000, 6000),
+(21, 'Sunsilk Botol', 1, '794685', 7000, 8000),
+(22, 'Surya 16 ', 11, '789789', 23000, 25000),
+(23, 'Surya 12', 11, '456456', 15000, 18000),
+(24, 'Sampoerna Mild 16', 17, '159753', 24000, 26000),
+(25, 'Anggur Merah', 15, '756145', 50000, 60000);
 
 -- --------------------------------------------------------
 
@@ -66,23 +65,8 @@ CREATE TABLE `tbl_detail_pembelian` (
   `id_pembelian` int(10) NOT NULL,
   `id_barang` int(10) NOT NULL,
   `jumlah_barang` int(10) NOT NULL,
-  `harga_total_barang` int(20) NOT NULL
+  `discount` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tbl_detail_pembelian`
---
-
-INSERT INTO `tbl_detail_pembelian` (`id_detail_pembelian`, `id_pembelian`, `id_barang`, `jumlah_barang`, `harga_total_barang`) VALUES
-(75, 56, 2, 1000, 140000000),
-(76, 56, 25, 1000, 50000000),
-(77, 57, 3, 20, 180000),
-(78, 57, 22, 20, 460000),
-(79, 58, 22, 20, 460000),
-(80, 59, 2, 20, 2800000),
-(81, 59, 3, 20, 180000),
-(82, 59, 18, 20, 44000),
-(83, 59, 19, 20, 40000);
 
 -- --------------------------------------------------------
 
@@ -94,17 +78,8 @@ CREATE TABLE `tbl_detail_penjualan` (
   `id_detail_penjualan` int(20) NOT NULL,
   `id_penjualan` int(10) NOT NULL,
   `id_barang` int(20) NOT NULL,
-  `jumlah_barang` int(20) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `jumlah_barang` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tbl_detail_penjualan`
---
-
-INSERT INTO `tbl_detail_penjualan` (`id_detail_penjualan`, `id_penjualan`, `id_barang`, `jumlah_barang`, `created_at`) VALUES
-(17, 14, 2, 1, '2021-05-01 15:30:29'),
-(18, 14, 22, 2, '2021-05-01 15:30:29');
 
 -- --------------------------------------------------------
 
@@ -115,7 +90,9 @@ INSERT INTO `tbl_detail_penjualan` (`id_detail_penjualan`, `id_penjualan`, `id_b
 CREATE TABLE `tbl_pembelian` (
   `id_pembelian` int(10) NOT NULL,
   `tgl_pembelian` date NOT NULL,
-  `total_harga_pembelian` int(20) NOT NULL,
+  `no_faktur` varchar(20) NOT NULL,
+  `ppn` int(3) NOT NULL,
+  `jenis_pembayaran` enum('Cash','Kredit') NOT NULL,
   `user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -123,11 +100,11 @@ CREATE TABLE `tbl_pembelian` (
 -- Dumping data for table `tbl_pembelian`
 --
 
-INSERT INTO `tbl_pembelian` (`id_pembelian`, `tgl_pembelian`, `total_harga_pembelian`, `user`) VALUES
-(56, '2021-04-30', 190000000, 0),
-(57, '2021-05-20', 640000, 0),
-(58, '2021-05-01', 460000, 0),
-(59, '0000-00-00', 3064000, 0);
+INSERT INTO `tbl_pembelian` (`id_pembelian`, `tgl_pembelian`, `no_faktur`, `ppn`, `jenis_pembayaran`, `user`) VALUES
+(56, '2021-04-30', '190000000', 0, 'Cash', 0),
+(57, '2021-05-20', '640000', 0, 'Cash', 0),
+(58, '2021-05-01', '460000', 0, 'Cash', 0),
+(59, '0000-00-00', '3064000', 0, 'Cash', 0);
 
 -- --------------------------------------------------------
 
@@ -276,20 +253,21 @@ INSERT INTO `tbl_user` (`id_user`, `nama`, `password`, `email`, `level`, `kode_a
 
 CREATE TABLE `tbl_voucher` (
   `id_voucher` int(10) NOT NULL,
-  `nama_voucher` varchar(50) NOT NULL,
-  `nilai_voucher` int(10) NOT NULL,
-  `tanggal_release` date NOT NULL DEFAULT current_timestamp(),
-  `tanggal_expired` date NOT NULL
+  `id_user` int(12) NOT NULL,
+  `bulan` varchar(10) NOT NULL,
+  `tahun` int(10) NOT NULL DEFAULT current_timestamp(),
+  `tanggal_release` date NOT NULL,
+  `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_voucher`
 --
 
-INSERT INTO `tbl_voucher` (`id_voucher`, `nama_voucher`, `nilai_voucher`, `tanggal_release`, `tanggal_expired`) VALUES
-(1, 'Voucher 1', 200000, '0000-00-00', '2024-05-09'),
-(2, 'Voucher 2', 10000, '0000-00-00', '2023-05-02'),
-(3, 'asdfasdf', 1000, '2021-05-01', '0000-00-00');
+INSERT INTO `tbl_voucher` (`id_voucher`, `id_user`, `bulan`, `tahun`, `tanggal_release`, `status`) VALUES
+(1, 0, '200000', 0, '2024-05-09', 0),
+(2, 0, '10000', 0, '2023-05-02', 0),
+(3, 0, '1000', 20210501, '0000-00-00', 0);
 
 --
 -- Indexes for dumped tables

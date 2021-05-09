@@ -115,10 +115,30 @@
 						</div>
 						<!-- wrapper -->
 						<div class="row">
-							<div class="col-xl-8 col-lg-7">
+							<div class="col-xl-9 col-lg-8">
 								<div class="row">
 									<!-- container cari barang -->
 									<div class="col">
+										<div class="card shadow mb-4 border-left-primary">
+											<div class="card-body">
+												<div  class="d-flex justify-content-between">
+													<h6>Subtotal</h6>
+													<h6 class="text-primary" id="sub-total">Rp. 0</h6>
+												</div>
+												<div class="d-flex justify-content-between">
+													<h6>Voucher</h6>
+													<h6 class="text-primary" id="voucher">Rp. 0</h6>
+												</div>
+												<hr class="bg-primary">
+												<div class="grand-total d-flex justify-content-between">
+													<h6>Grand Total</h6>
+													<h4 class="text-primary mb-0" id="grand-total">Rp. 0</h4>
+												</div>
+
+											</div>
+										</div>
+									</div>
+									<div class="col-3">
 
 										<div class="card shadow mb-4">
 											<div class="card-header py-3">
@@ -127,8 +147,8 @@
 
 											<div class="card-body">
 												<div class="input-group">
-													<input type="text" name="kode_barang" id="kode_barang"
-														class="form-control" placeholder="Kode Barang">
+													<input type="text" name="kode_barang" data-provide="typeahead" id="kode_barang"
+														class="form-control typeahead" placeholder="Kode Barang" autocomplete="off" autofocus>
 													<div class="input-group-append">
 														<button class="btn btn-outline-primary" type="button"
 															onclick="functionTambahBarang()"><i
@@ -138,15 +158,14 @@
 											</div>
 										</div>
 									</div>
-									<!-- end container cari barang -->
-									<div class="col">
+									<div class="col-3">
 										<div class="card shadow mb-4">
 											<div class="card-header py-3">
 												<h6 class="m-0 font-weight-bold text-primary">Input Anggota</h6>
 											</div>
 											<div class="card-body">
 												<div class="input-group">
-													<input type="text" class="form-control" id="kode_anggota"
+													<input type="text" class="form-control" id="kode_anggota" autocomplete="off"
 														placeholder="Kode Anggota">
 													<div class="input-group-append">
 														<button class="btn btn-outline-primary" type="button"
@@ -157,13 +176,15 @@
 											</div>
 										</div>
 									</div>
+									<!-- end container cari barang -->
+
 								</div>
 
 
 
 								<!-- start daftar barang penjualan -->
 
-								<table class="table shadow bg-white" id="table-detail-barang" width="100%"
+								<table class="table table-sm shadow bg-white" id="table-detail-barang" width="100%"
 									cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
 									<thead class="thead-light">
 										<tr>
@@ -171,6 +192,7 @@
 											<th>Harga</th>
 											<th style="width: 20%">Qty</th>
 											<th>Total</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody id="detail-barang">
@@ -178,7 +200,8 @@
 									<tfoot>
 										<tr>
 											<th colspan="3">Total</th>
-											<th id="harga-total-barang"></th>
+											<th id="harga-total-barang">Rp. 0</th>
+											<th></th>
 										</tr>
 									</tfoot>
 								</table>
@@ -190,8 +213,10 @@
 
 
 							<!-- container input anggota -->
-							<div class="col-xl-4 col-lg-5">
-								<div class="card shadow mb-4">
+							<div class="col-xl-3 col-lg-4">
+
+
+								<div class="card shadow mb-2">
 									<div class="card-header py-3">
 										<h6 class="m-0 font-weight-bold text-primary">Detail Anggota</h6>
 									</div>
@@ -200,30 +225,38 @@
 										<div>Kode Anggota : <span id="detail-kode-anggota"></span></div>
 									</div>
 								</div>
+
+
+
 								<div class="card shadow">
 									<div class="card-header py-3">
 										<h6 class="m-0 font-weight-bold text-primary">Detail Transaksi</h6>
 									</div>
 									<div class="card-body">
-										<div
-											class="subtotal d-flex justify-content-between text-primary font-weight-bold text-bold">
-											<p class="m-0">Subtotal</p>
-										</div>
-										<hr>
-										<div
-											class="total d-flex justify-content-between text-primary font-weight-bold text-bold">
-											<p class="m-0">Total</p>
-										</div>
-										<hr>
+										<div class="form-group row">
+											<label for="inputPassword" class="col-4 col-form-label">Voucher</label>
+											<div class="col-8">
+												<div class="input-group">
+													<input type="text" class="form-control" id="id-voucher" placeholder="Voucher">
+													<div class="input-group-append">
+														<button class="btn btn-outline-secondary" type="button"
+															onclick="tambahVoucher()"><i
+																class="fas fa-fw fa-plus"></i></button>
+													</div>
+												</div>
 
+											</div>
+										</div>
+										<div id="input-voucher" class="voucher mb-1 d-flex flex-wrap text-white">
+										</div>
+										<hr>
 										<div
 											class="total d-flex justify-content-between mb-3 text-primary font-weight-bold text-bold">
 											<select name="jenis_pembayaran" id="jenis_pembayaran"
 												class="form-control custom-select">
 												<option value="">Jenis Pembayaran</option>
-												<option value="cash">Cash</option>
-												<option value="voucher">Voucher</option>
-												<option value="kredit">Kredit</option>
+												<option value="Cash">Cash</option>
+												<option value="Kredit">Kredit</option>
 											</select>
 										</div>
 										<input type="text" class="form-control mb-3" name="nominal_uang"
@@ -268,7 +301,6 @@
 
 					function cariAnggota() {
 						const kodeAnggota = document.getElementById('kode_anggota').value;
-						const anggota = arrayAnggota.find(data => data.kode_anggota == kodeAnggota);
 						const formBody = document.getElementById("form-body-detail");
 						const input = document.createElement('INPUT');
 
@@ -277,22 +309,39 @@
 							url: baseUrl + "kasir/anggota_kode/" + kodeAnggota,
 							dataType: "JSON",
 							success: function (response) {
+								console.log(response)
 								// get data
 								document.getElementById('detail-kode-anggota').innerHTML = response.kode_anggota;
 								document.getElementById('detail-nama-anggota').innerHTML = response.nama;
+								console.log(response.nama);
+								input.setAttribute('type', 'hidden');
+								input.setAttribute('name', 'kode_anggota');
+								input.setAttribute('value', response.kode_anggota);
+								formBody.appendChild(input);
+
 							}
 
 						});
-
-
-						input.setAttribute('type', 'hidden');
-						input.setAttribute('name', 'kode_anggota');
-						input.setAttribute('value', anggota.kode_anggota);
-						formBody.appendChild(input);
-						
 					}
 
+					function tambahVoucher() {
+						const formatter = new Intl.NumberFormat(['ban', 'id']);
+						const kodeVoucher = $('#id-voucher').val();
+						const inputVoucher = $('#input-voucher');
+						const voucher = $('#voucher');
 
+						inputVoucher.append('<span style="cursor:pointer" class="border border-secondary bg-primary m-1 p-1" onclick="hapusVoucher(this)"><input type="hidden" name="id_voucher[]" value="'+kodeVoucher+'">#'+kodeVoucher+'</input></span>');
+						const totalVoucher = inputVoucher.children().length*100000;
+						voucher.html('- Rp. ' + formatter.format(totalVoucher));
+						printGrandTotal()
+					}
+
+					function hapusVoucher(nilai) {
+						$(nilai).closest("span").remove();
+						$('#voucher').html('Rp. 0')
+						printGrandTotal()
+
+					}
 
 					function functionTambahBarang() {
 						const kodeBarang = $('#kode_barang').val();
@@ -310,7 +359,7 @@
 								trEl.setAttribute('data-id-barang', response.id_barang);
 								tbodyEl.appendChild(trEl);
 
-								for (i = 0; i < 4; i++) {
+								for (i = 0; i < 5; i++) {
 									if (i == 0) {
 										var td = document.createElement("TD");
 										td.innerHTML = response.nama_barang;
@@ -323,11 +372,18 @@
 									} else if (i == 2) {
 										var td = document.createElement("TD");
 										td.innerHTML =
-											'<input type="number" class="form-control form-control-sm" name="jumlah_barang[]" onchange="ubahJumlah(this)" onkeyup="ubahJumlah(this)" value="1">';
+											'<input type="number" min="0" max="100" class="form-control form-control-sm" name="jumlah_barang[]" onchange="ubahJumlah(this)" onkeyup="ubahJumlah(this)" value="1">';
 										trEl.appendChild(td);
 									} else if (i == 3) {
 										var td = document.createElement("TD");
 										td.innerHTML = 'Rp. ' + formatter.format(response.harga_jual);
+										trEl.appendChild(td);
+									} else if (i == 4) {
+										var td = document.createElement("TD");
+										td.innerHTML =
+											'<button type="button" onclick="hapusBarang(this)" data-id="' + response
+											.id_barang +
+											'" class="btn btn-danger btn-sm btn-circle"><i class="fas fa-trash"></i></button>';
 										trEl.appendChild(td);
 									}
 								}
@@ -338,7 +394,7 @@
 
 
 					function addHiddenInput(idBarang) {
-						
+
 						const divHidden = document.getElementById("div-hidden-input");
 						const input = document.createElement('INPUT');
 						input.setAttribute('type', 'hidden');
@@ -373,6 +429,7 @@
 					function printHargaGlobal() {
 						const formatter = new Intl.NumberFormat(['ban', 'id']);
 						const hargaTotalBarang = document.getElementById('harga-total-barang');
+						const subTotal = document.getElementById('sub-total');
 						var resHargaTotal = 0;
 						const tRow = document.getElementById('detail-barang').children;
 						for (i = 0; i < tRow.length; i++) {
@@ -380,11 +437,32 @@
 							var res = parseInt(totalHarga.replace(/\D/g, ""));
 							resHargaTotal += res;
 						}
-
+						subTotal.innerHTML = 'Rp. ' + formatter.format(resHargaTotal);
 						hargaTotalBarang.innerHTML = 'Rp. ' + formatter.format(resHargaTotal);
+						printGrandTotal()
 					}
 
-					
+					function printGrandTotal() {
+						const formatter = new Intl.NumberFormat(['ban', 'id']);
+						const subTotal = document.getElementById('sub-total').innerText;
+						const voucher = document.getElementById('voucher').innerText;
+						const grandTotal = document.getElementById('grand-total');
+						var nilaiSubTotal = parseInt(subTotal.replace(/\D/g, ""));
+						var nilaiVoucher = parseInt(voucher.replace(/\D/g, ""));
+						var nilaiGrandTotal = nilaiSubTotal-nilaiVoucher;
+						grandTotal.innerHTML = 'Rp. ' + formatter.format(nilaiGrandTotal);
+					}
+
+					function hapusBarang(data) {
+						$(data).closest("tr").remove();
+						$('#div-hidden-input').find('input').each(function () {
+							if ($(data).data('id') == $(this).val()) {
+								$(this).remove();
+							}
+						});
+						printHargaGlobal();
+					}
+
 				</script>
 
 				<!-- end content -->
