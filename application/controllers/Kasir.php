@@ -10,11 +10,15 @@ class Kasir extends CI_Controller {
     }
 
     public function index() {
-        $data['judul'] = 'Dashboard | Kasir';
-		$data['stok'] = $this->Model_kasir->jumlah_total_stok();
-		$data['jumlah_transaksi'] = $this->Model_kasir->jumlah_transaksi();
-		$data['barang'] = count($this->Model_kasir->barang());
-        $this->load->view('kasir/dashboard', $data);
+        // $data['judul'] = 'Dashboard | Kasir';
+		// $data['stok'] = $this->Model_kasir->jumlah_total_stok();
+		// $data['jumlah_transaksi'] = $this->Model_kasir->jumlah_transaksi();
+		// $data['barang'] = count($this->Model_kasir->barang());
+        // $this->load->view('kasir/dashboard', $data);
+        $data['judul'] = 'Tampilan Kasir | Kasir';
+        $data['barang'] = $this->Model_kasir->barang();
+        $data['anggota'] = $this->Model_kasir->anggota();
+        $this->load->view('kasir/transaksi', $data);
     }
 
     public function transaksi() {
@@ -81,5 +85,15 @@ class Kasir extends CI_Controller {
         $data['barang'] = $this->Model_kasir->detail_barang();
         $this->load->view('kasir/barang', $data);
     }
+
+    public function barang_kode($input) {
+		$data = $this->Model_kasir->barang_kode($input);
+		echo json_encode($data);
+	}
+
+    public function barang_id($id) {
+		$data = $this->Model_kasir->barang_id($id);
+		echo json_encode($data);
+	}
 
 }

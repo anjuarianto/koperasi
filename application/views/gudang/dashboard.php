@@ -13,7 +13,6 @@
 
 <div class="container-fluid">
 	<div class="row">
-
 		<!-- Earnings (Monthly) Card Example -->
 		<div class="col-xl-3 col-md-6 mb-4">
 			<div class="card border-left-primary shadow h-100 py-2">
@@ -91,6 +90,79 @@
 			</div>
 		</div>
 	</div>
+	<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-warning py-3">
+                <h6 class="m-0 font-weight-bold text-white text-center">Stok Akan Expired</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table mb-0 text-center table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Nama Barang</th>
+                            <th>Jumlah Stok</th>
+                            <th>Tanggal Expired</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+					<?php if($stok_expired)  :?>
+                        <?php
+                            foreach ($stok_expired as $ex) : ?>
+                                <tr>
+                                    <td><?= $ex->nama_barang ?></td>
+                                    <td><?= $ex->stok_barang ?></td>
+                                    <td><?= $ex->tanggal_expired ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+							<?php else : ?>
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    Tidak ada data barang akan expired
+                                </td>
+                            </tr>
+							<?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success py-3">
+                <h6 class="m-0 font-weight-bold text-white text-center">Transaksi Pembayaran Kredit</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table mb-0 table-sm table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>No Faktur</th>
+                            <th>Total Harga</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<?php if($transaksi_kredit) : ?>
+                        <?php foreach ($transaksi_kredit as $kredit) : ?>
+                            <tr>
+                                <td><strong><?= $kredit->tgl_pembelian ?></strong></td>
+                                <td><?= $kredit->no_faktur ?></td>
+                                <td><span class="badge badge-success"><?= $kredit->total_harga_pembelian ?></span></td>
+                            </tr>
+                        <?php endforeach; ?>
+						<?php else : ?>
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    Tidak ada transaksi kredit
+                                </td>
+                            </tr>
+							<?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+	</row>
 </div>
 <!-- /.container-fluid -->
 

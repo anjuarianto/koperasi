@@ -16,12 +16,18 @@
 	<link
 		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 		rel="stylesheet">
-
+	<!-- selectpicker -->
+	
 	<!-- Custom styles for this template-->
 	<link href="<?=base_url()?>assets/css/sb-admin-2.min.css" rel="stylesheet">
 
-    <link href="<?=base_url()?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+	<link href="<?=base_url()?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.0.3/css/dataTables.dateTime.min.css">
+	<link rel="stylesheet" href="<?=base_url()?>assets/vendorother/typeahead/typeahead.css">
+	<style>
+		.typeahead { z-index: 1051; }
+	</style>
+	
 </head>
 
 <body id="page-top">
@@ -176,7 +182,8 @@
 						<li class="nav-item dropdown no-arrow">
 							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$this->session->userdata('login_session')['name'];?></span>
+								<span
+									class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$this->session->userdata('login_session')['name'];?></span>
 								<img class="img-profile rounded-circle" src="<?=base_url()?>assets/img/user.png">
 							</a>
 							<!-- Dropdown - User Information -->

@@ -4,232 +4,315 @@
 <div class="container-fluid mb-4 p-3 shadow bg-white">
 	<h1 class="h3 text-primary"><?=$judul;?></h1>
 </div>
-		
-<div class="card shadow mb-4">
-	<div class="card-header py-3">
-		<h6 class="m-0 font-weight-bold text-primary">Tabel Barang</h6>
+
+<div class="card shadow mb-4 border-bottom-primary">
+	<div class="card-header py-3 bg-primary">
+		<h6 class="m-0 font-weight-bold text-white">Tabel Barang</h6>
 	</div>
 	<div class="card-body">
+	<h6 class="mb-2 font-weight-bold text-primary">Filter Tanggal</h6>
+	<table border="0" cellspacing="5" cellpadding="5">
+        <tbody><tr>
+            <td>Tanggal Awal:</td>
+            <td><input type="text" id="min" name="min"></td>
+        </tr>
+        <tr>
+            <td>Tanggal Akhir:</td>
+            <td><input type="text" id="max" name="max"></td>
+        </tr>
+    </tbody></table>
 		<div class="table-responsive">
-		<button class="btn btn-primary mt-2 mb-4" data-toggle="modal" data-target="#modalInputPembelian"><strong>+
-				Tambah
-				Pembelian</strong></button>
-			<table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
-				aria-describedby="dataTable_info" style="width: 100%;">
+			<button class="btn btn-primary btn-sm mt-2 mb-4 btn-icon-split" data-toggle="modal"
+				data-target="#modalInputPembelian"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
+				<span class="text">Tambah Barang</span></button>
+			<table class="table table-striped table-hover dataTable" id="dataTable" width="100%" cellspacing="0"
+				role="grid" aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
-				<tr>
-					<th>Tanggal Pembelian</th>
-					<th>Total Harga Pembelian</th>
-					<th>Detail Pembelian</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($pembelian as $p) : ?>
-				<tr>
-					<td><?=$p->tgl_pembelian;?></td>
-					<td><?=$p->total_harga_pembelian;?></td>
-					<td><a href="<?=base_url()?>gudang/detail_pembelian/<?=$p->id_pembelian?>">Detail</a></td>
-				</tr>
-				<?php endforeach; ?>
-			</tbody>
+					<tr>
+						<th></th>
+						<th>Tanggal Pembelian</th>
+						<th>No Faktur</th>
+						<th>PPN</th>
+						<th>Jenis Pembayaran</th>
+						<th>Total Harga Pembelian</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($pembelian as $p) : ?>
+					<tr data-info="beli" data-id="<?=$p->id_pembelian?>">
+						<td></td>
+						<td><?=date('d-m-Y', strtotime($p->tgl_pembelian))?></td>
+						<td><?=$p->no_faktur?></td>
+						<td><?=$p->ppn?> %</td>
+						<td><?=$p->jenis_pembayaran?></td>
+						<td>Rp. <?=number_format($p->total_harga_pembelian, 2, ',', '.')?></td>
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
-				
-	<!-- Modal Tambah Pembelian -->
 
-	<div class="modal fade bd-example-modal-lg" id="modalInputPembelian" tabindex="-1" role="dialog"
-		aria-labelledby="modalInputPembelian" aria-hidden="true">
-		<div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalScrollableTitle">Input Pembelian</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form action="aksi_tambah_pembelian" method="post" onsubmit="validasi()" id="formPembelian">
-						<div class="form-group">
+<!-- Modal Tambah Pembelian -->
+<div class="modal fade bd-example-modal-lg" id="modalInputPembelian" tabindex="-1" role="dialog"
+	aria-labelledby="modalInputPembelian" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Pembelian</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="aksi_tambah_pembelian" method="post" id="form-body-detail">
+					<div class="row">
+						<div id="div-hidden-input">
+						</div>
+						<div class="form-group col">
 							<label for="tanggal_pembelian">Tanggal Masuk</label>
-							<input type="date" class="form-control" name="tanggal_pembelian" id="tanggal_pembelian"
-								placeholder="Tanggal Masuk" class="form-control"
-								value="<?=set_value('tanggal_pembelian')?>">
-							<span style="font-size: 10px; color: red"><?=form_error('tanggal_pembelian')?></span>
+							<input type="date" name="tanggal_pembelian" id="tanggal_pembelian"
+								placeholder="Tanggal Masuk" class="form-control form-control-sm">
+						</div>
+						<div class="form-group col">
+							<label for="no_faktur">No. Faktur</label>
+							<div class="input-group">
+								<input type="text" name="no_faktur" id="no_faktur" placeholder="Nomor Faktur"
+									class="form-control form-control-sm">
+							</div>
+						</div>
+						<div class="form-group col-2">
+							<label for="ppn">PPN</label>
+							<div class="input-group input-group-sm ">
+								<input type="text" name="ppn" id="ppn" placeholder="PPN"
+									class="form-control form-control-sm">
+								<div class="input-group-append">
+									<div class="input-group-text">%</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col">
+							<label for="jenis_pembayaran">Jenis Pembayaran</label>
+							<select class="form-control form-control-sm" name="jenis_pembayaran" id="jenis_pembayaran"
+								placeholder="Tanggal Masuk">
+								<option value="Cash">Cash</option>
+								<option value="Kredit">Kredit</option>
+							</select>
+						</div>
+					</div>
+
+
+
+					<!-- Input Setelah Ada -->
+					<div class="row">
+						<div class="input-group input-group-sm col-3">
+							<input type="text" name="input_barang" id="input_barang"
+								placeholder="Kode Barang/Nama Barang" style="z-index:1000"class="form-control typehead" data-provide="typehead" autofocus autocomplete="off">
+							<div class="input-group-append">
+								<button type="button" class="btn btn-success" id="btn-input-barang" onclick="checkBarang()"><i
+										class="fas fa-plus"></i></button>
+							</div>
 						</div>
 						
+						<div class="col">
 
-						<!-- Input Setelah Ada -->
-						<div class="row">
-							<div class="form-group col-3">
-								<label for="nama_supplier">Nama Supplier</label>
-								<select type="text" class="form-control" id="nama_supplier" class="form-control">
-									<option value="">Pilih Nama Supplier</option>
-									<?php foreach ($supplier as $s) : ?>
-									<option value="<?=$s->id_supplier?>"><?=$s->nama_supplier?></option>
-									<?php endforeach; ?>
-								</select>
-								<span style="font-size: 10px; color: red"><?=form_error('nama_supplier')?></span>
-							</div>
-							<div class="form-group col-4">
-								<label for="nama_barang">Nama Barang</label>
-								<select type="text" class="form-control" id="nama_barang" class="form-control">
-									<option value="">Pilih Nama Barang</option>
-								</select>
-								<span style="font-size: 10px; color: red"><?=form_error('nama_barang')?></span>
-							</div>
-							<div class="form-group col-2">
-								<label for="jumlah_barang">Jumlah Barang</label>
-								<input type="text" class="form-control" name="jumlah_barang" id="jumlah_barang"
-									placeholder="Jumlah Barang" class="form-control"
-									value="<?=set_value('jumlah_barang')?>">
-								<span style="font-size: 10px; color: red"><?=form_error('jumlah_barang')?></span>
-							</div>
-							<div class="form-group col-2">
-								<label for="tanggal_expired">Tanggal Expired</label>
-								<input type="date" class="form-control" name="tanggal_expired" id="tanggal_expired"
-									placeholder="Tanggal Expired">
-							</div>
-							<div class="col-1">
-								<label for="tes">Tambah</label>
-								<button type="button" class="btn btn-success btn-block"
-									onclick="functionTambahBarang()"><strong>+</strong></button>
-							</div>
 						</div>
-						<div class="mt-3">
-							<h5 class="text-center mb-3">Daftar Detail Barang</h5>
-							<div id="result">
-                                <table class="table table-bordered table-striped table-sm">
-                                    <thead class="thead-dark">
-                                        <tr class="bg-info">
-                                            <th>Nama Barang</th>
-                                            <th>Harga/Unit</th>
-                                            <th>Jumlah Barang</th>
-                                            <th>Harga Barang</th>
-											<th>Hapus</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table-body-detail">
-                                    </tbody>
-                                    <tfoot class="bg-info">
-                                        <tr>
-                                            <th colspan="3">Total</th>
-                                            <th id="total-harga" colspan="2"></th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
+					</div>
+					<div class="mt-3">
+						<h5 class="text-center mb-3">Daftar Detail Barang</h5>
+						<div id="result">
+							<table class="table table-striped table-sm table-hover dataTable">
+								<thead class="thead-dark">
+									<tr class="bg-info">
+										<th style="width:45%">Nama Barang</th>
+										<th style="width:15%">Tanggal Expired</th>
+										<th style="width:10%">Qty</th>
+										<th style="width:10%">Discount</th>
+										<th style="width:15%">Harga</th>
+										<th style="width: 5%;"></th>
+									</tr>
+								</thead>
+								<tbody id="detail-barang">
+								</tbody>
+								<tfoot>
+									<tr class="bg-dark text-white">
+										<th colspan="4">Total</th>
+										<th id="harga-total-barang" colspan="2"></th>
+									</tr>
+								</tfoot>
+							</table>
 						</div>
+					</div>
 
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-					<input type="submit" class="btn btn-primary" value="Simpan!">
-					</form>
-				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+				<input type="submit" class="btn btn-primary" value="Simpan!">
+				</form>
 			</div>
 		</div>
 	</div>
-	
-	
-	<script>
-	let inputPost = [];
-	let idDetail = 0;
-		
-		function validasi() {
-			const formBody = document.getElementById("formPembelian");
-			let hargaGlobal = 0;
-			const tanggalPembelian = document.getElementById("tanggal_pembelian").value;
-			inputPost.forEach(e => {
-				formBody.innerHTML += `
-                <input type="hidden" name="id_barang[]" value="${e.idBarang}" />
-                <input type="hidden" name="jumlah_barang[]" value="${e.jumlahBarang}" />
-				<input type="hidden" name="tanggal_expired[]" value="${e.tanggalExpired}"/>
-                <input type="hidden" name="harga_total_barang[]" value="${e.totalHarga}" />
+</div>
 
-            `;
-			})
-			inputPost.forEach(element => {
-				hargaGlobal += element.totalHarga
-			})
-			formBody.innerHTML += `
-				<input type="hidden" name="tanggal_pembelian" value="${tanggalPembelian}"/>
-                <input type="hidden" name="total_harga_pembelian" value="${hargaGlobal}"/>
-            `;
-		}
-		function printHargaGlobal() {
-			const formatter = new Intl.NumberFormat(['ban', 'id']);
-			let hargaGlobal = 0;
-			inputPost.forEach(element => {
-				hargaGlobal += element.totalHarga
-			})
-			
-			document.getElementById("total-harga").innerHTML = "Rp " + formatter.format(hargaGlobal);
-		}
-        function functionTambahBarang() {
-            const idBarangVal = document.getElementById("nama_barang").value;
-            const jumlahBarang = document.getElementById("jumlah_barang").value;
-			const tanggalExpired = document.getElementById("tanggal_expired").value;
-            const tbodyEl = document.getElementById('table-body-detail');
-            const arrayBarang = <?=json_encode($barang)?>;
-            
-            const resBarang = arrayBarang.find(data => data.id_barang == idBarangVal);
-            const totalHarga = jumlahBarang*resBarang.harga_beli;
-            const formatter = new Intl.NumberFormat(['ban', 'id']);
-			
-            var objek = {idDetail:idDetail, idBarang:idBarangVal, jumlahBarang:jumlahBarang, totalHarga:totalHarga, tanggalExpired:tanggalExpired};
-			inputPost.push(objek)
-            tbodyEl.innerHTML += `
-                <tr>
-                    <td>${resBarang.nama_barang}</td>
-                    <td>Rp ${formatter.format(resBarang.harga_beli)}</td>
-                    <td>${jumlahBarang}</td>
-                    <td>Rp ${formatter.format(totalHarga)}</td>
-					<td><button class="btn btn-outline-light btn-danger btn-sm" onclick="functionHapus(this, ${idDetail})" type="button">x</button></td>
-                </tr>
-            `;
-			printHargaGlobal();
-			idDetail++
-			
-        }
 
-		function functionHapus(e, id) {
-			e.closest("tr").remove()
-			var indexHapus = inputPost.indexOf(inputPost.find(data => data.idDetail == id));
-			inputPost.splice(indexHapus, 1)
-			
-			printHargaGlobal();
-		}
-		
+<script>
+	const baseUrl = "<?=base_url()?>";
 
-		document.getElementById("nama_supplier").addEventListener('change', function (e) {
-			var namaBarang = document.getElementById("nama_barang");
-			var length = namaBarang.options.length;
-			for (var i = 1; i < length; i++) {
-				namaBarang.remove(1);
-			}
-			var idSupplier = document.getElementById("nama_supplier").value;
-			var arrayBarang = <?=json_encode($barang)?> ;
-
-			arrayBarang.forEach(element => {
-				if (idSupplier == element["id_supplier"]) {
-					var option = document.createElement("option");
-					option.text = element["nama_barang"];
-					option.value = element["id_barang"];
-					namaBarang.add(option);
+	function checkBarang() {
+		const kodeBarang = $('#input_barang').val();
+		$.ajax({
+			type: "POST",
+			url: baseUrl + "gudang/barang_kode/" + kodeBarang,
+			dataType: "JSON",
+			success: function (response) {
+				if ($('#detail-barang').find('tr[data-id-barang="' + response.id_barang + '"]').length > 0) {
+					alert('Silahkan input barang Lain');
+				} else {
+					if (response.kode_barang == null) {
+						alert('Kode Barang tidak diketahui');
+					} else {
+						functionTambahBarang();
+					}
 				}
+			}
+		});
+	}
 
-			})
+	function functionTambahBarang() {
+		const kodeBarang = $('#input_barang').val();
+		const formatter = new Intl.NumberFormat(['ban', 'id']);
 
-		})
-		$(document).ready(function () {
-			$('#example').DataTable(); 
-			<?=$script?>
 
+		$.ajax({
+			type: "POST",
+			url: baseUrl + "gudang/barang_kode/" + kodeBarang,
+			dataType: "JSON",
+			success: function (response) {
+				// get data
+				addHiddenInput(response.id_barang);
+				const tbodyEl = document.getElementById('detail-barang');
+				const trEl = document.createElement("TR");
+				trEl.setAttribute('data-id-barang', response.id_barang);
+				tbodyEl.appendChild(trEl);
+
+				for (i = 0; i < 6; i++) {
+					if (i == 0) {
+						var td = document.createElement("TD");
+						td.innerHTML = response.nama_barang;
+						trEl.appendChild(td);
+
+					} else if (i == 1) {
+						var td = document.createElement("TD");
+						td.innerHTML =
+							'<input type="date" class="form-control form-control-sm" name="tanggal_expired[]">';
+						trEl.appendChild(td);
+					} else if (i == 2) {
+						var td = document.createElement("TD");
+						td.innerHTML =
+							'<input type="number" class="form-control form-control-sm" min="0" name="jumlah_barang[]" onchange="ubahJumlah(this)" onkeyup="ubahJumlah(this)" value="1">';
+						trEl.appendChild(td);
+					} else if (i == 3) {
+						var td = document.createElement("TD");
+						td.innerHTML =
+							'<div class="input-group input-group-sm"><input type="number" min="0" max="100" class="form-control form-control-sm" name="discount[]" onchange="ubahDiscount(this)" onkeyup="ubahDiscount(this)"><div class="input-group-append"><div class="input-group-text">%</div></div>';
+						trEl.appendChild(td);
+					} else if (i == 4) {
+						var td = document.createElement("TD");
+						td.innerHTML = 'Rp. ' + formatter.format(response.harga_jual);
+						trEl.appendChild(td);
+					} else if (i == 5) {
+						var td = document.createElement("TD");
+						td.innerHTML =
+							'<button type="button" onclick="hapusBarang(this)" data-id="' + response
+							.id_barang +
+							'" class="btn btn-danger btn-sm btn-circle"><i class="fas fa-times"></i></button>';
+						trEl.appendChild(td);
+					}
+				}
+				printHargaGlobal();
+			}
 		});
 
-	</script>
+
+	}
+
+	function addHiddenInput(idBarang) {
+		const divHidden = document.getElementById("div-hidden-input");
+		const input = document.createElement('INPUT');
+
+		input.setAttribute('type', 'hidden');
+		input.setAttribute('name', 'id_barang[]');
+		input.setAttribute('value', idBarang);
+		divHidden.appendChild(input);
+	}
+
+	function ubahJumlah(value) {
+		const formatter = new Intl.NumberFormat(['ban', 'id']);
+		const row = value.parentElement.parentElement;
+		const valDisc = row.cells[3].children.item(0).children[0].value;
+		const valQty = row.cells[2].children[0].value;
+		const idBarang = row.getAttribute("data-id-barang");
+		$.ajax({
+			type: "POST",
+			url: baseUrl + "gudang/barang_id/" + idBarang,
+			dataType: "JSON",
+			success: function (response) {
+				// get data
+				const hargaBarang = response.harga_beli;
+				const totalDisc = (hargaBarang * valDisc * valQty) / 100;
+				row.cells[4].innerHTML = 'Rp. ' + formatter.format((hargaBarang * valQty) - totalDisc);
+				printHargaGlobal();
+			}
+
+		});
+	}
+
+	function ubahDiscount(val) {
+		const formatter = new Intl.NumberFormat(['ban', 'id']);
+		const row = val.parentElement.parentElement.parentElement;
+		const valQty = row.cells[2].children[0].value;
+		const valDisc = row.cells[3].children.item(0).children[0].value;
+		console.log(valDisc)
+		const idBarang = row.getAttribute("data-id-barang");
+		$.ajax({
+			type: "POST",
+			url: baseUrl + "gudang/barang_id/" + idBarang,
+			dataType: "JSON",
+			success: function (response) {
+
+				const hargaBarang = response.harga_jual;
+				const totalDisc = (hargaBarang * valDisc * valQty) / 100;
+				row.cells[4].innerHTML = 'Rp. ' + formatter.format((hargaBarang * valQty) - totalDisc);
+				printHargaGlobal();
+			}
+		});
+	}
+
+	function printHargaGlobal() {
+		const formatter = new Intl.NumberFormat(['ban', 'id']);
+		const hargaTotalBarang = document.getElementById('harga-total-barang');
+		var resHargaTotal = 0;
+		const tRow = document.getElementById('detail-barang').children;
+		for (i = 0; i < tRow.length; i++) {
+			var totalHarga = tRow[i].children[4].innerText.replace(/\D/g, "");
+			var res = parseInt(totalHarga.replace(/\D/g, ""));
+			resHargaTotal += res;
+		}
+		hargaTotalBarang.innerHTML = 'Rp. ' + formatter.format(resHargaTotal);
+	}
+
+	function hapusBarang(data) {
+		$(data).closest("tr").remove();
+		$('#div-hidden-input').find('input').each(function () {
+			if ($(data).data('id') == $(this).val()) {
+				$(this).remove();
+			}
+		});
+		printHargaGlobal();
+	}
+
+</script>
 
 
 <?php $this->load->view('gudang/footer');

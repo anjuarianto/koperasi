@@ -28,11 +28,6 @@
 		</div>
 	</div>
 </div>
-<script>
-		var arrayBarang = <?=json_encode($barang)?>;
-		var arrayAnggota = <?=json_encode($anggota)?>;
-	</script>
-	<script src="<?=base_url()?>assets/app.js"></script>
 <!-- Bootstrap core JavaScript-->
 <script src="<?=base_url()?>assets/vendor/jquery/jquery.min.js"></script>
 <script src="<?=base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

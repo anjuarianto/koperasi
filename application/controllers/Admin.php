@@ -60,13 +60,21 @@ class Admin extends CI_Controller {
         $this->load->view('admin/pengeluaran', $data);
     }
 
-    public function input_voucher() {
-        $data = array(
-            'nama_voucher' => $this->input->post('nama_voucher'),
-            'nilai_voucher' => $this->input->post('nilai_voucher')
-        );
+    public function generate_voucher() {
 
-        $this->Model_admin->input_voucher($data);
+        $user = $this->Model_admin->user();
+        
+        foreach ($user as $user) {
+            $data = array(
+                'id_user' => $user->id_user,
+                'bulan' => $this->input->post('bulan'),
+                'tahun' => $this->input->post('tahun'),
+                'status' => 0
+            );
+            // print_r($data);
+            $this->Model_admin->input_voucher($data);
+        }
+        
         redirect('admin/voucher');
     }
 

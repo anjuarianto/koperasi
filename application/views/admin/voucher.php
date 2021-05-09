@@ -11,22 +11,26 @@
 		<div class="table-responsive">
 		<button class="btn btn-primary mt-2 mb-4 btn-icon-split btn-sm" data-toggle="modal" data-target="#modalInputSupplier"><strong><span class="icon text-white-50">
 						<i class="fas fa-plus"></i>
-					</span><span class="text">Tambah Voucher</span></strong></button>
+					</span><span class="text">Generate Voucher</span></strong></button>
 			<table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
                         <th>ID</th>
-						<th>Nama Voucher</th>
-						<th>Nilai VOucher</th>
+						<th>Nama Anggota </th>
+						<th>Bulan</th>
+						<th>Tahun</th>
+						<th>Status</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php foreach ($voucher as $s) : ?>
 					<tr>
                         <td><?=$s->id_voucher;?></td>
-						<td><?=$s->nama_voucher;?></td>
-						<td><?=$s->nilai_voucher;?></td>
+						<td><?=$s->nama;?></td>
+						<td><?=$s->bulan;?></td>
+						<td><?=$s->tahun;?></td>
+						<td><?=$s->status == 0 ? 'Aktif' : 'Hangus' ?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -49,18 +53,21 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form action="<?=base_url()?>admin/input_voucher" method="post">
+				<form action="<?=base_url()?>admin/generate_voucher" method="post">
 					<div class="form-group">
-						<label for="nama_voucher">Nama Voucher</label>
-						<input type="text" name="nama_voucher" id="nama_voucher"
-							placeholder="Nama Voucher" class="form-control" value="<?=set_value('nama_voucher')?>">
-						<span style="font-size: 10px; color: red"><?=form_error('nama_voucher')?></span>
+						<label for="nama_voucher">Bulan</label>
+						<select name="bulan" id="periode-bulan"
+							placeholder="Bulan" class="form-control">
+							<?php $bulan = ["Januari", "Pebruari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+							
+							for($i = 0; $i<count($bulan); $i++) : ?>
+							<option value="<?=$bulan[$i]?>"><?=$bulan[$i]?></option>
+							<?php endfor; ?>
+						</select>
 					</div>
 					<div class="form-group">
-						<label for="nilai_voucher">Nilai Voucher</label>
-						<input type="text" name="nilai_voucher" id="nilai_voucher" placeholder="Nilai Voucher" class="form-control"
-							value="<?=set_value('nilai_voucher')?>" rows="5" />
-						<span style="font-size: 10px; color: red"><?=form_error('nilai_voucher')?></span>
+						<label for="tahun">Tahun</label>
+						<input type="text" name="tahun" id="nilai_voucher" placeholder="Nilai Voucher" class="form-control" />
 					</div>
 			</div>
 			<div class="modal-footer">

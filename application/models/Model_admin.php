@@ -44,7 +44,10 @@ class Model_admin extends CI_Model {
     }
 
     public function voucher() {
-        $query = $this->db->get('tbl_voucher');
+        $this->db->select('v.*, u.nama');
+        $this->db->from('tbl_voucher as v');
+        $this->db->join('tbl_user as u', 'u.id_user = v.id_user');
+        $query = $this->db->get();
         return $query->result();
     }
 

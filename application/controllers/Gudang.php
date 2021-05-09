@@ -16,11 +16,16 @@ class Gudang extends CI_Controller {
 		$data['jumlah_transaksi'] = $this->Model_gudang->jumlah_transaksi();
 		$data['supplier'] = count($this->Model_gudang->supplier());
 		$data['barang'] = count($this->Model_gudang->barang());
+		$data['stok_expired'] = $this->Model_gudang->stok_expired();
+		$data['transaksi_kredit'] = $this->Model_gudang->transaksi_kredit();
+		
+		$data["script"] = "";
 		$this->load->view('gudang/dashboard',$data);
 	}
 
 	public function stok() {
 		$data['judul'] = 'Daftar Stok | Gudang';
+		$data["script"] = "";
 		$data['stok'] = $this->Model_gudang->stok_barang();
 		$this->load->view('gudang/stok', $data);
 	}
@@ -28,6 +33,7 @@ class Gudang extends CI_Controller {
 	public function barang() {
 		$data['judul'] = 'Daftar Barang | Gudang';
 		$data['barang'] = $this->Model_gudang->detail_barang();
+		$data['supplier'] = $this->Model_gudang->supplier();
 		$data["script"] = "";
 		$this->load->view('gudang/barang', $data);
 		
@@ -140,29 +146,37 @@ class Gudang extends CI_Controller {
 
 	public function aksi_tambah_pembelian() {
 		$tanggal_pembelian = $this->input->post("tanggal_pembelian");
-		
 		$total_harga_pembelian = $this->input->post("total_harga_pembelian");
+		$no_faktur = $this->input->post('no_faktur');
+		$ppn = $this->input->post('ppn');
+		$jenis_pembayaran = $this->input->post('jenis_pembayaran');
+		$id_barang = $this->input->post('id_barang');
+		$jumlah_barang = $this->input->post('jumlah_barang');
+		$harga_total_barang = $this->input->post('harga_total_barang');
+		$tanggal_expired = $this->input->post('tanggal_expired');
+		$discount = $this->input->post('discount');
+        
+		
 		$pembelian = array(
 			'tgl_pembelian' => $tanggal_pembelian,
-			'total_harga_pembelian' => $total_harga_pembelian
+			'no_faktur' => $no_faktur,
+			'jenis_pembayaran' => $jenis_pembayaran,
+			'ppn' => $ppn,
+			'user' => $this->session->userdata('login_session')['id_user']
 		);
 		
 		$this->Model_gudang->tambah_pembelian($pembelian);
 		$last_id = $this->db->insert_id();
 		
-		$id_supplier = $this->input->post('id_supplier');
-		$id_barang = $this->input->post('id_barang');
-		$jumlah_barang = $this->input->post('jumlah_barang');
-		$harga_total_barang = $this->input->post('harga_total_barang');
-		$tanggal_expired = $this->input->post('tanggal_expired');
 		
 		for($i=0;$i<count($id_barang);$i++) {
 			$detail_barang = array(
 				"id_pembelian" => $last_id,
 				"id_barang" => $id_barang[$i],
-				"jumlah_barang" => $jumlah_barang[$i],
-				"harga_total_barang" => $harga_total_barang[$i]
+				"discount"	=> $discount[$i],
+				"jumlah_barang" => $jumlah_barang[$i]
 			);
+			// print_r($detail_barang);
 			$this->Model_gudang->tambah_detail_pembelian($detail_barang);
 			$stok = array(
 				"id_barang"	=> $id_barang[$i],
@@ -172,6 +186,7 @@ class Gudang extends CI_Controller {
 			);
 			$this->Model_gudang->tambah_stok($stok);	
 		}
+	
 		redirect('gudang/pembelian');
 	}
 
@@ -181,12 +196,79 @@ class Gudang extends CI_Controller {
 			'tanggal_return'	=> $tanggal_return
 		);
 		$this->Model_gudang->return_barang($id, $data);
-		// redirect('gudang/stok');
+		redirect('gudang/stok');
 	}
 
-	function data_barang() {
-		$data = $this->Model_gudang->detail_barang();
+	public function update_supplier($id) {
+		$data = array(
+			'nama_supplier' => $this->input->post('nama_supplier'),
+			'alamat' => $this->input->post('alamat')
+		);
+		$this->Model_gudang->update_supplier($id, $data);
+		redirect('gudang/supplier');
+	}
+
+	public function update_barang($id) {
+		$data = array(
+			'nama_barang' => $this->input->post('nama_barang'),
+			'harga_beli' => $this->input->post('harga_beli'),
+			'harga_jual' => $this->input->post('harga_jual')
+		);
+		$this->Model_gudang->update_barang($id, $data);
+		redirect('gudang/barang');
+	}
+
+	public function update_stok($id) {
+		if($this->input->post('tanggal_return') == "") {
+			$tanggal_return = NULL;
+		}
+		$data = array(
+			'tanggal_expired' => $this->input->post('tanggal_expired'),
+			'stok_barang' => $this->input->post('stok_barang'),
+			'tanggal_return' => $tanggal_return
+		);
+		$this->Model_gudang->update_stok($id, $data);
+		redirect('gudang/stok');
+	}
+
+	public function test() {
+		$this->load->view('test');
+	}
+
+	public function cetak_harga() {
+		
+	}
+
+	public function barang_id($id) {
+		$data = $this->Model_gudang->barang_id($id);
 		echo json_encode($data);
 	}
+
+	public function barang_all() {
+		$data = $this->Model_gudang->barang();
+		echo json_encode($data);
+	}
+
+	public function supplier_id($id) {
+		$data = $this->Model_gudang->supplier_id($id);
+		echo json_encode($data);
+	}
+
+	public function stok_id($id) {
+		$data = $this->Model_gudang->stok_id($id);
+		echo json_encode($data);
+	}
+
+	public function barang_kode($input) {
+		$data = $this->Model_gudang->barang_kode($input);
+		echo json_encode($data);
+	}
+
+	public function supplier_all() {
+		$data = $this->Model_gudang->supplier();
+		echo json_encode($data);
+	}
+
+	
     
 }
