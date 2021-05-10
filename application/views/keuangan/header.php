@@ -89,16 +89,31 @@
 			<div class="sidebar-heading">
 				Aksi
 			</div>
-            <li class="nav-item">
+			<li class="nav-item">
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseMaster" aria-expanded="true" aria-controls="collapseMaster">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Simpan Pinjam</span>
+                </a>
+                <div id="collapseMaster" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-light py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Simpan Pinjam:</h6>
+                        <a class="collapse-item" href="<?= base_url(); ?>keuangan/simpan">Simpanan</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>keuangan/pinjam">Pinjaman</a>
+                    </div>
+                </div>
+            </li>
+			<li class="nav-item">
 				<a class="nav-link" href="<?=base_url()?>keuangan/shu">
 					<i class="fas fa-fw fa-cart-arrow-down"></i>
 					<span>Pembagian SHU</span></a>
 			</li>
+			<?php if ($this->session->userdata('login_session')['level'] == 4) : ?>
 			<li class="nav-item">
 				<a class="nav-link" href="<?=base_url()?>keuangan/laba_rugi">
 					<i class="fas fa-fw fa-hand-holding-usd"></i>
 					<span>Laba Rugi</span></a>
 			</li>
+			<?php endif; ?>
 
             
 

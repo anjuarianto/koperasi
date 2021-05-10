@@ -36,7 +36,7 @@
 			<div id="content">
 
 				<!-- Topbar -->
-				<nav class="navbar navbar-expand navbar-light bg-white topbar static-top">
+				<nav class="navbar navbar-expand navbar-dark bg-dark text-white topbar static-top">
 
 					<!-- Sidebar Toggle (Topbar) -->
 					<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -44,11 +44,21 @@
 					</button>
 
 					<!-- Topbar Search -->
-					<a href="" class="btn btn-danger">Kembali</a>
-
+					<a href="<?=base_url()?>kasir/penjualan" class="btn btn-secondary mr-2 btn-sm btn-icon-split"><span
+							class="icon text-white-600">
+							<i class="fas fa-arrow-left"></i>
+						</span><span class="text">Dashboard</span></a>
+					<a href="<?=base_url()?>kasir/penjualan" class="btn btn-danger btn-sm btn-icon-split"><span
+							class="icon text-white-600">
+							<i class="fas fa-trash"></i>
+						</span><span class="text">Return Barang</span></a>
+					<div id="no-struk" class="ml-3 text-white p-1 font-weight-bold">
+						No. Struk <?=$no_struk ? $no_struk->id_penjualan+1 : $no_struk ?>
+					</div>
+					<div id="time" class="ml-auto text-white p-1 px-3 font-weight-bold">
+					</div>
 					<!-- Topbar Navbar -->
-					<ul class="navbar-nav ml-auto">
-
+					<ul class="navbar-nav">
 						<!-- Nav Item - Search Dropdown (Visible Only XS) -->
 						<li class="nav-item dropdown no-arrow d-sm-none">
 							<a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -78,7 +88,7 @@
 							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span
-									class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$this->session->userdata('login_session')['name'];?></span>
+									class="mr-2 d-none d-lg-inline text-white font-weight-bold small"><?=$this->session->userdata('login_session')['name'];?></span>
 								<img class="img-profile rounded-circle" src="<?=base_url()?>assets/img/user.png">
 							</a>
 							<!-- Dropdown - User Information -->
@@ -121,18 +131,22 @@
 									<div class="col">
 										<div class="card shadow mb-4 border-left-primary">
 											<div class="card-body">
-												<div  class="d-flex justify-content-between">
+												<div class="d-flex justify-content-between">
 													<h6>Subtotal</h6>
 													<h6 class="text-primary" id="sub-total">Rp. 0</h6>
 												</div>
 												<div class="d-flex justify-content-between">
 													<h6>Voucher</h6>
-													<h6 class="text-primary" id="voucher">Rp. 0</h6>
+													<h6 class="text-primary" >-<span id="voucher"> Rp. 0</span></h6>
 												</div>
 												<hr class="bg-primary">
-												<div class="grand-total d-flex justify-content-between">
+												<div class="grand-total d-flex justify-content-between mb-1">
 													<h6>Grand Total</h6>
-													<h4 class="text-primary mb-0" id="grand-total">Rp. 0</h4>
+													<h4 class="text-primary font-weight-bold" id="grand-total">Rp. 0</h4>
+												</div>
+												<div class="kembalian d-flex justify-content-between">
+													<h6 class="mb-0">Kembalian</h6>
+													<h6 class="text-primary mb-0" id="kembalian">Rp. 0</h6>
 												</div>
 
 											</div>
@@ -147,11 +161,12 @@
 
 											<div class="card-body">
 												<div class="input-group">
-													<input type="text" name="kode_barang" data-provide="typeahead" id="kode_barang"
-														class="form-control typeahead" placeholder="Kode Barang" autocomplete="off" autofocus>
+													<input type="text" name="kode_barang" id="kode_barang"
+														class="form-control typeahead" placeholder="Kode Barang"
+														data-provide="typeahead" autocomplete="off" autofocus>
 													<div class="input-group-append">
 														<button class="btn btn-outline-primary" type="button"
-															onclick="functionTambahBarang()"><i
+															onclick="checkBarang()"><i
 																class="fas fa-fw fa-search"></i></button>
 													</div>
 												</div>
@@ -165,7 +180,8 @@
 											</div>
 											<div class="card-body">
 												<div class="input-group">
-													<input type="text" class="form-control" id="kode_anggota" autocomplete="off"
+													<input type="text" class="form-control" id="kode_anggota"
+														name="kode_anggota" autocomplete="off"
 														placeholder="Kode Anggota">
 													<div class="input-group-append">
 														<button class="btn btn-outline-primary" type="button"
@@ -237,7 +253,8 @@
 											<label for="inputPassword" class="col-4 col-form-label">Voucher</label>
 											<div class="col-8">
 												<div class="input-group">
-													<input type="text" class="form-control" id="id-voucher" placeholder="Voucher">
+													<input type="text" class="form-control" id="id-voucher"
+														placeholder="Voucher">
 													<div class="input-group-append">
 														<button class="btn btn-outline-secondary" type="button"
 															onclick="tambahVoucher()"><i
@@ -254,13 +271,18 @@
 											class="total d-flex justify-content-between mb-3 text-primary font-weight-bold text-bold">
 											<select name="jenis_pembayaran" id="jenis_pembayaran"
 												class="form-control custom-select">
-												<option value="">Jenis Pembayaran</option>
 												<option value="Cash">Cash</option>
 												<option value="Kredit">Kredit</option>
 											</select>
 										</div>
-										<input type="text" class="form-control mb-3" name="nominal_uang"
-											placeholder="Nominal Uang">
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Rp</span>
+											</div>
+											<input type="text" class="form-control" onchange="printKembalian()"
+												value="0" onkeyup="printKembalian()" id="nominal_uang"
+												name="nominal_uang" placeholder="Nominal Uang">
+										</div>
 										<input type="submit" value="Bayar" class="btn btn-success btn-block">
 
 									</div>
@@ -299,6 +321,15 @@
 				<script>
 					const baseUrl = '<?=base_url()?>';
 
+					var timeDisplay = document.getElementById("time");
+
+					function refreshTime() {
+						var dateString = moment().format('MMMM Do YYYY, h:mm:ss a');
+						timeDisplay.innerHTML = dateString;
+					}
+
+					setInterval(refreshTime, 1000);
+
 					function cariAnggota() {
 						const kodeAnggota = document.getElementById('kode_anggota').value;
 						const formBody = document.getElementById("form-body-detail");
@@ -309,18 +340,38 @@
 							url: baseUrl + "kasir/anggota_kode/" + kodeAnggota,
 							dataType: "JSON",
 							success: function (response) {
-								console.log(response)
 								// get data
-								document.getElementById('detail-kode-anggota').innerHTML = response.kode_anggota;
-								document.getElementById('detail-nama-anggota').innerHTML = response.nama;
-								console.log(response.nama);
-								input.setAttribute('type', 'hidden');
-								input.setAttribute('name', 'kode_anggota');
-								input.setAttribute('value', response.kode_anggota);
-								formBody.appendChild(input);
-
+								if (response == null) {
+									alert('Data anggota tidak ditemukan')
+								} else {
+									document.getElementById('detail-kode-anggota').innerHTML =
+										'<input type="hidden" name="kode_anggota" value="' + response.kode_anggota +
+										'" />' + response.kode_anggota;
+									document.getElementById('detail-nama-anggota').innerHTML = response.nama;
+								}
 							}
 
+						});
+					}
+
+					function checkBarang() {
+						const kodeBarang = $('#kode_barang').val();
+						$.ajax({
+							type: "POST",
+							url: baseUrl + "kasir/barang_kode/" + kodeBarang,
+							dataType: "JSON",
+							success: function (response) {
+								if ($('#detail-barang').find('tr[data-id-barang="' + response.id_barang + '"]').length >
+									0) {
+									alert('Silahkan input barang Lain');
+								} else {
+									if (response.kode_barang == null) {
+										alert('Kode Barang tidak diketahui');
+									} else {
+										functionTambahBarang();
+									}
+								}
+							}
 						});
 					}
 
@@ -330,17 +381,38 @@
 						const inputVoucher = $('#input-voucher');
 						const voucher = $('#voucher');
 
-						inputVoucher.append('<span style="cursor:pointer" class="border border-secondary bg-primary m-1 p-1" onclick="hapusVoucher(this)"><input type="hidden" name="id_voucher[]" value="'+kodeVoucher+'">#'+kodeVoucher+'</input></span>');
-						const totalVoucher = inputVoucher.children().length*100000;
-						voucher.html('- Rp. ' + formatter.format(totalVoucher));
-						printGrandTotal()
+						$.ajax({
+							type: "POST",
+							url: baseUrl + "kasir/voucher_id/" + kodeVoucher,
+							dataType: "JSON",
+							success: function (response) {
+								if (response == null) {
+									alert('Data Voucher tidak ditemukan')
+								} else {
+									if (response.status == 0) {
+										inputVoucher.append(
+											'<span style="cursor:pointer" class="bg-primary m-1 p-1" onclick="hapusVoucher(this)"><input type="hidden" name="id_voucher[]" value="' +
+											kodeVoucher + '">#' + kodeVoucher + '</input></span>');
+										const totalVoucher = inputVoucher.children().length * 100000;
+										voucher.html('Rp. ' + formatter.format(totalVoucher));
+										printGrandTotal();
+									} else {
+										alert('Voucher Sudah Digunakan')
+									}
+
+								}
+							}
+						});
 					}
 
 					function hapusVoucher(nilai) {
 						$(nilai).closest("span").remove();
-						$('#voucher').html('Rp. 0')
-						printGrandTotal()
-
+						const formatter = new Intl.NumberFormat(['ban', 'id']);
+						const inputVoucher = $('#input-voucher');
+						const voucher = $('#voucher');
+						const totalVoucher = inputVoucher.children().length * 100000;
+						voucher.html('Rp. ' + formatter.format(totalVoucher));
+						printGrandTotal();
 					}
 
 					function functionTambahBarang() {
@@ -372,7 +444,7 @@
 									} else if (i == 2) {
 										var td = document.createElement("TD");
 										td.innerHTML =
-											'<input type="number" min="0" max="100" class="form-control form-control-sm" name="jumlah_barang[]" onchange="ubahJumlah(this)" onkeyup="ubahJumlah(this)" value="1">';
+											'<input type="number" min="0" class="form-control form-control-sm" name="jumlah_barang[]" onchange="ubahJumlah(this)" onkeyup="ubahJumlah(this)" value="1">';
 										trEl.appendChild(td);
 									} else if (i == 3) {
 										var td = document.createElement("TD");
@@ -419,9 +491,7 @@
 								row.cells[3].innerHTML = 'Rp. ' + formatter.format(hargaBarang * valQty);
 								printHargaGlobal();
 							}
-
 						});
-						printHargaGlobal();
 
 					}
 
@@ -440,6 +510,22 @@
 						subTotal.innerHTML = 'Rp. ' + formatter.format(resHargaTotal);
 						hargaTotalBarang.innerHTML = 'Rp. ' + formatter.format(resHargaTotal);
 						printGrandTotal()
+						printKembalian()
+					}
+
+					function printKembalian() {
+						const formatter = new Intl.NumberFormat(['ban', 'id']);
+						const nominalUang = document.getElementById('nominal_uang').value;
+						const kembalian = document.getElementById('kembalian');
+						const grandTotal = document.getElementById('grand-total').innerText;
+						var nilaiNominalUang = parseInt(nominalUang.replace(/\D/g, ""));
+						var nilaiGrandTotal = parseInt(grandTotal.replace(/\D/g, ""));
+						var nilaiKembalian = nilaiNominalUang - nilaiGrandTotal;
+						if(nilaiKembalian < 0) {
+							nilaiKembalian = 0;
+						}
+						kembalian.innerHTML = 'Rp. ' + formatter.format(nilaiKembalian);
+
 					}
 
 					function printGrandTotal() {
@@ -449,7 +535,10 @@
 						const grandTotal = document.getElementById('grand-total');
 						var nilaiSubTotal = parseInt(subTotal.replace(/\D/g, ""));
 						var nilaiVoucher = parseInt(voucher.replace(/\D/g, ""));
-						var nilaiGrandTotal = nilaiSubTotal-nilaiVoucher;
+						var nilaiGrandTotal = nilaiSubTotal - nilaiVoucher;
+						if(nilaiGrandTotal < 0) {
+							nilaiGrandTotal = 0;
+						}
 						grandTotal.innerHTML = 'Rp. ' + formatter.format(nilaiGrandTotal);
 					}
 

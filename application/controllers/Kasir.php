@@ -15,44 +15,49 @@ class Kasir extends CI_Controller {
 		// $data['jumlah_transaksi'] = $this->Model_kasir->jumlah_transaksi();
 		// $data['barang'] = count($this->Model_kasir->barang());
         // $this->load->view('kasir/dashboard', $data);
+        
         $data['judul'] = 'Tampilan Kasir | Kasir';
+        $data['no_struk'] = $this->Model_kasir->last_penjualan();
         $data['barang'] = $this->Model_kasir->barang();
         $data['anggota'] = $this->Model_kasir->anggota();
         $this->load->view('kasir/transaksi', $data);
     }
 
-    public function transaksi() {
-        $data['judul'] = 'Tampilan Kasir | Kasir';
-        $data['barang'] = $this->Model_kasir->barang();
-        $data['anggota'] = $this->Model_kasir->anggota();
-        $this->load->view('kasir/transaksi', $data);
-    }
+    
 
     public function bayar() {
-
         $kode_anggota = $this->input->post('kode_anggota');
         $jenis_pembayaran = $this->input->post('jenis_pembayaran');
-        $nominal_uang = $this->input->post('nominal_uang');
+        $nominal_uang = preg_replace('/\D/', '', $this->input->post('nominal_uang'));
         $id_barang = $this->input->post('id_barang');
         $jumlah_barang = $this->input->post('jumlah_barang');
-    
-        $harga_total_barang = 0;
-        // hitung harga total barang
-        for($i=0;$i<count($id_barang);$i++) {
-            $harga_total_barang += $this->Model_kasir->barang_id($id_barang[$i])['harga_jual'];
-        };
+        $id_voucher = $this->input->post('id_voucher');
+        if($id_voucher) {
+            $voucher = implode(',', $id_voucher);
+        } else {
+            $voucher = null;
+        }
+        // $harga_total_barang = 0;
+        // // hitung harga total barang
+        // for($i=0;$i<count($id_barang);$i++) {
+        //     $harga_total_barang += $this->Model_kasir->barang_id($id_barang[$i])['harga_jual'];
+        // };
         
-        $kembalian = $nominal_uang - $harga_total_barang;
+        // $kembalian = $nominal_uang - $harga_total_barang;
 
         $penjualan = array(
             'kode_anggota'    => $kode_anggota,
-            'harga_total_barang'    => $harga_total_barang,
             'jenis_pembayaran'     => $jenis_pembayaran,
             'nominal_uang'     => $nominal_uang,
-            'kembalian'        => $kembalian,
+            // 'kembalian'        => $kembalian,
+            'kode_voucher'           => $voucher,
             'user'  => $this->session->userdata('login_session')['id_user']
         );
-       
+
+        for($i=0;$i<count($id_voucher);$i++) {
+            $this->Model_kasir->update_voucher($id_voucher[$i]);
+        };
+
         $this->Model_kasir->tambah_penjualan($penjualan);
 
         $last_id = $this->db->insert_id();
@@ -87,6 +92,10 @@ class Kasir extends CI_Controller {
         $this->load->view('kasir/barang', $data);
     }
 
+    public function cetak_struk() {
+        $this->load->view('kasir/cetak_struk');
+    }
+
     public function barang_kode($input) {
 		$data = $this->Model_kasir->barang_kode($input);
 		echo json_encode($data);
@@ -109,6 +118,11 @@ class Kasir extends CI_Controller {
 
     public function anggota_all() {
         $data = $this->Model_kasir->anggota_all();
+        echo json_encode($data);
+    }
+
+    public function voucher_id($input) {
+        $data = $this->Model_kasir->voucher_id($input);
         echo json_encode($data);
     }
 

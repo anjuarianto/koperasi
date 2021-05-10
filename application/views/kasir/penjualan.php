@@ -17,17 +17,23 @@
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 				<tr>
+				<th>No. Struk</th>
 					<th>Tanggal Pembelian</th>
 					<th>Total Harga Pembelian</th>
-					<th>Detail Pembelian</th>
+					<th>Voucher</th>
+					<th>Nominal Uang</th>
+					<th>Kembalian</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach ($penjualan as $p) : ?>
 				<tr>
+				<td><?=$p->id_penjualan?></td>
 					<td><?=$p->tgl_penjualan;?></td>
-					<td><?=$p->harga_total_barang;?></td>
-					<td><a href="<?=base_url()?>kasir/detail_pembelian/<?=$p->id_penjualan?>">Detail</a></td>
+					<td>Rp. <?=number_format($p->total_harga_pembelian, 2, ',', '.')?></td>
+					<td><?=$p->kode_voucher?></td>
+					<td>Rp. <?=number_format($p->nominal_uang, 2, ',','.')?></td>
+					<td>Rp. <?=number_format((count(explode(',', $p->kode_voucher))*100000+$p->nominal_uang)-$p->total_harga_pembelian, 2, ',','.')?></td>
 				</tr>
 				<?php endforeach; ?>
 			</tbody>

@@ -129,7 +129,6 @@ class Gudang extends CI_Controller {
 
 	public function pembelian() {
 		$data['judul'] = 'Daftar Pembelian | Gudang';
-
 		$data["pembelian"] = $this->Model_gudang->pembelian();
 		$data["supplier"] = $this->Model_gudang->supplier();
 		$data["barang"] = $this->Model_gudang->barang();
@@ -139,6 +138,8 @@ class Gudang extends CI_Controller {
 	}
 
 	public function detail_pembelian($id) {
+		$data["judul"] = "Detail Pembelian | Gudang";
+		$data["script"] = "";
 		$data["pembelian"] = $this->Model_gudang->pembelian_id($id);
 		$data["detail_pembelian"] = $this->Model_gudang->detail_pembelian($id);
 		$this->load->view('gudang/detail_pembelian', $data);
@@ -235,8 +236,9 @@ class Gudang extends CI_Controller {
 		$this->load->view('test');
 	}
 
-	public function cetak_harga() {
-		
+	public function cetak_harga($id) {
+		$data = $this->Model_gudang->barang_id($id);
+		$this->load->view('gudang/cetak_harga', $data);
 	}
 
 	public function barang_id($id) {

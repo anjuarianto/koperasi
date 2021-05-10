@@ -52,7 +52,12 @@ class Model_kasir extends CI_Model {
     }
 
     public function penjualan() {
-        $query = $this->db->get('tbl_penjualan');
+        $this->db->select('jual.*, sum(detail.jumlah_barang*barang.harga_jual) as total_harga_pembelian');
+        $this->db->from('tbl_penjualan as jual');
+        $this->db->join('tbl_detail_penjualan as detail', 'jual.id_penjualan = detail.id_penjualan');
+        $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+        $this->db->group_by('id_penjualan');
+        $query = $this->db->get();
         return $query->result();
     }
 
@@ -114,5 +119,23 @@ class Model_kasir extends CI_Model {
         $this->db->where('u.level', 5);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function voucher_id($input) {
+        $this->db->select('*');
+        $this->db->from('tbl_voucher');
+        $this->db->where('id_voucher', $input);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    public function update_voucher($id_voucher) {
+        $this->db->where('id_voucher', $id_voucher);
+        $this->db->update('tbl_voucher', array('status' => 1));
+    }
+
+    public function last_penjualan() {
+        return $this->db->get('tbl_penjualan')->last_row();
+        
     }
 }

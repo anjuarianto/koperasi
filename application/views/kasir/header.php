@@ -82,18 +82,7 @@
 					<i class="fas fa-fw fa-cart-arrow-down"></i>
 					<span>Penjualan</span></a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>kasir/transaksi">
-					<i class="fas fa-fw fa-hand-holding-usd"></i>
-					<span>Tampilan Kasir</span></a>
-			</li>
-			<!-- ///////////////////// Ini cuma testing ///////////////////////////// -->
-			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>kasir/testing">
-					<i class="fas fa-fw fa-hand-holding-usd"></i>
-					<span>Testing</span></a>
-			</li>
-			<!-- //////////////////////////////////////////////////////////////////// -->
+			
 
 			<!-- Divider -->
 			<hr class="sidebar-divider">

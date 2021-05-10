@@ -16,6 +16,16 @@ class Keuangan extends CI_Controller {
         $this->load->view('keuangan/dashboard', $data);
     }
 
+    public function simpan() {
+        $data['judul'] = 'Data Simpanan Anggota | Keuangan';
+        $this->load->view('keuangan/simpan');
+    }
+
+    public function pinjam() {
+        $data['judul'] = 'Data Pinjaman Anggota | Keuangan';
+        $this->load->view('keuangan/pinjam', $data);
+    }
+
     public function anggota() {
         $data['judul'] = 'Daftar Anggota | Keuangan';
         $data['anggota'] = $this->Model_keuangan->anggota();

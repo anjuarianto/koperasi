@@ -29,7 +29,10 @@ class Model_admin extends CI_Model {
     }
 
     public function user() {
-        $query = $this->db->get('tbl_user');
+        $this->db->select('*');
+        $this->db->from('tbl_user');
+        $this->db->where('level', 5);
+        $query = $this->db->get();
         return $query->result();
     }
 

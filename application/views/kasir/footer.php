@@ -61,15 +61,13 @@
 <script>
 	$(document).ready(function () {
 		$('#dataTable').DataTable();
-		$('#modalInputSupplier').modal('show');
+		// $('#modalInputSupplier').modal('show');
 		$('#kode_barang').typeahead({
-
 			source: function (query, process) {
 				states = [];
 				map = {};
 				hasil = [];
 				data = [];
-				console.log('test')
 				$.getJSON('<?=base_url()?>kasir/barang_all', function (barang) {
 					$.each(barang, function (key, val) {
 						data.push(val);
@@ -89,13 +87,11 @@
 		});
 
 		$('#kode_anggota').typeahead({
-
 			source: function (query, process) {
 				states = [];
 				map = {};
 				hasil = [];
 				data = [];
-				console.log('test')
 				$.getJSON('<?=base_url()?>kasir/anggota_all', function (anggota) {
 					$.each(anggota, function (key, val) {
 						data.push(val);
@@ -105,6 +101,7 @@
 						map[hasil] = anggota;
 						states.push(hasil);
 					});
+					console.log(states)
 					process(states);
 				});
 			},
@@ -112,6 +109,17 @@
 				selectedItem = map[item].kode_anggota;
 				return selectedItem;
 			}
+		});
+		$("#nominal_uang").on('keyup', function () {
+			var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+			console.log(n)
+			if (isNaN(n)) {
+				$(this).val('0');
+			} else {
+				$(this).val(n.toLocaleString());
+			}
+			//do something else as per updated question
+			printKembalian()
 		});
 	});
 

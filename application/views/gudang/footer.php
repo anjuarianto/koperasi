@@ -1,12 +1,3 @@
-<footer class="sticky-footer bg-white">
-	<div class="container my-auto">
-		<div class="copyright text-center my-auto">
-			<span>Copyright &copy; Your Website 2020</span>
-		</div>
-	</div>
-</footer>
-<!-- End of Footer -->
-
 </div>
 <!-- End of Content Wrapper -->
 
@@ -194,7 +185,10 @@
 		// row clicked
 		$('#dataTable tbody').on('click', 'tr', function () {
 			const baseUrl = "<?=base_url()?>";
-			tampilDataTable(this, baseUrl);
+			if($(this).data('info') != "detail_pembelian") {
+				tampilDataTable(this, baseUrl);
+			}
+			
 		});
 		// edit-button clicked
 		$('#btn-edit').on('click', function () {
@@ -202,8 +196,6 @@
 		})
 
 		table.buttons().container().appendTo('#dataTable_wrapper .col-md-5:eq(0)');
-
-		
 
 		<?=$script;?>
 	});

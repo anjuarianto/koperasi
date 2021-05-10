@@ -59,21 +59,23 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function pembelian() {
-		$this->db->select('beli.*, sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))-sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))*beli.ppn/100 as total_harga_pembelian');
+		$this->db->select('beli.*, sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100)) + sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))*beli.ppn/100 as total_harga_pembelian');
 		$this->db->from('tbl_pembelian as beli');
 		$this->db->join('tbl_detail_pembelian as detail', 'detail.id_pembelian = beli.id_pembelian');
-		$this->db->join('tbl_barang as barang', 'barang.id_barang = barang.id_barang');
+		$this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
 		$this->db->group_by('beli.id_pembelian');
 		$query = $this->db->get();
 		return $query->result();
 	}
 
 	public function pembelian_id($id) {
-		$this->db->select('beli.*, sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))-sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))*beli.ppn/100 as total_harga_pembelian');
+		$this->db->select('beli.*, sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100)) + sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))*beli.ppn/100 as total_harga_pembelian, sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100)) as before_ppn ,user.nama');
 		$this->db->from('tbl_pembelian as beli');
 		$this->db->join('tbl_detail_pembelian as detail', 'detail.id_pembelian = beli.id_pembelian');
-		$this->db->join('tbl_barang as barang', 'barang.id_barang = barang.id_barang');
+		$this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+		$this->db->join('tbl_user as user', 'user.id_user = beli.user');
 		$this->db->where('beli.id_pembelian', $id);
+		
 		$query = $this->db->get();
 		return $query->row();
 	}
@@ -137,7 +139,7 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function detail_pembelian($id) {
-		$this->db->select('dp.jumlah_barang, (b.harga_beli*dp.jumlah_barang) as harga_total_barang, b.nama_barang, b.id_barang');
+		$this->db->select('dp.*, (b.harga_beli*dp.jumlah_barang-(dp.discount*b.harga_beli*dp.jumlah_barang/100)) as harga_total_barang, b.nama_barang, b.id_barang');
 		$this->db->from('tbl_detail_pembelian as dp');
 		$this->db->join('tbl_barang as b', 'b.id_barang = dp.id_barang', 'left');
 		$this->db->where('dp.id_pembelian', $id);

@@ -18,7 +18,7 @@
 				<thead class="thead-light">
 					<tr>
 						<th>#</th>
-						<th>Username</th>
+						<th>NRP</th>
 						<th>Nama User</th>
 						<th>Role</th>
 					</tr>
@@ -27,7 +27,7 @@
 					<?php foreach ($user as $u) : ?>
 					<tr>
 						<td><?=$u->id_user;?></td>
-						<td><?=$u->username;?></td>
+						<td><?=$u->kode_anggota;?></td>
 						<td><?=$u->nama;?></td>
 						<td>
 							<?php if($u->level == '1') {
