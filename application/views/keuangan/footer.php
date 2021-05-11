@@ -29,13 +29,29 @@
 	</div>
 </div>
 
-<!-- Bootstrap core JavaScript-->
-<script src="<?=base_url()?>assets/vendor/jquery/jquery.min.js"></script>
-<script src="<?=base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <script src="<?=base_url()?>assets/vendor/jquery/jquery.js"></script>
-<script src="<?=base_url()?>assets/vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="<?=base_url()?>assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="<?=base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- User custom Javascript -->
+<script src="<?=base_url()?>assets/gudang.js"></script>
+
+<!-- Typehead -->
+<script src="<?=base_url()?>assets/vendorother/typeahead/typeahead.js"></script>
+<!-- Page level plugins -->
+<script src="<?=base_url()?>assets/vendorother/datatables/jquery.dataTables.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/dataTables.buttons.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/momentjs/moment.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/dataTables.dateTime.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/jszip/jszip.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/pdfmake/pdfmake.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/pdfmake/vfs_fonts.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/buttons.html5.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/buttons.print.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/buttons.colVis.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/responsive/js/responsive.bootstrap4.min.js"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="<?=base_url()?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -43,12 +59,155 @@
 <!-- Custom scripts for all pages-->
 <script src="<?=base_url()?>assets/js/sb-admin-2.min.js"></script>
 <script>
-		$(document).ready(function() {
-  			$('#dataTable').DataTable();
-            $('#modalInputSupplier').modal('show');
+	$.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+		var min, max;
+		if(moment.utc($('#min').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
+			min = moment.utc($('#min').val(), 'DD-MM-YYYY').toDate();
+		} else {
+			min = null;
+		}
+
+		if(moment.utc($('#max').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
+			max = moment.utc($('#max').val(), 'DD-MM-YYYY').toDate();
+		} else {
+			max = null;
+		}
+		
+        var max = maxDate.val();
+        var date = moment.utc(data[1], 'DD-MM-YYYY');
+		var tes = date.toDate();
+
+        if (
+            ( min === null && max === null ) ||
+            ( min === null && date <= max ) ||
+            ( min <= date   && max === null ) ||
+            ( min <= date   && date <= max )
+        ) {
+            return true;
+        }
+        return false;
+    }
+);
+	$(document).ready(function () {
+		
+		$('#input_barang').typeahead({
+			source: function (query, process) {
+				states = [];
+				map = {};
+				hasil = [];
+				data = [];
+				$.getJSON('<?=base_url()?>gudang/barang_all', function (barang) {
+					$.each(barang, function (key, val) {
+						data.push(val);
+					});
+					$.each(data, function (i, barang) {
+						const hasil = barang.nama_barang + ' | ' + barang.kode_barang;
+						map[hasil] = barang;
+						states.push(hasil);
+					});
+					process(states);
+				});
+			},
+			updater: function (item) {
+				selectedItem = map[item].kode_barang;
+				return selectedItem;
+			}
+		});
+		
+
+		// $('#modalInputPembelian').on('shown.bs.modal', function () {
+		// 	$('#input_barang').trigger('focus');
+		// });
+
+		// $(window).keydown(function (event) {
+		// 	if (event.keyCode == 13) {
+		// 		event.preventDefault();
+		// 		$('#btn-input-barang').click();
+		// 		return false;
+		// 	}
+		// });
+
+		
+		minDate = new DateTime($('#min'), {
+			format: 'DD-MM-YYYY',
+		});
+		maxDate = new DateTime($('#max'), {
+			format: 'DD-MM-YYYY'
 		});
 
-	</script>
+		// custom option datatable
+		var table = $('#dataTable').DataTable({
+			"scrollY": "30rem",
+			"scrollCollapse": true,
+			buttons: [{
+				extend: 'collection',
+				className: 'btn-icon-split btn-sm',
+				text: '<span class="icon text-white-50"><i class="fas fa-file"></i></span><span class="text">Export</span>',
+				buttons: [
+					'copy',
+					'excel',
+					'csv',
+					'pdf',
+					'print'
+				]
+			}],
+			dom: "<'row px-2 px-md-4 pt-2'<'col-md-3'l><'col-md-5 text-center'B><'col-md-4'f>>" +
+				"<'row'<'col-md-12'tr>>" +
+				"<'row px-2 px-md-4 py-3'<'col-md-5'i><'col-md-7'p>>",
+			lengthMenu: [
+				[5, 10, 25, 50, 100, -1],
+				[5, 10, 25, 50, 100, "All"]
+			],
+			columnDefs: [{
+
+				targets: 0,
+				orderable: false,
+				searchable: false
+			}],
+			"order": [
+				[1, 'asc']
+			]
+		});
+		
+
+		// order number automatic
+		table.on('order.dt search.dt', function () {
+			table.column(0, {
+				search: 'applied',
+				order: 'applied'
+			}).nodes().each(function (cell, i) {
+				cell.innerHTML = i + 1;
+			});
+		}).draw();
+
+		
+		$('#min, #max').on('change keyup', function () {
+			table.draw();
+		});
+		// // $('#filterColumn').on('change', function () {
+		// 	table.draw();
+		// });
+
+
+		// row clicked
+		$('#dataTable tbody').on('click', 'tr', function () {
+			const baseUrl = "<?=base_url()?>";
+			if ($(this).data('info') != "history_pinjam") {
+				tampilDataTable(this, baseUrl);
+			}
+
+		});
+		// edit-button clicked
+		$('#btn-edit').on('click', function () {
+			enableForm(this);
+		})
+
+		table.buttons().container().appendTo('#dataTable_wrapper .col-md-5:eq(0)');
+
+	});
+
+</script>
 </body>
 
 </html>

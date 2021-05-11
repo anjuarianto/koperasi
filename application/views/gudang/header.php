@@ -22,7 +22,7 @@
 	<link href="<?=base_url()?>assets/css/sb-admin-2.min.css" rel="stylesheet">
 
 	<link href="<?=base_url()?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.0.3/css/dataTables.dateTime.min.css">
+	<link rel="stylesheet" href="<?=base_url()?>assets/vendorother/datatables/dataTables.dateTime.min.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/vendorother/typeahead/typeahead.css">
 	<style>
 		.typeahead { z-index: 1051; }

@@ -18,20 +18,42 @@ class Keuangan extends CI_Controller {
 
     public function simpan() {
         $data['judul'] = 'Data Simpanan Anggota | Keuangan';
-        $this->load->view('keuangan/simpan');
+        $data['simpanan_anggota'] = $this->Model_keuangan->simpanan_anggota();
+        $this->load->view('keuangan/simpan', $data);
     }
 
     public function pinjam() {
         $data['judul'] = 'Data Pinjaman Anggota | Keuangan';
+        $data['pinjaman_anggota'] = $this->Model_keuangan->pinjaman_anggota();
         $this->load->view('keuangan/pinjam', $data);
+    }
+
+    public function history_pinjam($id) {
+        $data['judul'] = 'Data Pinjaman Anggota | Keuangan';
+        $data['pinjaman'] = $this->Model_keuangan->pinjam_id($id);
+        $data['history_pinjam'] = $this->Model_keuangan->history_pinjam($id);
+        $this->load->view('keuangan/history_pinjam', $data);
     }
 
     public function anggota() {
         $data['judul'] = 'Daftar Anggota | Keuangan';
         $data['anggota'] = $this->Model_keuangan->anggota();
+        
         $this->load->view('keuangan/anggota', $data);
     }
     
+    public function transaksi_pembelian() {
+        $data['judul'] = 'Daftar Transaksi Pembelian | Keuangan';
+        $data['pembelian'] = $this->Model_keuangan->pembelian();
+        $this->load->view('keuangan/transaksi_pembelian', $data);
+    }
+
+    public function transaksi_pembelian_kredit() {
+        $data['judul'] = 'Daftar Transaksi Pembelian | Keuangan';
+        $data['pembelian'] = $this->Model_keuangan->pembelian_kredit();
+        $this->load->view('keuangan/transaksi_pembelian', $data);
+    }
+
     public function pengeluaran() {
         $data['judul'] = 'Daftar Pengeluaran | Keuangan';
         $data['pengeluaran'] = $this->Model_keuangan->pengeluaran();
@@ -42,6 +64,34 @@ class Keuangan extends CI_Controller {
         $data['judul'] = 'Daftar Pemasukan | Keuangan';
         $data['pemasukan'] = $this->Model_keuangan->pemasukan();
         $this->load->view('keuangan/pemasukan', $data);
+    }
+
+    public function pemasukan_global() {
+        $data['judul'] = 'Daftar Pemasukan Global | Keuangan';
+        $data['pemasukan'] = $this->Model_keuangan->pemasukan_global();
+        
+        $this->load->view('keuangan/pemasukan_global', $data);
+    }
+
+    public function penjualan() {
+        $data['judul'] = 'Daftar Penjualan | Keuangan';
+        $data['penjualan'] = $this->Model_keuangan->penjualan();
+        $this->load->view('keuangan/penjualan', $data);
+    }
+
+    public function aksi_input_pemasukan() {
+        $deskripsi_pemasukan = $this->input->post('deskripsi_pemasukan');
+        $total_pemasukan = $this->input->post('total_pemasukan');
+        $tanggal = $this->input->post('tanggal');
+
+        $data = array(
+            'deskripsi_pemasukan' => $deskripsi_pemasukan,
+            'total_pemasukan' => $total_pemasukan,
+            'tanggal' => $tanggal
+        );
+
+        $this->Model_keuangan->aksi_input_pemasukan($data);
+        redirect('keuangan/pemasukan');
     }
 
     public function shu() {

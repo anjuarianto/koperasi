@@ -10,17 +10,29 @@
 		<h6 class="m-0 font-weight-bold text-white">Tabel Barang</h6>
 	</div>
 	<div class="card-body">
-	<h6 class="mb-2 font-weight-bold text-primary">Filter Tanggal</h6>
-	<table border="0" cellspacing="5" cellpadding="5">
-        <tbody><tr>
-            <td>Tanggal Awal:</td>
-            <td><input type="text" id="min" name="min"></td>
-        </tr>
-        <tr>
-            <td>Tanggal Akhir:</td>
-            <td><input type="text" id="max" name="max"></td>
-        </tr>
-    </tbody></table>
+		<div class="row mb-4 w-20">
+			<span> From </span>
+			<div class="form-group col-sm-2 mx-2">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+					</div>
+					<input type="text" id="min" class="form-control form-control-sm ">
+				</div>
+
+			</div>
+			<span> to </span>
+			<div class="form-group col-sm-2 mx-2">
+			<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+					</div>
+					<input type="text" id="max" class="form-control form-control-sm ">
+				</div>
+				
+			</div>
+		</div>
+
 		<div class="table-responsive">
 			<button class="btn btn-primary btn-sm mt-2 mb-4 btn-icon-split" data-toggle="modal"
 				data-target="#modalInputPembelian"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
@@ -108,13 +120,14 @@
 					<div class="row">
 						<div class="input-group input-group-sm col-3">
 							<input type="text" name="input_barang" id="input_barang"
-								placeholder="Kode Barang/Nama Barang" style="z-index:1000"class="form-control typehead" data-provide="typehead" autofocus autocomplete="off">
+								placeholder="Kode Barang/Nama Barang" style="z-index:1000" class="form-control typehead"
+								data-provide="typehead" autofocus autocomplete="off">
 							<div class="input-group-append">
-								<button type="button" class="btn btn-success" id="btn-input-barang" onclick="checkBarang()"><i
-										class="fas fa-plus"></i></button>
+								<button type="button" class="btn btn-success" id="btn-input-barang"
+									onclick="checkBarang()"><i class="fas fa-plus"></i></button>
 							</div>
 						</div>
-						
+
 						<div class="col">
 
 						</div>

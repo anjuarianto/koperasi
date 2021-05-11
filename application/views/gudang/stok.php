@@ -12,7 +12,6 @@
 		<h6 class="m-0 font-weight-bold text-white">Tabel Stok</h6>
 	</div>
 	<div class="card-body">
-		<h6 class="mb-2 font-weight-bold text-primary">Filter Tanggal</h6>
 		<div class="row mb-4 w-20">
 			<div class="form-group col-sm-2">
 				<select class="form-control form-control-sm" id="filterColumn">
@@ -21,12 +20,24 @@
 					<option value="5">Tanggal Return</option>
 				</select>
 			</div>
+			<span> From </span>
 			<div class="form-group col-sm-2 mx-2">
+			<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+					</div>
+					
 				<input type="text" id="min" class="form-control form-control-sm ">
+				</div>
 			</div>
 			<span> to </span>
 			<div class="form-group col-sm-2 mx-2">
-				<input type="text" id="max" class="form-control form-control-sm ">
+			<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+					</div>
+					<input type="text" id="max" class="form-control form-control-sm ">
+				</div>
 			</div>
 		</div>
 

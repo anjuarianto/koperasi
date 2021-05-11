@@ -34,8 +34,8 @@
 						<td><?=$b->nama_barang;?></td>
 						<td><?=$b->nama_supplier;?></td>
 						<td><?=$b->kode_barang;?></td>
-						<td>Rp. <?=$b->harga_beli;?></td>
-						<td>Rp. <?=$b->harga_jual;?></td>
+						<td>Rp. <?=number_format($b->harga_beli, 0 , ',','.');?></td>
+						<td>Rp. <?=number_format($b->harga_jual, 0 , ',','.');?></td>
 						<td><?=$b->total_stok == null ? 0 : $b->total_stok?></td>
 					</tr>
 					<?php endforeach; ?>

@@ -90,6 +90,8 @@ class Home extends CI_Controller {
 					redirect('admin');
 				} else if ($user_db['level'] == 6) {
 					redirect('keuangan');
+				} else if($user_db['level'] == 7) {
+					redirect('keuangan');
 				}
 				
 			} else {

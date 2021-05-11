@@ -13,14 +13,20 @@
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
+					<th></th>
 						<th>Kode Anggota</th>
 						<th>Nama Anggota</th>
+						<th>Saldo Simpan</th>
+						<th>Saldo Pinjam</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php foreach ($anggota as $a) : ?>
 					<tr>
+					<td></td>
 						<td><?=$a->kode_anggota;?></td>
+						<td><?=$a->nama;?></td>
+						<td><?=$a->nama;?></td>
 						<td><?=$a->nama;?></td>
 					</tr>
 					<?php endforeach; ?>

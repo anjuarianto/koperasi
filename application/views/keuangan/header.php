@@ -19,7 +19,8 @@
 
 	<!-- Custom styles for this template-->
 	<link href="<?=base_url()?>assets/css/sb-admin-2.min.css" rel="stylesheet">
-
+	
+	<link rel="stylesheet" href="<?=base_url()?>assets/vendorother/datatables/dataTables.dateTime.min.css">	
     <link href="<?=base_url()?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
@@ -55,7 +56,7 @@
 
 			<!-- Heading -->
 			<div class="sidebar-heading">
-				Keuangan
+				Data
 			</div>
 			<li class="nav-item">
 				<a class="nav-link" href="<?=base_url()?>keuangan/anggota">
@@ -63,6 +64,8 @@
 					<span>Anggota</span></a>
 			</li>
 
+			
+			<?php if($this->session->userdata('login_session')['level'] == 4 or $this->session->userdata('login_session')['level'] == 7)  : ?>
 			<!-- Divider -->
 			<hr class="sidebar-divider">
 
@@ -70,24 +73,50 @@
 			<div class="sidebar-heading">
 				Transaksi
 			</div>
-
+			<?php if($this->session->userdata('login_session')['level'] == 4)  : ?>
 			<!-- Nav Item - Pages Collapse Menu -->
 			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>keuangan/pemasukan">
-					<i class="fas fa-fw fa-angle-double-right"></i>
-					<span>Uang Masuk</span></a>
-			</li>
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapsePemasukan" aria-expanded="true" aria-controls="collapseMaster">
+                    <i class="fas fa-fw fa-angle-double-right"></i>
+                    <span>Uang Masuk</span>
+                </a>
+                <div id="collapsePemasukan" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-light py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pemasukan:</h6>
+                        <a class="collapse-item" href="<?= base_url(); ?>keuangan/pemasukan_global">Pemasukan Global</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>keuangan/pemasukan">Pemasukan</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>keuangan/penjualan">Transaksi Penjualan</a>
+                    </div>
+                </div>
+            </li>
+			<?php endif ?>
+			
 			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>keuangan/pengeluaran">
-					<i class="fas fa-fw fa-angle-double-left"></i>
-					<span>Uang Keluar</span></a>
-			</li>
-
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapsePengeluaran" aria-expanded="true" aria-controls="collapseMaster">
+                    <i class="fas fa-fw fa-angle-double-left"></i>
+                    <span>Uang Keluar</span>
+                </a>
+                <div id="collapsePengeluaran" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-light py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Pengeluaran:</h6>
+						<?php if($this->session->userdata('login_session')['level'] == 4)  : ?>
+                        <a class="collapse-item" href="<?= base_url(); ?>keuangan/pengeluaran">Pengeluaran</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>keuangan/transaksi_pembelian">Transaksi Pembelian</a>
+						<?php endif; ?>
+						<?php if($this->session->userdata('login_session')['level'] == 7)  : ?>
+						<a class="collapse-item" href="<?= base_url(); ?>keuangan/transaksi_pembelian_kredit">Transaksi (Kredit)</a>
+						<?php endif; ?>
+                    </div>
+                </div>
+            </li>
+			<?php endif; ?>
+			
+			<?php if($this->session->userdata('login_session')['level'] == 6)  : ?>
             <!-- Divider -->
 			<hr class="sidebar-divider">
             <!-- Heading -->
 			<div class="sidebar-heading">
-				Aksi
+				Simpan Pinjam
 			</div>
 			<li class="nav-item">
                 <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseMaster" aria-expanded="true" aria-controls="collapseMaster">
@@ -107,7 +136,6 @@
 					<i class="fas fa-fw fa-cart-arrow-down"></i>
 					<span>Pembagian SHU</span></a>
 			</li>
-			<?php if ($this->session->userdata('login_session')['level'] == 4) : ?>
 			<li class="nav-item">
 				<a class="nav-link" href="<?=base_url()?>keuangan/laba_rugi">
 					<i class="fas fa-fw fa-hand-holding-usd"></i>

@@ -43,8 +43,8 @@
 <script src="<?=base_url()?>assets/vendorother/datatables/jquery.dataTables.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/dataTables.bootstrap4.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-<script src="https://cdn.datatables.net/datetime/1.0.3/js/dataTables.dateTime.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/momentjs/moment.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/dataTables.dateTime.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/buttons.bootstrap4.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/jszip/jszip.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/pdfmake/pdfmake.min.js"></script>
@@ -63,17 +63,28 @@
 <script>
 	$.fn.dataTable.ext.search.push(
 		function (settings, data, dataIndex) {
+			var min, max;
 			var filterColumn;
-			if($('#filterColumn').length) {
+			if ($('#filterColumn').length) {
 				filterColumn = $('#filterColumn').val();
 			} else {
 				filterColumn = 1;
 			}
-			
-			var min = minDate.val();
+			if (moment.utc($('#min').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
+				min = moment.utc($('#min').val(), 'DD-MM-YYYY').toDate();
+			} else {
+				min = null;
+			}
+
+			if (moment.utc($('#max').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
+				max = moment.utc($('#max').val(), 'DD-MM-YYYY').toDate();
+			} else {
+				max = null;
+			}
+
 			var max = maxDate.val();
-			var dateMomentObject = moment.utc(data[filterColumn], "DD-MM-YYYY");
-			var date = dateMomentObject.toDate();
+			var date = moment.utc(data[filterColumn], 'DD-MM-YYYY');
+			var tes = date.toDate();
 
 			if (
 				(min === null && max === null) ||
@@ -161,7 +172,7 @@
 				[5, 10, 25, 50, 100, "All"]
 			],
 			columnDefs: [{
-				
+
 				targets: 0,
 				orderable: false,
 				searchable: false
@@ -185,10 +196,10 @@
 		// row clicked
 		$('#dataTable tbody').on('click', 'tr', function () {
 			const baseUrl = "<?=base_url()?>";
-			if($(this).data('info') != "detail_pembelian") {
+			if ($(this).data('info') != "detail_pembelian") {
 				tampilDataTable(this, baseUrl);
 			}
-			
+
 		});
 		// edit-button clicked
 		$('#btn-edit').on('click', function () {
@@ -197,7 +208,7 @@
 
 		table.buttons().container().appendTo('#dataTable_wrapper .col-md-5:eq(0)');
 
-		<?=$script;?>
+		
 	});
 
 </script>

@@ -1,43 +1,41 @@
 <?php $this->load->view('keuangan/header'); ?>
 
+
+<div class="container-fluid mb-4 p-3 shadow bg-white">
+	<h1 class="h3 text-primary"><?=$judul;?></h1>
+</div>
+
 <div class="card shadow mb-4">
-	<div class="card-header bg-primary py-3 d-flex">
-		<h6 class="m-0 font-weight-bold my-auto text-white">Data Pinjaman</h6>
-		<button class="btn btn-dark btn-sm ml-auto my-0 btn-icon-split" data-toggle="modal"
-			data-target="#modalInputPinjaman"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
-			<span class="text">Input Pinjaman</span></button>
+	<div class="card-header bg-primary py-3">
+		<h6 class="m-0 font-weight-bold text-white">Data Pinjaman</h6>
 	</div>
 	<div class="card-body">
-	<div class="table-responsive">
-	
-			<table class="table table-hover table-sm table-striped dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
+            <div class="table-responsive">
+			<button class="btn btn-primary btn-sm mt-2 mb-4 btn-icon-split" data-toggle="modal" data-target="#modalInputBarang"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
+				<span class="text">Input Simpanan</span></button>
+			<table class="table table-hover table-striped dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
 					<th></th>
-						<th>NRP</th>
 						<th>Nama Anggota</th>
-						<th>Total Pinjaman</th>
-						<th>Tgl. Pinjam</th>
-						<th>Tgl. Jatuh Tempo</th>
-						<th>Status</th>
+                        <th>Pokok</th>
+						<th>Wajib</th>
+						<th>Sukarela</th>
+						<th>Saldo</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($pinjaman_anggota as $p) : ?>
-					<tr data-info="pinjam" data-id="<?=$p->id_user;?>">
+					<?php foreach ($simpanan_anggota as $s) : ?>
+					<tr data-info="simpan" data-id="<?=$s->id_user;?>">
 					<td></td>
-						<td><?=$p->kode_anggota;?></td>
-						<td><?=$p->nama;?></td>
-						<td>Rp. <?=number_format($p->pinjaman,0,',','.');?></td>
-						<td><?=$p->tanggal_pinjam;?></td>
-						<td><?=$p->jatuh_tempo;?></td>
-						<td><?=$p->status == 0 ? 'Belum Lunas' : 'Lunas'?></td>
+						<td><?=$s->nama;?></td>
+						<td>Rp. <?=number_format($s->pokok,0,',','.');?></td>
+					
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-		
 	</div>
 </div>
 
@@ -97,6 +95,8 @@
 		</div>
 	</div>
 </div>
+
+
 
 
 <?php $this->load->view('keuangan/footer'); ?>
