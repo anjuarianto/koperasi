@@ -1,18 +1,15 @@
 <?php $this->load->view('gudang/header');?>
 
-<div class="container-fluid mb-4 p-3 shadow bg-white">
-	<h1 class="h3 text-primary"><?=$judul;?></h1>
-</div>
-<div class="card shadow mb-4 border-bottom-primary">
-	<div class="card-header py-3 bg-primary ">
-		<h6 class="m-0 font-weight-bold text-light">Tabel Supplier</h6>
+<div class="card shadow mb-4 border-bottom-primary ">
+	<div class="card-header bg-primary d-flex justify-content-between">
+		<h6 class="m-0 font-weight-bold text-light my-auto">Tabel Supplier</h6>
+		<button class="btn btn-sm btn-dark btn-icon-split" data-toggle="modal"
+				data-target="#modalInputSupplier"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
+				<span class="text">Tambah Supplier</span></button>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-			<button class="btn btn-sm btn-primary mt-2 mb-4 btn-icon-split" data-toggle="modal"
-				data-target="#modalInputSupplier"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
-				<span class="text">Tambah Supplier</span></button>
-			<table class="table table-striped table-hover dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
+			<table class="table table-sm table-striped table-hover dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
@@ -41,7 +38,7 @@
 <div class="modal fade" id="modalInputSupplier" tabindex="-1" role="dialog" aria-labelledby="modalInputSupplier"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable" role="document">
-		<div class="modal-content">
+		<div class="modal-content border-bottom-primary">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Supplier</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -53,7 +50,7 @@
 					<div class="form-group">
 						<label for="nama_supplier">Nama Supplier</label>
 						<input type="text" class="form-control" name="nama_supplier" placeholder="Nama Supplier"
-							class="form-control" value="<?=set_value('nama_supplier')?>">
+							class="form-control" required autocomplete="off">
 						<span style="font-size: 10px; color: red"><?=form_error('nama_supplier')?></span>
 					</div>
 					<div class="form-group">

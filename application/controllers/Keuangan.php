@@ -46,7 +46,6 @@ class Keuangan extends CI_Controller {
     public function anggota() {
         $data['judul'] = 'Daftar Anggota | Keuangan';
         $data['anggota'] = $this->Model_keuangan->anggota();
-        
         $this->load->view('keuangan/anggota', $data);
     }
     
@@ -62,19 +61,23 @@ class Keuangan extends CI_Controller {
         $this->load->view('keuangan/transaksi_pembelian', $data);
     }
 
+    public function verifikasi_kredit() {
+        
+    }
+
     public function pengeluaran() {
         $data['judul'] = 'Daftar Pengeluaran | Keuangan';
         $data['pengeluaran'] = $this->Model_keuangan->pengeluaran();
         $this->load->view('keuangan/pengeluaran', $data);
     }
 
-    public function pemasukan() {
-        $data['judul'] = 'Daftar Pemasukan | Keuangan';
-        $data['pemasukan'] = $this->Model_keuangan->pemasukan();
-        $this->load->view('keuangan/pemasukan', $data);
-    }
+    // public function pemasukan() {
+    //     $data['judul'] = 'Daftar Pemasukan | Keuangan';
+    //     $data['pemasukan'] = $this->Model_keuangan->pemasukan();
+    //     $this->load->view('keuangan/pemasukan', $data);
+    // }
 
-    public function pemasukan_global() {
+    public function pemasukan() {
         $data['judul'] = 'Daftar Pemasukan Global | Keuangan';
         $data['pemasukan'] = $this->Model_keuangan->pemasukan_global();
         

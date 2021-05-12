@@ -83,7 +83,6 @@
                 <div id="collapsePemasukan" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-light py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pemasukan:</h6>
-                        <a class="collapse-item" href="<?= base_url(); ?>keuangan/pemasukan_global">Pemasukan Global</a>
                         <a class="collapse-item" href="<?= base_url(); ?>keuangan/pemasukan">Pemasukan</a>
                         <a class="collapse-item" href="<?= base_url(); ?>keuangan/penjualan">Transaksi Penjualan</a>
                     </div>

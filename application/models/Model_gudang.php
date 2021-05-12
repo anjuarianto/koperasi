@@ -38,11 +38,31 @@ class Model_gudang extends CI_Model {
 		return $query->result();
 	}
 
+	public function return_terakhir() {
+		$this->db->select('s.id_stok, b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, s.tanggal_return, beli.no_faktur');
+		$this->db->from('tbl_stok as s');
+		$this->db->join('tbl_barang as b', 'b.id_barang = s.id_barang', 'left');
+		$this->db->join('tbl_pembelian as beli', 'beli.id_pembelian = s.id_pembelian', 'left');
+		$this->db->where('s.tanggal_return is not NULL ');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function stok_akan_habis() {
+		$this->db->select('s.id_stok, b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, s.tanggal_return, beli.no_faktur');
+		$this->db->from('tbl_stok as s');
+		$this->db->join('tbl_barang as b', 'b.id_barang = s.id_barang', 'left');
+		$this->db->join('tbl_pembelian as beli', 'beli.id_pembelian = s.id_pembelian', 'left');
+		$this->db->where('s.stok_barang <= 30');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function transaksi_kredit() {
-		$this->db->select('beli.*, sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))-sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))*beli.ppn/100 as total_harga_pembelian');
+		$this->db->select('beli.*, sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100)) + sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))*beli.ppn/100 as total_harga_pembelian');
 		$this->db->from('tbl_pembelian as beli');
 		$this->db->join('tbl_detail_pembelian as detail', 'detail.id_pembelian = beli.id_pembelian');
-		$this->db->join('tbl_barang as barang', 'barang.id_barang = barang.id_barang');
+		$this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
 		$this->db->where('beli.jenis_pembayaran', 'kredit');
 		$this->db->group_by('beli.id_pembelian');
 		$query = $this->db->get();

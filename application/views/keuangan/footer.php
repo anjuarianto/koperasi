@@ -114,19 +114,6 @@
 				return selectedItem;
 			}
 		});
-		
-
-		// $('#modalInputPembelian').on('shown.bs.modal', function () {
-		// 	$('#input_barang').trigger('focus');
-		// });
-
-		// $(window).keydown(function (event) {
-		// 	if (event.keyCode == 13) {
-		// 		event.preventDefault();
-		// 		$('#btn-input-barang').click();
-		// 		return false;
-		// 	}
-		// });
 
 		
 		minDate = new DateTime($('#min'), {
@@ -185,16 +172,14 @@
 		$('#min, #max').on('change keyup', function () {
 			table.draw();
 		});
-		// // $('#filterColumn').on('change', function () {
-		// 	table.draw();
-		// });
 
 
 		// row clicked
 		$('#dataTable tbody').on('click', 'tr', function () {
 			const baseUrl = "<?=base_url()?>";
-			if ($(this).data('info') != "history_pinjam") {
-				tampilDataTable(this, baseUrl);
+			if ($(this).data('info')) {
+				// tampilDataTable(this, baseUrl);
+				console.log($(this).data('info'));
 			}
 
 		});

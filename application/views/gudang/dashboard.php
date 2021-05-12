@@ -93,7 +93,7 @@
 	<div class="row">
     <div class="col-md-4">
         <div class="card shadow mb-4">
-            <div class="card-header bg-warning py-3">
+            <div class="card-header bg-danger py-3">
                 <h6 class="m-0 font-weight-bold text-white text-center">Stok Akan Expired</h6>
             </div>
             <div class="table-responsive">
@@ -112,7 +112,7 @@
                                 <tr>
                                     <td><?= $ex->nama_barang ?></td>
                                     <td><?= $ex->stok_barang ?></td>
-                                    <td><?= $ex->tanggal_expired ?></td>
+                                    <td><?= date('d-m-Y',strtotime($ex->tanggal_expired))?></td>
                                 </tr>
                             <?php endforeach; ?>
 							<?php else : ?>
@@ -129,7 +129,7 @@
     </div>
     <div class="col-md-4">
         <div class="card shadow mb-4">
-            <div class="card-header bg-success py-3">
+            <div class="card-header bg-warning py-3">
                 <h6 class="m-0 font-weight-bold text-white text-center">Transaksi Pembayaran Kredit</h6>
             </div>
             <div class="table-responsive">
@@ -147,13 +147,83 @@
                             <tr>
                                 <td><strong><?= $kredit->tgl_pembelian ?></strong></td>
                                 <td><?= $kredit->no_faktur ?></td>
-                                <td><span class="badge badge-success"><?= $kredit->total_harga_pembelian ?></span></td>
+                                <td>Rp. <?=number_format($kredit->total_harga_pembelian, 0, ',', '.')?></td>
                             </tr>
                         <?php endforeach; ?>
 						<?php else : ?>
                             <tr>
                                 <td colspan="3" class="text-center">
                                     Tidak ada transaksi kredit
+                                </td>
+                            </tr>
+							<?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+	<div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success py-3">
+                <h6 class="m-0 font-weight-bold text-white text-center">Stok Akan Habis</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table mb-0 table-sm table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th>Nama Barang</th>
+                            <th>Stok Barang</th>
+                            <th>No. Faktur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<?php if($stok_akan_habis) : ?>
+                        <?php foreach ($stok_akan_habis as $sth) : ?>
+                            <tr>
+                                <td><strong><?= $sth->nama_barang ?></strong></td>
+                                <td><?= $sth->stok_barang ?></td>
+                                <td><?= $sth->no_faktur ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+						<?php else : ?>
+                            <tr>
+                                <td colspan="2" class="text-center">
+                                    Tidak ada Stok Tipis
+                                </td>
+                            </tr>
+							<?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+	<div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-warning py-3">
+                <h6 class="m-0 font-weight-bold text-white text-center">History Return Terakhir</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table mb-0 table-sm table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th>Nama Barang</th>
+                            <th>Stok Barang</th>
+                            <th>No. Faktur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<?php if($return_terakhir) : ?>
+                        <?php foreach ($return_terakhir as $rt) : ?>
+                            <tr>
+                                <td><strong><?= $rt->nama_barang ?></strong></td>
+                                <td><?= $rt->stok_barang ?></td>
+                                <td><?= $rt->no_faktur ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+						<?php else : ?>
+                            <tr>
+                                <td colspan="2" class="text-center">
+                                    Tidak ada Barang Return
                                 </td>
                             </tr>
 							<?php endif; ?>

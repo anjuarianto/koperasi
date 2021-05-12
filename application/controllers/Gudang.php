@@ -18,6 +18,8 @@ class Gudang extends CI_Controller {
 		$data['barang'] = count($this->Model_gudang->barang());
 		$data['stok_expired'] = $this->Model_gudang->stok_expired();
 		$data['transaksi_kredit'] = $this->Model_gudang->transaksi_kredit();
+		$data['stok_akan_habis'] = $this->Model_gudang->stok_akan_habis();
+		$data['return_terakhir'] = $this->Model_gudang->return_terakhir();
 		
 		$data["script"] = "";
 		$this->load->view('gudang/dashboard',$data);
@@ -181,6 +183,7 @@ class Gudang extends CI_Controller {
 			$this->Model_gudang->tambah_detail_pembelian($detail_barang);
 			$stok = array(
 				"id_barang"	=> $id_barang[$i],
+				"id_pembelian" => $last_id,
 				"stok_barang" => $jumlah_barang[$i],
 				"tanggal_pembelian" => $tanggal_pembelian,
 				"tanggal_expired"	=> $tanggal_expired[$i]
@@ -222,12 +225,15 @@ class Gudang extends CI_Controller {
 	public function update_stok($id) {
 		if($this->input->post('tanggal_return') == "") {
 			$tanggal_return = NULL;
+		} else {
+			$tanggal_return = $this->input->post('tanggal_return');
 		}
 		$data = array(
 			'tanggal_expired' => $this->input->post('tanggal_expired'),
 			'stok_barang' => $this->input->post('stok_barang'),
 			'tanggal_return' => $tanggal_return
 		);
+		
 		$this->Model_gudang->update_stok($id, $data);
 		redirect('gudang/stok');
 	}

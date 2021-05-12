@@ -2,17 +2,13 @@
 
 
 <!-- Start content -->
-
-<div class="container-fluid mb-4 p-3 shadow bg-white">
-	<h1 class="h3 text-primary"><?=$judul;?></h1>
-</div>
 <!-- datatable -->
 <div class="card shadow mb-4 border-bottom-primary">
-	<div class="card-header bg-primary py-3">
+	<div class="card-header bg-primary">
 		<h6 class="m-0 font-weight-bold text-white">Tabel Stok</h6>
 	</div>
 	<div class="card-body">
-		<div class="row mb-4 w-20">
+		<div class="row w-20">
 			<div class="form-group col-sm-2">
 				<select class="form-control form-control-sm" id="filterColumn">
 					<option value="1">Tanggal Pembelian</option>
@@ -42,8 +38,8 @@
 		</div>
 
 		<div class="table-responsive">
-			<table class="table table-hover table-striped dataTable" id="dataTable" width="100%" cellspacing="0"
-				role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+			<table class="table table-sm table-hover table-striped dataTable" id="dataTable" width="100%"
+				cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
 						<th>No</th>
@@ -78,7 +74,7 @@
 
 <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
 	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-scrollable" role="document">
+	<div class="modal-dialog modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Detail Barang</h5>
@@ -92,33 +88,37 @@
 						<label for="tanggal_pembelian">Tanggal Pembelian</label>
 						<input type="date" class="form-control" name="tanggal_pembelian" id="tanggal_pembelian"
 							placeholder="Tanggal Pembelian" class="form-control" disabled>
-						<span style="font-size: 10px; color: red"><?=form_error('tanggal_pembelian')?></span>
 					</div>
-					<div class="form-group <?=form_error('nama_barang') ? 'has-error' : null ?>">
+					<div class="form-group">
 						<label for="nama_barang">Nama Barang</label>
 						<input type="text" class="form-control" name="nama_barang" id="nama_barang"
-							placeholder="Nama Barang" class="form-control" value="<?=set_value('nama_barang')?>">
-						<span style="font-size: 10px; color: red"><?=form_error('nama_barang')?></span>
+							placeholder="Nama Barang" class="form-control" autocomplete="off">
 					</div>
 
 					<div class="form-group">
 						<label for="stok_barang">Jumah Stok Barang</label>
 						<input type="text" name="stok_barang" id="stok_barang" placeholder="Jumlah Stok"
-							class="form-control" value="<?=set_value('stok_barang')?>" required>
-						<span style="font-size: 10px; color: red"><?=form_error('stok_barang')?></span>
+							class="form-control" required autocomplete="off">
 					</div>
 					<div class="form-group">
 						<label for="harga_beli">Tanggal Expired</label>
-
-						<input type="date" name="tanggal_expired" id="tanggal_expired" placeholder="Tanggal Expired"
-							class="form-control" value="<?=set_value('tanggal_expired')?>" required>
-						<span style="font-size: 10px; color: red"><?=form_error('tanggal_expired')?></span>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+							</div>
+							<input type="text" name="tanggal_expired" id="tanggal_expired" placeholder="Tanggal Expired"
+								class="form-control" required autocomplete="off">
+						</div>
 					</div>
 					<div class="form-group">
 						<label for="harga_beli">Tanggal Return</label>
-						<input type="date" name="tanggal_return" id="tanggal_return" placeholder="Tanggal Return"
-							class="form-control" value="<?=set_value('tanggal_return')?>">
-						<span style="font-size: 10px; color: red"><?=form_error('tanggal_return')?></span>
+						<div class="input-group">
+						<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+							</div>
+						<input type="text" name="tanggal_return" id="tanggal_return" placeholder="Tanggal Return"
+							class="form-control" autocomplete="off">
+							</div>
 					</div>
 			</div>
 			<div class="modal-footer">

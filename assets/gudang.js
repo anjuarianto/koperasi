@@ -1,5 +1,4 @@
 function tampilDataTable(data, baseUrl) {
-
     var id = $(data).data("id");
     var info = $(data).data("info");
     if(info == "supplier") {
@@ -8,8 +7,10 @@ function tampilDataTable(data, baseUrl) {
         modalBarang(id, baseUrl);
     } else if(info == "stok"){
         modalStok(id, baseUrl);
-    } else {
+    } else if(info == "pembelian") {
         window.location.href = baseUrl+'gudang/detail_pembelian/'+id;
+    } else if(info == "detail_pembelian") {
+        modalDetailPembelian(id, baseUrl)
     }
     
 }
@@ -28,6 +29,23 @@ function enableForm(data) {
     $("#btn-submit").prop('disabled', false);
 }
 
+function modalDetailPembelian(id, baseUrl) {
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"gudang/detail_pembelian/"+id,
+        dataType : "JSON",
+        success: function(response) {
+            $('#nama_supplier').val(response.nama_supplier);
+            $('#alamat').val(response.alamat);
+            $('#form-edit').attr("action", baseUrl+'gudang/update_supplier/'+id)
+            $('#modalEdit').modal('show');
+            $("#modalEdit .form-control").prop('disabled', true);
+
+            $("#btn-edit").attr('data-info', 'supplier');
+            $("#btn-edit").prop('disabled', false);
+        }
+    });
+}
 
 function modalSupplier(id, baseUrl) {
     $.ajax({
@@ -78,13 +96,20 @@ function modalStok(id, baseUrl) {
         url: baseUrl+"gudang/stok_id/"+id,
         dataType : "JSON",
         success: function(response) {
-            console.log(response)
             // get data
             $('#tanggal_pembelian').val(response.tanggal_pembelian);
             $('#nama_barang').val(response.nama_barang);
             $('#stok_barang').val(response.stok_barang);
-            $('#tanggal_expired').val(response.tanggal_expired);
-            $('#tanggal_return').val(response.tanggal_return);
+            var tanggalExpired = moment(response.tanggal_expired).format("DD-MM-YYYY");
+            var tanggalReturn = moment(response.tanggal_return).format("DD-MM-YYYY")
+            if(tanggalExpired == "Invalid date") {
+                tanggalExpired = null;
+            }
+            if(tanggalReturn == "Invalid date") {
+                tanggalReturn = null;
+            }
+            $('#tanggal_expired').val(tanggalExpired);
+            $('#tanggal_return').val(tanggalReturn);
             // utility
             $('#form-edit').attr("action", baseUrl+'gudang/update_stok/'+id)
             $('#modalEdit').modal('show');

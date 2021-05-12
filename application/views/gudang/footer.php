@@ -122,12 +122,40 @@
 			}
 		});
 
+		$('#input_nama_supplier').typeahead({
+			source: function (query, process) {
+				states = [];
+				map = {};
+				hasil = [];
+				data = [];
+				$.getJSON('<?=base_url()?>gudang/supplier_all', function (supplier) {
+					$.each(supplier, function (key, val) {
+						data.push(val);
+					});
+					$.each(data, function (i, supplier) {
+						const hasil = supplier.nama_supplier + ' | ' + supplier.id_supplier;
+						map[hasil] = supplier;
+						states.push(hasil);
+					});
+					process(states);
+				});
+			},
+			updater: function (item) {
+				selectedItem = map[item].id_supplier;
+				return selectedItem;
+			}
+		});
+
 
 		$('#modalInputPembelian').on('shown.bs.modal', function () {
 			$('#input_barang').trigger('focus');
 		});
 
-		$(window).keydown(function (event) {
+		$('#modalInputBarang').on('shown.bs.modal', function () {
+			$('#kode_barang').trigger('focus');
+		});
+
+		$('#form-body-detail').keydown(function (event) {
 			if (event.keyCode == 13) {
 				event.preventDefault();
 				$('#btn-input-barang').click();
@@ -141,6 +169,9 @@
 		maxDate = new DateTime($('#max'), {
 			format: 'DD-MM-YYYY'
 		});
+		tanggalExpired = new DateTime($('#tanggal_expired'));
+		tanggalReturn = new DateTime($('#tanggal_return'));
+		tanggalPembelian = new DateTime($('#tanggal_pembelian'));
 		$('#min, #max').on('change', function () {
 			table.draw();
 		});
@@ -196,9 +227,8 @@
 		// row clicked
 		$('#dataTable tbody').on('click', 'tr', function () {
 			const baseUrl = "<?=base_url()?>";
-			if ($(this).data('info') != "detail_pembelian") {
-				tampilDataTable(this, baseUrl);
-			}
+			tampilDataTable(this, baseUrl);
+			
 
 		});
 		// edit-button clicked

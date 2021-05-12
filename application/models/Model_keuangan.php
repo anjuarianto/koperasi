@@ -66,9 +66,12 @@ class Model_keuangan extends CI_Model {
     }
 
     public function anggota() {
-        $this->db->select('u.id_user, u.nama, u.kode_anggota');
-        $this->db->from('tbl_user as u');
-        $this->db->where('u.level = 5');
+        $this->db->select('user.id_user, user.nama, user.kode_anggota, user.satuan, user.pokok+sum(simpan.wajib+simpan.sukarela) as saldo_simpan, (select saldo from tbl_history_pinjam where id_pinjam = pinjam.id_pinjam order by tanggal_history_pinjam desc limit 1) as saldo_pinjam');
+        $this->db->from('tbl_user as user');
+        $this->db->join('tbl_simpan as simpan', 'simpan.id_user = user.id_user', 'left');
+        $this->db->join('tbl_pinjam as pinjam', 'pinjam.id_user = user.id_user', 'left');
+        $this->db->where('user.level = 5');
+        $this->db->group_by('user.id_user');
         $query = $this->db->get();
         return $query->result();
     }

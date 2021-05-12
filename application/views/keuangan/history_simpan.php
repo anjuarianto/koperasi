@@ -52,7 +52,6 @@
 						<th>Wajib</th>
 						<th>Sukarela</th>
 						<th>Saldo</th>
-
 					</tr>
 				</thead>
 				<tbody><?php $total_saldo = 0 ?>

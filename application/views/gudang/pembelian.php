@@ -1,16 +1,16 @@
 <!-- header -->
 <?php $this->load->view('gudang/header'); ?>
 <!-- end header -->
-<div class="container-fluid mb-4 p-3 shadow bg-white">
-	<h1 class="h3 text-primary"><?=$judul;?></h1>
-</div>
 
 <div class="card shadow mb-4 border-bottom-primary">
-	<div class="card-header py-3 bg-primary">
-		<h6 class="m-0 font-weight-bold text-white">Tabel Barang</h6>
+	<div class="card-header bg-primary d-flex justify-content-between">
+		<h6 class="m-0 font-weight-bold my-auto text-white">Tabel Daftar Pembelian</h6>
+		<button class="btn btn-dark btn-sm  btn-icon-split" data-toggle="modal"
+				data-target="#modalInputPembelian"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
+				<span class="text">Tambah Barang</span></button>
 	</div>
 	<div class="card-body">
-		<div class="row mb-4 w-20">
+		<div class="row w-20">
 			<span> From </span>
 			<div class="form-group col-sm-2 mx-2">
 				<div class="input-group">
@@ -34,10 +34,7 @@
 		</div>
 
 		<div class="table-responsive">
-			<button class="btn btn-primary btn-sm mt-2 mb-4 btn-icon-split" data-toggle="modal"
-				data-target="#modalInputPembelian"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
-				<span class="text">Tambah Barang</span></button>
-			<table class="table table-striped table-hover dataTable" id="dataTable" width="100%" cellspacing="0"
+			<table class="table table-sm table-striped table-hover dataTable" id="dataTable" width="100%" cellspacing="0"
 				role="grid" aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
@@ -57,7 +54,7 @@
 						<td><?=$p->no_faktur?></td>
 						<td><?=$p->ppn?> %</td>
 						<td><?=$p->jenis_pembayaran?></td>
-						<td>Rp. <?=number_format($p->total_harga_pembelian, 2, ',', '.')?></td>
+						<td>Rp. <?=number_format($p->total_harga_pembelian, 0, ',', '.')?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -84,21 +81,27 @@
 						</div>
 						<div class="form-group col">
 							<label for="tanggal_pembelian">Tanggal Masuk</label>
-							<input type="date" name="tanggal_pembelian" id="tanggal_pembelian"
-								placeholder="Tanggal Masuk" class="form-control form-control-sm">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+								</div>
+								<input type="text" name="tanggal_pembelian" id="tanggal_pembelian"
+								placeholder="Tanggal Masuk" class="form-control form-control-sm" required>
+							</div>
+							
 						</div>
 						<div class="form-group col">
 							<label for="no_faktur">No. Faktur</label>
 							<div class="input-group">
 								<input type="text" name="no_faktur" id="no_faktur" placeholder="Nomor Faktur"
-									class="form-control form-control-sm">
+									class="form-control form-control-sm" required autocomplete="off">
 							</div>
 						</div>
 						<div class="form-group col-2">
 							<label for="ppn">PPN</label>
 							<div class="input-group input-group-sm ">
-								<input type="text" name="ppn" id="ppn" placeholder="PPN"
-									class="form-control form-control-sm">
+								<input type="number" name="ppn" id="ppn" placeholder="PPN"
+									class="form-control form-control-sm" autocomplete="off" required>
 								<div class="input-group-append">
 									<div class="input-group-text">%</div>
 								</div>
@@ -107,7 +110,7 @@
 						<div class="form-group col">
 							<label for="jenis_pembayaran">Jenis Pembayaran</label>
 							<select class="form-control form-control-sm" name="jenis_pembayaran" id="jenis_pembayaran"
-								placeholder="Tanggal Masuk">
+								placeholder="Tanggal Masuk" required>
 								<option value="Cash">Cash</option>
 								<option value="Kredit">Kredit</option>
 							</select>
@@ -218,7 +221,7 @@
 					} else if (i == 1) {
 						var td = document.createElement("TD");
 						td.innerHTML =
-							'<input type="date" class="form-control form-control-sm" name="tanggal_expired[]">';
+							'<input type="date" class="form-control form-control-sm" name="tanggal_expired[]" required>';
 						trEl.appendChild(td);
 					} else if (i == 2) {
 						var td = document.createElement("TD");
@@ -232,14 +235,14 @@
 						trEl.appendChild(td);
 					} else if (i == 4) {
 						var td = document.createElement("TD");
-						td.innerHTML = 'Rp. ' + formatter.format(response.harga_jual);
+						td.innerHTML = 'Rp. ' + formatter.format(response.harga_beli);
 						trEl.appendChild(td);
 					} else if (i == 5) {
 						var td = document.createElement("TD");
 						td.innerHTML =
 							'<button type="button" onclick="hapusBarang(this)" data-id="' + response
 							.id_barang +
-							'" class="btn btn-danger btn-sm btn-circle"><i class="fas fa-times"></i></button>';
+							'" class="btn btn-danger btn-sm btn-circle"><i class="fas fa-trash"></i></button>';
 						trEl.appendChild(td);
 					}
 				}
@@ -294,7 +297,7 @@
 			dataType: "JSON",
 			success: function (response) {
 
-				const hargaBarang = response.harga_jual;
+				const hargaBarang = response.harga_beli;
 				const totalDisc = (hargaBarang * valDisc * valQty) / 100;
 				row.cells[4].innerHTML = 'Rp. ' + formatter.format((hargaBarang * valQty) - totalDisc);
 				printHargaGlobal();
