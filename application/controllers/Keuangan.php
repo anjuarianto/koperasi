@@ -35,6 +35,14 @@ class Keuangan extends CI_Controller {
         $this->load->view('keuangan/history_pinjam', $data);
     }
 
+    public function history_simpan($id) {
+        $data['judul'] = 'History Simpanan Anggota | Keuangan';
+        $data['simpanan'] = $this->Model_keuangan->simpanan_anggota_id($id);
+        $data['history_simpan'] = $this->Model_keuangan->history_simpan($id);
+        
+        $this->load->view('keuangan/history_simpan', $data);
+    }
+
     public function anggota() {
         $data['judul'] = 'Daftar Anggota | Keuangan';
         $data['anggota'] = $this->Model_keuangan->anggota();
@@ -89,9 +97,27 @@ class Keuangan extends CI_Controller {
             'total_pemasukan' => $total_pemasukan,
             'tanggal' => $tanggal
         );
-
         $this->Model_keuangan->aksi_input_pemasukan($data);
         redirect('keuangan/pemasukan');
+    }
+
+    public function aksi_simpanan() {
+        $wajib = $this->input->post('wajib');
+        $sukarela = $this->input->post('sukarela');
+        $tanggal = $this->input->post('tanggal');
+        $kode_anggota = $this->input->post('kode_anggota');
+
+        $id_user = $this->Model_keuangan->get_id_user($kode_anggota);
+
+        $data = array(
+            'id_user'   => $id_user,
+            'wajib' => $wajib,
+            'sukarela' => $sukarela,
+            'tanggal' => $tanggal
+        );
+
+        $this->Model_keuangan->aksi_simpanan($data);
+        redirect('keuangan/simpan');
     }
 
     public function shu() {

@@ -82,11 +82,42 @@ class Model_keuangan extends CI_Model {
         return $query->result();
     }
 
-    public function simpanan_anggota() {
-        $this->db->select('*');
+    public function history_simpan($id) {
+        $this->db->select('simpan.*, (simpan.sukarela+simpan.wajib) as saldo');
+        $this->db->from('tbl_simpan as simpan');
+        $this->db->join('tbl_user as user', 'simpan.id_user = user.id_user');
+        $this->db->where('simpan.id_user', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function simpanan_anggota_id($id) {
+        $this->db->select('user.id_user, user.nama, user.kode_anggota, user.satuan,user.pokok, sum(simpan.wajib) as wajib, sum(simpan.sukarela) as sukarela, user.pokok+sum(simpan.wajib+simpan.sukarela) as saldo');
         $this->db->from('tbl_user as user');
-        // $this->db->join('');
+        $this->db->join('tbl_simpan as simpan', 'user.id_user = simpan.id_user', 'left');
+        $this->db->where('simpan.id_user', $id);
+        $this->db->group_by('simpan.id_user');
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    public function aksi_simpanan($data) {
+        $this->db->insert('tbl_simpan', $data);
+    }
+
+    public function get_id_user($kode_anggota) {
+        $this->db->select('id_user');
+        $this->db->from('tbl_user');
+        $this->db->where('kode_anggota', $kode_anggota);
+        $query = $this->db->get();
+        return $query->row()->id_user;
+    }
+
+    public function simpanan_anggota() {
+        $this->db->select('user.id_user, user.nama, user.kode_anggota, user.satuan,user.pokok, sum(simpan.wajib) as wajib, sum(simpan.sukarela) as sukarela, user.pokok+sum(simpan.wajib+simpan.sukarela) as saldo');
+        $this->db->from('tbl_user as user');
+        $this->db->join('tbl_simpan as simpan', 'user.id_user = simpan.id_user', 'left');
         $this->db->where('user.level = 5');
+        $this->db->group_by('user.id_user');
         $query = $this->db->get();
         return $query->result();
     }

@@ -22,17 +22,17 @@
 			</div>
 			<span> From </span>
 			<div class="form-group col-sm-2 mx-2">
-			<div class="input-group">
+				<div class="input-group">
 					<div class="input-group-prepend">
 						<div class="input-group-text"><i class="fas fa-calendar"></i></div>
 					</div>
-					
-				<input type="text" id="min" class="form-control form-control-sm ">
+
+					<input type="text" id="min" class="form-control form-control-sm ">
 				</div>
 			</div>
 			<span> to </span>
 			<div class="form-group col-sm-2 mx-2">
-			<div class="input-group">
+				<div class="input-group">
 					<div class="input-group-prepend">
 						<div class="input-group-text"><i class="fas fa-calendar"></i></div>
 					</div>
@@ -109,15 +109,15 @@
 					</div>
 					<div class="form-group">
 						<label for="harga_beli">Tanggal Expired</label>
-						
-							<input type="date" name="tanggal_expired" id="tanggal_expired" placeholder="Tanggal Expired"
-								class="form-control" value="<?=set_value('tanggal_expired')?>" required>
+
+						<input type="date" name="tanggal_expired" id="tanggal_expired" placeholder="Tanggal Expired"
+							class="form-control" value="<?=set_value('tanggal_expired')?>" required>
 						<span style="font-size: 10px; color: red"><?=form_error('tanggal_expired')?></span>
 					</div>
 					<div class="form-group">
 						<label for="harga_beli">Tanggal Return</label>
-							<input type="date" name="tanggal_return" id="tanggal_return" placeholder="Tanggal Return"
-								class="form-control" value="<?=set_value('tanggal_return')?>">
+						<input type="date" name="tanggal_return" id="tanggal_return" placeholder="Tanggal Return"
+							class="form-control" value="<?=set_value('tanggal_return')?>">
 						<span style="font-size: 10px; color: red"><?=form_error('tanggal_return')?></span>
 					</div>
 			</div>

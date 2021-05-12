@@ -59,7 +59,7 @@
                         <div class="input-group">
                         <input type="text" name="kode_anggota" placeholder="NRP" class="form-control typeahead" autocomplete="off" data-provide="typeahead" required>
                         <div class="input-group-append">
-                        <button type="button" class="btn btn-outline-primary" id="btn-input-barang" onclick="checkBarang()"><i
+                        <button type="button" class="btn btn-outline-primary" id="btn-input-barang"><i
 										class="fas fa-search"></i></button>
                         </div>
                         </div>
