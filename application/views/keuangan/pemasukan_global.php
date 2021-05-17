@@ -40,7 +40,7 @@
 							<th></th>
 							<th>Tanggal</th>
 							<th>Deskripsi</th>
-							<th>Total Harga Penjualan</th>
+							<th>Total Harga Pemasukan</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -49,10 +49,14 @@
 							<td></td>
 							<td><?=date('d-m-Y', strtotime($p->tanggal));?></td>
 							<td><?=$p->deskripsi_pemasukan;?></td>
-							<td>Rp. <?=number_format($p->total_pemasukan, 2, ',', '.')?></td>
+							<td>Rp. <?=number_format($p->total_pemasukan, 0, ',', '.')?></td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
+					<tfoot>
+							<th colspan="3">Total</th>
+							<th></th>
+					</tfoot>
 				</table>
 			</div>
 		</div>

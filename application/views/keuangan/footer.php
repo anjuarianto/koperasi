@@ -33,7 +33,7 @@
 <!-- Bootstrap core JavaScript-->
 <script src="<?=base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- User custom Javascript -->
-<script src="<?=base_url()?>assets/gudang.js"></script>
+<script src="<?=base_url()?>assets/keuangan.js"></script>
 
 <!-- Typehead -->
 <script src="<?=base_url()?>assets/vendorother/typeahead/typeahead.js"></script>
@@ -59,6 +59,13 @@
 <!-- Custom scripts for all pages-->
 <script src="<?=base_url()?>assets/js/sb-admin-2.min.js"></script>
 <script>
+function rubah(angka){
+   var reverse = angka.toString().split('').reverse().join(''),
+   ribuan = reverse.match(/\d{1,3}/g);
+   ribuan = ribuan.join('.').split('').reverse().join('');
+   return ribuan;
+ }
+
 	$.fn.dataTable.ext.search.push(
     function( settings, data, dataIndex ) {
 		var min, max;
@@ -90,7 +97,6 @@
     }
 );
 	$(document).ready(function () {
-		
 		$('#input_barang').typeahead({
 			source: function (query, process) {
 				states = [];
@@ -116,15 +122,53 @@
 		});
 
 		
+
+		
 		minDate = new DateTime($('#min'), {
 			format: 'DD-MM-YYYY',
 		});
 		maxDate = new DateTime($('#max'), {
 			format: 'DD-MM-YYYY'
-		});
+			});
+
+		tanggal = new DateTime($('#tanggal'));
+		jatuhTempo = new DateTime($('#jatuh_tempo'));
+		historyPinjam = new DateTime($('#tanggal_pinjam'));
+
+		
 
 		// custom option datatable
 		var table = $('#dataTable').DataTable({
+			"footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+			
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/\D/g, "")*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+			total = api
+                .column(3)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+				console.log(total)
+
+				pageTotal = api
+                .column( 3, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+				$( api.column( 3 ).footer() ).html('Rp. '+ rubah(total));
+       
+        },
 			"scrollY": "30rem",
 			"scrollCollapse": true,
 			buttons: [{
@@ -154,7 +198,8 @@
 			}],
 			"order": [
 				[1, 'asc']
-			]
+			],
+			
 		});
 		
 
@@ -177,10 +222,10 @@
 		// row clicked
 		$('#dataTable tbody').on('click', 'tr', function () {
 			const baseUrl = "<?=base_url()?>";
-			if ($(this).data('info')) {
-				// tampilDataTable(this, baseUrl);
-				console.log($(this).data('info'));
-			}
+			console.log('tes')
+			tampilDataTable(this, baseUrl);
+				
+	
 
 		});
 		// edit-button clicked

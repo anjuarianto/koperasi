@@ -1,16 +1,21 @@
 <?php $this->load->view('keuangan/header');?>
-
+<?php $saldo = $pinjaman->pinjaman?>
 <div class="card shadow mb-4 border-bottom-primary">
 	<div class="card-header py-3 bg-primary">
 		<h6 class="m-0 font-weight-bold text-white">Detail Pembelian</h6>
 	</div>
 	<div class="card-body">
-		<a href="<?=base_url();?>gudang/pembelian" class="btn btn-secondary btn-sm mt-2 mb-4 btn-icon-split"><span
+		<a href="<?=base_url();?>keuangan/pinjam" class="btn btn-secondary btn-sm mt-2 mb-4 btn-icon-split"><span
 				class="icon text-white-50"><i class="fas fa-arrow-left"></i></span>
 			<span class="text">Kembali</span></a>
-		<a href="<?=base_url();?>gudang/pembelian" class="btn btn-success btn-sm mt-2 mb-4 btn-icon-split"><span
+		<button class="btn btn-success btn-sm mt-2 mb-4 btn-icon-split" data-toggle="modal" data-target="#modalHistoryPinjam"><span
 				class="icon text-white-50"><i class="fas fa-dollar-sign"></i></span>
-			<span class="text">Bayar</span></a>
+			<span class="text">Bayar</span></button>
+			<?php if($pinjaman->status == 0) : ?>
+			<a href="<?=base_url()?>keuangan/aksi_pinjam_lunas/<?=$pinjaman->id_pinjam?>" onclick="return confirm('Ubah status menjadi lunas?')" class="btn btn-warning btn-sm mt-2 mb-4 btn-icon-split"><span
+				class="icon text-white-50"><i class="fas fa-dollar-sign"></i></span>
+			<span class="text">Lunas</span></a>
+			<?php endif ?>
 		<table>
 			<tr>
 				<td>Nama Anggota</td>
@@ -40,7 +45,7 @@
 			<tr>
 				<td>Status</td>
 				<td>:</td>
-				<td><?=$pinjaman->status?></td>
+				<td><?=$pinjaman->status == 0? 'Belum Lunas': 'Lunas'?></td>
 			</tr>
 		</table>
 
@@ -60,12 +65,12 @@
 				</thead>
 				<tbody>
 					<?php foreach ($history_pinjam as $history) : ?>
-					<tr data-info="detail_pembelian" data-id="<?=$history->id_history_pinjam?>">
+					<tr data-info="history_pinjam" data-id="<?=$history->id_history_pinjam?>">
 						<td></td>
-						<td><?=$history->tanggal_history_pinjam?></td>
-						<td><?=$history->bunga?></td>
-						<td><?=$history->angsuran?></td>
-						<td><?=$history->saldo?></td>
+						<td><?=date('d-m-Y', strtotime($history->tanggal_history_pinjam))?></td>
+						<td>Rp. <?=number_format($history->bunga,0, ',','.')?></td>
+						<td>Rp. <?=number_format($history->angsuran,0, ',','.')?></td>
+						<td>Rp. <?php echo number_format($saldo -= $history->angsuran, 0, ',', '.')?></td>
 
 					</tr>
 					<?php endforeach; ?>
@@ -75,6 +80,107 @@
 				</tfoot>
 			</table>
 		</div>
-
 	</div>
+
+	<div class="modal fade" id="modalHistoryPinjam" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Pinjaman</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="<?=base_url()?>keuangan/aksi_bayar_pinjam/<?=$pinjaman->id_pinjam?>" method="post">
+				<div class="form-group">
+						<label for="tanggal_history_pinjam">Tanggal</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+							</div>
+							<input type="text" name="tanggal_history_pinjam" id="tanggal" placeholder="Tanggal" class="form-control" autocomplete="off" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="angsuran">Angsuran</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">Rp. </div>
+							</div>
+							<input type="text" name="angsuran" placeholder="Nilai Angsuran" class="form-control" autocomplete="off" required>
+						</div>
+					</div>
+                    
+					<div class="form-group">
+						<label for="bunga">Bunga</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">Rp. </div>
+							</div>
+							<input type="text" name="bunga" placeholder="Nilai Bunga" class="form-control" autocomplete="off" required>
+						</div>
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+				<input type="submit" class="btn btn-primary" value="Simpan!">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Pinjaman</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="<?=base_url()?>keuangan/update_history_pinjam/<?=$pinjaman->id_pinjam?>" id="form-edit" method="post">
+				<div class="form-group">
+						<label for="tanggal_history_pinjam">Tanggal</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+							</div>
+							<input type="text" name="tanggal_history_pinjam" id="tanggal_pinjam" placeholder="Tanggal" class="form-control" autocomplete="off" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="angsuran">Angsuran</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">Rp. </div>
+							</div>
+							<input type="text" name="angsuran" id="angsuran" placeholder="Nilai Angsuran" class="form-control" autocomplete="off" required>
+						</div>
+					</div>
+                    
+					<div class="form-group">
+						<label for="bunga">Bunga</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">Rp. </div>
+							</div>
+							<input type="text" name="bunga" id="bunga" placeholder="Nilai Bunga" class="form-control" autocomplete="off" required>
+						</div>
+					</div>
+			</div>
+			<div class="modal-footer">
+
+				<button type="button" id="btn-edit" class="btn btn-danger">Edit</button>
+				<input type="submit" class="btn btn-primary" id="btn-submit" disabled value="Simpan!">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 	<?php $this->load->view('keuangan/footer'); ?>

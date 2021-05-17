@@ -1,20 +1,16 @@
 <?php $this->load->view('keuangan/header'); ?>
 
-
-<div class="container-fluid mb-4 p-3 shadow bg-white">
-	<h1 class="h3 text-primary"><?=$judul;?></h1>
-</div>
-
 <div class="card shadow mb-4">
-	<div class="card-header bg-primary py-3">
-		<h6 class="m-0 font-weight-bold text-white">Data Pinjaman</h6>
+	<div class="card-header bg-primary d-flex justify-content-between">
+		<h6 class="m-0 font-weight-bold my-auto text-white">Data Pinjaman</h6>
+		<button class="btn btn-dark btn-sm btn-icon-split" data-toggle="modal"
+				data-target="#modalInputSimpanan"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
+				<span class="text">Input Simpanan</span></button>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-			<button class="btn btn-primary btn-sm mt-2 mb-4 btn-icon-split" data-toggle="modal"
-				data-target="#modalInputSimpanan"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
-				<span class="text">Input Simpanan</span></button>
-			<table class="table table-hover table-striped dataTable" id="dataTable" width="100%" cellspacing="0"
+			
+			<table class="table table-sm table-hover table-striped dataTable" id="dataTable" width="100%" cellspacing="0"
 				role="grid" aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
@@ -38,7 +34,7 @@
 						<td>Rp. <?=number_format($s->pokok,0,',','.');?></td>
 						<td>Rp. <?=number_format($s->wajib,0,',','.');?></td>
 						<td>Rp. <?=number_format($s->sukarela,0,',','.');?></td>
-						<td>Rp. <?=number_format($s->saldo,0,',','.');?></td>
+						<td>Rp. <?=number_format($s->pokok+$s->wajib+$s->sukarela)?></td>
 
 					</tr>
 					<?php endforeach; ?>
@@ -103,7 +99,7 @@
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fas fa-calendar"></i></div>
 								</div>
-								<input type="text" name="tanggal" placeholder="Tanggal Pinjaman" class="form-control"
+								<input type="text" name="tanggal" id="tanggal" placeholder="Tanggal Pinjaman" class="form-control"
 									autocomplete="off" required>
 							</div>
 						</div>

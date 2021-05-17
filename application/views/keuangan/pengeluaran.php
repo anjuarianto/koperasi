@@ -30,7 +30,7 @@
 
 			</div>
 		<div class="table-responsive">
-			<table class="table table-striped table-hover dataTable" id="dataTable" width="100%" cellspacing="0"
+			<table class="table table-sm table-striped table-hover dataTable" id="dataTable" width="100%" cellspacing="0"
 				role="grid" aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
@@ -50,6 +50,12 @@
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
+				<tfoot>
+						<tr>
+							<th colspan="3">Total</th>
+							<th></th>
+						</tr>
+				</tfoot>
 			</table>
 		</div>
 	</div>

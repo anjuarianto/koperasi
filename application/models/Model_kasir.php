@@ -2,13 +2,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_kasir extends CI_Model {
-    public function barang() {
-        $this->db->select('*');
+    public function barang()
+	{
+		$this->db->select('*');
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier');
 		$query = $this->db->get();
         return $query->result();
-    }
+	}
 
     public function barang_id($id) {
         $this->db->select('*');
@@ -19,7 +20,7 @@ class Model_kasir extends CI_Model {
     }
 
     public function detail_barang() {
-		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, kode_barang, harga_beli, harga_jual, diskon, sum(st.stok_barang) as total_stok');
+		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, kode_barang, harga_beli, harga_jual, sum(st.stok_barang) as total_stok');
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_stok as st', 'st.id_barang = b.id_barang', 'left');
 		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier');
@@ -36,6 +37,14 @@ class Model_kasir extends CI_Model {
 		$result = $query->row_array();
 		return $result['jumlah_stok'];
     }
+
+    public function voucher() {
+        $this->db->select('v.*, u.nama');
+        $this->db->from('tbl_voucher as v');
+        $this->db->join('tbl_user as u', 'u.id_user = v.id_user');
+        $query = $this->db->get();
+        return $query->result();
+    }
     
 
     public function supplier() {
@@ -51,14 +60,54 @@ class Model_kasir extends CI_Model {
         return $query->result();
     }
 
-    public function penjualan() {
+    public function penjualan($id_user) {
         $this->db->select('jual.*, sum(detail.jumlah_barang*barang.harga_jual) as total_harga_pembelian');
         $this->db->from('tbl_penjualan as jual');
         $this->db->join('tbl_detail_penjualan as detail', 'jual.id_penjualan = detail.id_penjualan');
         $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+        $this->db->where('jual.user', $id_user);
         $this->db->group_by('id_penjualan');
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function penjualan_id($id) {
+        $this->db->select('jual.*, user.nama, sum(detail.jumlah_barang*barang.harga_jual) as total_harga_penjualan');
+        $this->db->from('tbl_penjualan as jual');
+        $this->db->join('tbl_detail_penjualan as detail', 'jual.id_penjualan = detail.id_penjualan');
+        $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+        $this->db->join('tbl_user as user', 'user.id_user = jual.user');
+        $this->db->where('jual.id_penjualan', $id);
+        $this->db->group_by('id_penjualan');
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    public function detail_penjualan($id) {
+        $this->db->select('detail.*, barang.id_barang, barang.nama_barang, barang.kode_barang, barang.harga_jual, (barang.harga_jual*detail.jumlah_barang) as harga_total_barang');
+        $this->db->from('tbl_detail_penjualan as detail');
+        $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang', 'left');
+        $this->db->where('detail.id_penjualan', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function detail_penjualan_id($id) {
+        $this->db->select('detail.*, barang.id_barang, supplier.nama_supplier, barang.nama_barang, barang.kode_barang, barang.harga_jual, (barang.harga_jual*detail.jumlah_barang) as harga_total_barang');
+        $this->db->from('tbl_detail_penjualan as detail');
+        $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang', 'left');
+        $this->db->join('tbl_supplier as supplier', 'supplier.id_supplier = barang.id_supplier', 'left');
+        $this->db->where('detail.id_detail_penjualan', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    public function voucher_id($id) {
+        $this->db->select('voucher.*, user.nama, user.kode_anggota');
+        $this->db->from('tbl_voucher as voucher');
+        $this->db->join('tbl_user as user', 'user.id_user = voucher.id_user', 'left');
+        $this->db->where('voucher.id_voucher', $id);
+        $query = $this->db->get();
+        return $query->row();
     }
 
     public function tambah_penjualan($data) {
@@ -69,8 +118,8 @@ class Model_kasir extends CI_Model {
         $this->db->insert('tbl_detail_penjualan', $data);
     }
 
-    public function update_stok($id_barang, $data) {
-        $this->db->where('id_barang', $id_barang);
+    public function update_stok($id_stok, $data) {
+        $this->db->where('id_stok', $id_stok);
         $this->db->update('tbl_stok', $data);
     }
 
@@ -81,10 +130,19 @@ class Model_kasir extends CI_Model {
 		return $query['jumlah_transaksi'];
 	}
 
+    public function get_voucher($id) {
+        $this->db->select('kode_voucher');
+        $this->db->from('tbl_penjualan');
+        $this->db->where('id_penjualan', $id);
+        $query = $this->db->get();
+        return $query->row()->kode_voucher;
+    }
+
     public function get_stok($id_barang) {
-        $this->db->select('stok_barang');
+        $this->db->select('id_stok, stok_barang');
         $this->db->from('tbl_stok');
         $this->db->where('id_barang', $id_barang);
+        $this->db->order_by('tanggal_pembelian', 'desc');
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -121,17 +179,19 @@ class Model_kasir extends CI_Model {
         return $query->result();
     }
 
-    public function voucher_id($input) {
-        $this->db->select('*');
-        $this->db->from('tbl_voucher');
-        $this->db->where('id_voucher', $input);
-        $query = $this->db->get();
-        return $query->row();
+    public function update_detail_penjualan($id, $data) {
+        $this->db->where('id_detail_penjualan', $id);
+        $this->db->update('tbl_detail_penjualan', $data);
     }
 
-    public function update_voucher($id_voucher) {
+    public function update_voucher($id_voucher, $data) {
         $this->db->where('id_voucher', $id_voucher);
-        $this->db->update('tbl_voucher', array('status' => 1));
+        $this->db->update('tbl_voucher', $data);
+    }
+
+    public function update_penjualan($id, $data) {
+        $this->db->where('id_penjualan', $id);
+        $this->db->update('tbl_penjualan', $data);
     }
 
     public function last_penjualan() {

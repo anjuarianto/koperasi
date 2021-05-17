@@ -146,7 +146,6 @@
 			}
 		});
 
-
 		$('#modalInputPembelian').on('shown.bs.modal', function () {
 			$('#input_barang').trigger('focus');
 		});
@@ -228,17 +227,15 @@
 		$('#dataTable tbody').on('click', 'tr', function () {
 			const baseUrl = "<?=base_url()?>";
 			tampilDataTable(this, baseUrl);
-			
-
 		});
 		// edit-button clicked
-		$('#btn-edit').on('click', function () {
+		$('#btn-edit ').on('click', function () {
 			enableForm(this);
-		})
-
+		});
+		$('#btn-edit-pembelian ').on('click', function () {
+			enableForm(this);
+		});
 		table.buttons().container().appendTo('#dataTable_wrapper .col-md-5:eq(0)');
-
-		
 	});
 
 </script>

@@ -108,6 +108,11 @@
                     </div>
                 </div>
             </li>
+			<li class="nav-item">
+				<a class="nav-link" href="<?=base_url()?>keuangan/laba_rugi">
+					<i class="fas fa-fw fa-hand-holding-usd"></i>
+					<span>Laba Rugi</span></a>
+			</li>
 			<?php endif; ?>
 			
 			<?php if($this->session->userdata('login_session')['level'] == 6)  : ?>
@@ -135,11 +140,7 @@
 					<i class="fas fa-fw fa-cart-arrow-down"></i>
 					<span>Pembagian SHU</span></a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>keuangan/laba_rugi">
-					<i class="fas fa-fw fa-hand-holding-usd"></i>
-					<span>Laba Rugi</span></a>
-			</li>
+			
 			<?php endif; ?>
 
             

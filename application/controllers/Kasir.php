@@ -26,40 +26,37 @@ class Kasir extends CI_Controller {
     
 
     public function bayar() {
+        // Deklarasi variable
         $kode_anggota = $this->input->post('kode_anggota');
         $jenis_pembayaran = $this->input->post('jenis_pembayaran');
         $nominal_uang = preg_replace('/\D/', '', $this->input->post('nominal_uang'));
         $id_barang = $this->input->post('id_barang');
         $jumlah_barang = $this->input->post('jumlah_barang');
         $id_voucher = $this->input->post('id_voucher');
+
+        // Deklarasi Voucher
         if($id_voucher) {
             $voucher = implode(',', $id_voucher);
         } else {
             $voucher = null;
         }
-        // $harga_total_barang = 0;
-        // // hitung harga total barang
-        // for($i=0;$i<count($id_barang);$i++) {
-        //     $harga_total_barang += $this->Model_kasir->barang_id($id_barang[$i])['harga_jual'];
-        // };
-        
-        // $kembalian = $nominal_uang - $harga_total_barang;
-
+  
+        // Data insert ke table penjualan
         $penjualan = array(
             'kode_anggota'    => $kode_anggota,
             'jenis_pembayaran'     => $jenis_pembayaran,
             'nominal_uang'     => $nominal_uang,
-            // 'kembalian'        => $kembalian,
             'kode_voucher'           => $voucher,
             'user'  => $this->session->userdata('login_session')['id_user']
         );
 
         for($i=0;$i<count($id_voucher);$i++) {
-            $this->Model_kasir->update_voucher($id_voucher[$i]);
+            $data_voucher = array('status' => 1);
+            $this->Model_kasir->update_voucher($id_voucher[$i], $data_voucher);
         };
-
         $this->Model_kasir->tambah_penjualan($penjualan);
 
+        // Data insert ke table Detail Penjualan
         $last_id = $this->db->insert_id();
         for($i=0;$i<count($id_barang);$i++) {
             $detail_penjualan = array(
@@ -68,28 +65,90 @@ class Kasir extends CI_Controller {
                 'jumlah_barang' => $jumlah_barang[$i]
             );
 
-            
-
             $this->Model_kasir->tambah_detail_penjualan($detail_penjualan);
             $result = $this->Model_kasir->get_stok($id_barang[$i]);
             $updateStok = $result['stok_barang'] - $jumlah_barang[$i];
             $data = array('stok_barang' => $updateStok);
-            $this->Model_kasir->update_stok($id_barang[$i], $data);
+            $this->Model_kasir->update_stok($result['id_stok'], $data);
         }
-        
         redirect('kasir');
     }
 
     public function penjualan() {
         $data['judul'] = "Daftar Penjualan | Kasir";
-        $data['penjualan'] = $this->Model_kasir->penjualan();
+        $data['penjualan'] = $this->Model_kasir->penjualan($this->session->userdata('login_session')['id_user']);
         $this->load->view('kasir/penjualan', $data);
+    }
+
+    public function update_penjualan($id) {
+        $kode_voucher = $this->input->post('kode_voucher');
+        $nominal_uang = preg_replace('/\D/', '', $this->input->post('nominal_uang'));
+        if($kode_voucher != $this->Model_kasir->get_voucher($id)) {
+            $voucher = explode(',', $this->Model_kasir->get_voucher($id));
+            for($i=0;$i<count($voucher);$i++) {
+                $data_voucher = array('status' => 0);
+                $this->Model_kasir->update_voucher($voucher[$i], $data_voucher);
+            }
+        }
+        $data = array (
+            'kode_voucher' => $kode_voucher,
+            'nominal_uang' => $nominal_uang,
+            'jenis_pembayaran' => $this->input->post('jenis_pembayaran'),
+            'tgl_penjualan' => $this->input->post('tgl_penjualan')
+        );
+
+        $array_voucher = explode(',', $kode_voucher);
+
+        for($i=0;$i<count($array_voucher);$i++) {
+            $data_vouchery = array('status' => 1);
+            $this->Model_kasir->update_voucher($array_voucher[$i], $data_vouchery);
+        }
+        
+        $this->Model_kasir->update_penjualan($id, $data);
+        redirect('kasir/detail_penjualan/'.$id);
+    }
+
+    public function update_detail_penjualan($id) {
+
+        // Update Detail Penjualan
+        $jumlah_barang = $this->input->post('jumlah_barang');
+        $id_barang = $this->Model_kasir->detail_penjualan_id($id)->id_barang;
+        $jumlahawal = $this->Model_kasir->detail_penjualan_id($id)->jumlah_barang;
+        
+        $data = array(
+            'jumlah_barang' => $jumlah_barang
+        );
+
+        $id_penjualan = $this->Model_kasir->detail_penjualan_id($id)->id_penjualan;
+		$this->Model_kasir->update_detail_penjualan($id, $data);
+
+        // Update Stok
+        $result = $this->Model_kasir->get_stok($id_barang);
+        $updateStok = ($result['stok_barang'] + $jumlahawal) - $jumlah_barang;
+     
+        $data = array('stok_barang' => $updateStok);
+        $this->Model_kasir->update_stok($result['id_stok'], $data);
+
+		redirect('kasir/detail_penjualan/'.$id_penjualan);
+    }
+
+    public function detail_penjualan($id) {
+        $data['judul'] = "Detail Penjualan | Kasir";
+        $data['penjualan'] = $this->Model_kasir->penjualan_id($id);
+        $data['detail_penjualan'] = $this->Model_kasir->detail_penjualan($id);
+        $this->load->view('kasir/detail_penjualan', $data);
     }
 
     public function barang() {
         $data['judul'] = "Daftar Barang | Kasir";
         $data['barang'] = $this->Model_kasir->detail_barang();
         $this->load->view('kasir/barang', $data);
+    }
+
+    public function voucher() {
+        $data['judul'] = "Daftar Voucher | Kasir";
+        $data['voucher'] = $this->Model_kasir->voucher();
+        $this->load->view('kasir/voucher', $data);
     }
 
     public function cetak_struk() {
@@ -108,6 +167,16 @@ class Kasir extends CI_Controller {
 
     public function anggota_kode($input) {
         $data = $this->Model_kasir->anggota_kode($input);
+        echo json_encode($data);
+    }
+
+    public function penjualan_id($id) {
+        $data = $this->Model_kasir->penjualan_id($id);
+        echo json_encode($data);
+    }
+
+    public function detail_penjualan_id($id) {
+        $data = $this->Model_kasir->detail_penjualan_id($id);
         echo json_encode($data);
     }
 

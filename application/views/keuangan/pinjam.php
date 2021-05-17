@@ -25,7 +25,7 @@
 				</thead>
 				<tbody>
 					<?php foreach ($pinjaman_anggota as $p) : ?>
-					<tr data-info="pinjam" data-id="<?=$p->id_user;?>">
+					<tr data-info="pinjam" data-id="<?=$p->id_pinjam;?>">
 					<td></td>
 						<td><?=$p->kode_anggota;?></td>
 						<td><?=$p->nama;?></td>
@@ -67,7 +67,7 @@
 					</div>
 					<div class="form-group">
 						<label for="nilai_pinjaman">Nilai Pinjaman</label>
-						<input type="text" class="form-control" name="nilai_pinjaman" placeholder="Nilai Pinjaman"
+						<input type="text" class="form-control" name="pinjaman" placeholder="Nilai Pinjaman"
 							class="form-control">
 					</div>
                     <div class="form-group">
@@ -76,7 +76,7 @@
 							<div class="input-group-prepend">
 								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
 							</div>
-							<input type="text" name="harga_beli" placeholder="Tanggal Pinjaman" class="form-control" autocomplete="off" required>
+							<input type="text" name="tanggal" id="tanggal" placeholder="Tanggal Pinjaman" class="form-control" autocomplete="off" required>
 						</div>
 					</div>
 					<div class="form-group">
@@ -85,7 +85,7 @@
 							<div class="input-group-prepend">
 								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
 							</div>
-							<input type="text" name="tanggal_jatuh_tempo" placeholder="Tanggal Jatuh Tempo" class="form-control" autocomplete="off" required>
+							<input type="text" name="jatuh_tempo" id="jatuh_tempo" placeholder="Tanggal Jatuh Tempo" class="form-control" autocomplete="off" required>
 						</div>
 					</div>
 			</div>

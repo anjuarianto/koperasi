@@ -5,18 +5,23 @@ function tampilDataTable(data, baseUrl) {
         window.location.href = baseUrl+'keuangan/history_pinjam/'+id;
     } else if(info == "pemasukan") {
         modalPemasukan(id, baseUrl);
+    } else if (info == "simpan") {
+        window.location.href = baseUrl+'keuangan/history_simpan/'+id;
+    } else if(info == "history_pinjam") {
+        modalHistoryPinjam(id, baseUrl);
+    } else if (info == "history_simpan") {
+        modalHistorySimpan(id, baseUrl);
     }
     
 }
 
 function enableForm(data) {
     var info = $(data).data("info");
-    if(info == "supplier") {
-        $(".modal-body .form-control").prop('disabled', false);
-    } else if(info == "barang") {
-        $(".modal-body .form-control:not(#nama_supplier,#kode_barang)").prop('disabled', false);
-    } else {
-        $(".modal-body .form-control:not(#tanggal_pembelian,#nama_barang)").prop('disabled', false);
+    
+    if(info == "history_simpan") {
+        $(".modal-body .form-control:not(#kode_anggota)").prop('disabled', false);
+    } else if(info == "history_pinjam") {
+        $(".modal-body .form-control:not(#kode_anggota)").prop('disabled', false);
     }
     
     $("#btn-edit").prop('disabled', true);
@@ -25,6 +30,7 @@ function enableForm(data) {
 
 
 function modalPemasukan(id, baseUrl) {
+    
     $.ajax({
         type: "POST",
         url: baseUrl+"gudang/supplier_id/"+id,
@@ -42,49 +48,49 @@ function modalPemasukan(id, baseUrl) {
     });
 }
 
-function modalBarang(id, baseUrl) {
+function modalHistoryPinjam(id, baseUrl) {
     $.ajax({
         type: "POST",
-        url: baseUrl+"gudang/barang_id/"+id,
+        url: baseUrl+"keuangan/history_pinjam_id/"+id,
         dataType : "JSON",
         success: function(response) {
-            console.log(response)
             // get data
-            $('#nama_barang').val(response.nama_barang);
-            $('#kode_barang').val(response.kode_barang);
-            $('#nama_supplier').val(response.nama_supplier);
-            $('#harga_beli').val(response.harga_beli);
-            $('#harga_jual').val(response.harga_jual);
+            $('#bunga').val(response.bunga);
+            $('#angsuran').val(response.angsuran);
+            $('#tanggal_pinjam').val(response.tanggal_history_pinjam);
+            $('#modalEdit').modal('show');
 
             // utility
-            $('#btn-cetak-harga').attr("href", baseUrl+'gudang/cetak_harga/'+id);
-            $('#form-edit').attr("action", baseUrl+'gudang/update_barang/'+id);
-            $('#modalEdit').modal('show');
+            $('#form-edit').attr("action", baseUrl+'keuangan/update_history_pinjam/'+id);
+            $("#btn-edit").attr('data-info', 'history_pinjam');
             $("#modalEdit .form-control").prop('disabled', true);
+            
             $("#btn-edit").prop('disabled', false);
+            $("#btn-submit").prop('disabled', true);
         }
     });
 }
 
-
-function modalStok(id, baseUrl) {
+function modalHistorySimpan(id, baseUrl) {
     $.ajax({
         type: "POST",
-        url: baseUrl+"gudang/stok_id/"+id,
+        url: baseUrl+"keuangan/history_simpan_id/"+id,
         dataType : "JSON",
         success: function(response) {
-            console.log(response)
             // get data
-            $('#tanggal_pembelian').val(response.tanggal_pembelian);
-            $('#nama_barang').val(response.nama_barang);
-            $('#stok_barang').val(response.stok_barang);
-            $('#tanggal_expired').val(response.tanggal_expired);
-            $('#tanggal_return').val(response.tanggal_return);
-            // utility
-            $('#form-edit').attr("action", baseUrl+'gudang/update_stok/'+id)
+            $('#wajib').val(response.wajib);
+            $('#sukarela').val(response.sukarela);
+            $('#tanggal').val(response.tanggal);
+            $('#kode_anggota').val(response.kode_anggota)
             $('#modalEdit').modal('show');
+
+            // utility
+            $('#form-edit').attr("action", baseUrl+'keuangan/update_history_simpan/'+id);
+            
             $("#modalEdit .form-control").prop('disabled', true);
+            $("#btn-edit").attr('data-info', 'history_simpan');
             $("#btn-edit").prop('disabled', false);
+            $("#btn-submit").prop('disabled', true);
         }
     });
 }

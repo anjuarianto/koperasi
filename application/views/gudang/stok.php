@@ -123,7 +123,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" id="btn-edit" data-info="stok">Edit</button>
-				<input type="submit" class="btn btn-primary" value="Simpan!">
+				<input type="submit" class="btn btn-primary" id="btn-submit" value="Simpan!">
 				</form>
 			</div>
 		</div>

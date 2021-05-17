@@ -32,7 +32,16 @@ class Keuangan extends CI_Controller {
         $data['judul'] = 'Data Pinjaman Anggota | Keuangan';
         $data['pinjaman'] = $this->Model_keuangan->pinjam_id($id);
         $data['history_pinjam'] = $this->Model_keuangan->history_pinjam($id);
+        
         $this->load->view('keuangan/history_pinjam', $data);
+    }
+
+    public function aksi_pinjam_lunas($id) {
+        $data = array("status" => 1);
+
+        $this->db->where('id_pinjam', $id);
+        $this->db->update("tbl_pinjam", $data);
+        redirect('keuangan/history_pinjam/'.$id);
     }
 
     public function history_simpan($id) {
@@ -46,6 +55,7 @@ class Keuangan extends CI_Controller {
     public function anggota() {
         $data['judul'] = 'Daftar Anggota | Keuangan';
         $data['anggota'] = $this->Model_keuangan->anggota();
+      
         $this->load->view('keuangan/anggota', $data);
     }
     
@@ -70,12 +80,6 @@ class Keuangan extends CI_Controller {
         $data['pengeluaran'] = $this->Model_keuangan->pengeluaran();
         $this->load->view('keuangan/pengeluaran', $data);
     }
-
-    // public function pemasukan() {
-    //     $data['judul'] = 'Daftar Pemasukan | Keuangan';
-    //     $data['pemasukan'] = $this->Model_keuangan->pemasukan();
-    //     $this->load->view('keuangan/pemasukan', $data);
-    // }
 
     public function pemasukan() {
         $data['judul'] = 'Daftar Pemasukan Global | Keuangan';
@@ -131,7 +135,59 @@ class Keuangan extends CI_Controller {
 
     public function laba_rugi() {
         $data['judul'] = 'Daftar Pengeluaran | Keuangan';
-        $this->load->view('keuangan/laba_rugi');
+        $data['pemasukan'] = $this->Model_keuangan->laba();
+        
+        $data['pengeluaran'] = $this->Model_keuangan->rugi();
+        
+        $this->load->view('keuangan/laba_rugi', $data);
+    }
+
+    public function aksi_tambah_pinjam() {
+        $data = array(
+            'id_user'  => $this->Model_keuangan->get_id_user($this->input->post('kode_anggota')),
+            'jatuh_tempo'  => $this->input->post('jatuh_tempo'),
+            'tanggal_pinjam'  => $this->input->post('tanggal'),
+            'pinjaman'  => $this->input->post('pinjaman'),
+            'status'    => 0
+        );
+        $this->Model_keuangan->aksi_pinjaman($data);
+        redirect('keuangan/pinjam');
+        
+    }
+
+    public function aksi_bayar_pinjam($id) {
+        $data = array(
+            'id_pinjam' => $id,
+            'tanggal_history_pinjam' => $this->input->post('tanggal_history_pinjam'),
+            'bunga' => $this->input->post('bunga'),
+            'angsuran' => $this->input->post('angsuran')
+        );
+        $this->Model_keuangan->aksi_bayar_pinjam($data);
+        redirect('keuangan/pinjam/'.$id);
+    }
+
+    public function update_history_pinjam($id) {
+        $data = array(
+            'tanggal_history_pinjam' => $this->input->post('tanggal_history_pinjam'),
+            'bunga' => $this->input->post('bunga'),
+            'angsuran' => $this->input->post('angsuran')
+        );
+        $id_pinjam = $this->Model_keuangan->history_pinjam_id($id)->id_pinjam;
+        $this->db->where('id_history_pinjam', $id);
+        $this->db->update('tbl_history_pinjam', $data);
+        redirect('keuangan/history_pinjam/'.$id_pinjam);
+    }
+
+    public function update_history_simpan($id) {
+        $data = array(
+            'wajib' => $this->input->post('wajib'),
+            'sukarela' => $this->input->post('sukarela'),
+            'tanggal' => $this->input->post('tanggal')
+        );
+        $id_user = $this->Model_keuangan->history_simpan_id($id)->id_user;
+        $this->db->where('id_simpan', $id);
+        $this->db->update('tbl_simpan', $data);
+        redirect('keuangan/history_simpan/'.$id_user);
     }
 
 
@@ -146,6 +202,16 @@ class Keuangan extends CI_Controller {
         $this->Model_keuangan->input_shu($data);
         redirect('keuangan/shu');
         
+    }
+
+    public function history_pinjam_id($id) {
+        $data = $this->Model_keuangan->history_pinjam_id($id);
+        echo json_encode($data);
+    }
+
+    public function history_simpan_id($id) {
+        $data = $this->Model_keuangan->history_simpan_id($id);
+        echo json_encode($data);
     }
 
     

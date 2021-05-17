@@ -131,11 +131,8 @@ class Gudang extends CI_Controller {
 
 	public function pembelian() {
 		$data['judul'] = 'Daftar Pembelian | Gudang';
-		$data["pembelian"] = $this->Model_gudang->pembelian();
-		$data["supplier"] = $this->Model_gudang->supplier();
-		$data["barang"] = $this->Model_gudang->barang();
+		$data["pembelian"] = $this->Model_gudang->pembelian($this->session->userdata('login_session')['id_user']);
 		$data["script"] = "";
-
 		$this->load->view('gudang/pembelian', $data);
 	}
 
@@ -238,6 +235,30 @@ class Gudang extends CI_Controller {
 		redirect('gudang/stok');
 	}
 
+	public function update_detail_pembelian($id) {
+		$data = array(
+			'jumlah_barang' => $this->input->post('jumlah_barang'),
+			'discount' => $this->input->post('discount')
+		);
+
+		$id_pembelian = $this->Model_gudang->detail_pembelian_id($id)->id_pembelian;
+		
+		$this->Model_gudang->update_detail_pembelian($id, $data);
+		redirect('gudang/detail_pembelian/'.$id_pembelian);
+	}
+
+	public function update_pembelian($id) {
+		$data = array(
+			'no_faktur' => $this->input->post('no_faktur'),
+			'ppn' => $this->input->post('ppn'),
+			'tgl_pembelian' => $this->input->post('tgl_pembelian'),
+			'jenis_pembayaran' => $this->input->post('jenis_pembayaran')
+		);
+		
+		$this->Model_gudang->update_pembelian($id, $data);
+		redirect('gudang/detail_pembelian/'.$id);
+	}
+
 	public function test() {
 		$this->load->view('test');
 	}
@@ -269,6 +290,16 @@ class Gudang extends CI_Controller {
 
 	public function barang_kode($input) {
 		$data = $this->Model_gudang->barang_kode($input);
+		echo json_encode($data);
+	}
+
+	public function detail_pembelian_id($id) {
+		$data = $this->Model_gudang->detail_pembelian_id($id);
+		echo json_encode($data);
+	}
+
+	public function pembelian_id($id) {
+		$data = $this->Model_gudang->pembelian_id($id);
 		echo json_encode($data);
 	}
 

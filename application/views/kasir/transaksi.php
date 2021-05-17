@@ -48,10 +48,10 @@
 							class="icon text-white-600">
 							<i class="fas fa-arrow-left"></i>
 						</span><span class="text">Dashboard</span></a>
-					<a href="<?=base_url()?>kasir/penjualan" class="btn btn-danger btn-sm btn-icon-split"><span
+					<button class="btn btn-danger btn-sm btn-icon-split" data-toggle="modal" data-target="#modalReturnBarang"><span
 							class="icon text-white-600">
 							<i class="fas fa-trash"></i>
-						</span><span class="text">Return Barang</span></a>
+						</span><span class="text">Return Barang</span></button>
 					<div id="no-struk" class="ml-3 text-white p-1 font-weight-bold">
 						No. Struk <?=$no_struk ? $no_struk->id_penjualan+1 : $no_struk ?>
 					</div>
@@ -120,7 +120,7 @@
 				<!-- End of Topbar -->
 				<!-- start content -->
 				<div class="container-fluid mt-4">
-					<form action="<?=base_url()?>kasir/bayar" method="post" id="form-body-detail">
+					<form action="<?=base_url()?>kasir/bayar" method="post" onsubmit="return validasiBayar()" id="form-body-detail">
 						<div id="div-hidden-input">
 						</div>
 						<!-- wrapper -->
@@ -165,7 +165,7 @@
 														class="form-control typeahead" placeholder="Kode Barang"
 														data-provide="typeahead" autocomplete="off" autofocus>
 													<div class="input-group-append">
-														<button class="btn btn-outline-primary" type="button"
+														<button class="btn btn-outline-primary" id="btn-barang" type="button"
 															onclick="checkBarang()"><i
 																class="fas fa-fw fa-search"></i></button>
 													</div>
@@ -257,7 +257,7 @@
 														placeholder="Voucher">
 													<div class="input-group-append">
 														<button class="btn btn-outline-secondary" type="button"
-															onclick="tambahVoucher()"><i
+															onclick="checkVoucher()"><i
 																class="fas fa-fw fa-plus"></i></button>
 													</div>
 												</div>
@@ -283,7 +283,7 @@
 												value="0" onkeyup="printKembalian()" id="nominal_uang"
 												name="nominal_uang" placeholder="Nominal Uang">
 										</div>
-										<input type="submit" value="Bayar" class="btn btn-success btn-block">
+										<input type="submit" id="btn-bayar" value="Bayar (F10)" class="btn font-weight-bold btn-success btn-block">
 
 									</div>
 
@@ -318,10 +318,60 @@
 					</div>
 				</div>
 
+				<div class="modal fade" id="modalReturnBarang" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Return Barang</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body" id="modalNotification">
+							<label for="no_struk">No. Struk</label>
+							<input type="text" id="no_struk" placeholder="No Struk" class="form-control">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<button type="button" onclick="redirectReturnBarang()" class="btn btn-primary">Go</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<script>
 					const baseUrl = '<?=base_url()?>';
 
 					var timeDisplay = document.getElementById("time");
+
+					function redirectReturnBarang() {
+						const noStruk = $('#no_struk').val();
+						window.location.href = baseUrl+'kasir/detail_penjualan/'+noStruk;
+					}
+
+					function validasiBayar() {
+						const grandTotal = document.getElementById('grand-total').innerText;
+						const nominalUang = document.getElementById('nominal_uang').value;
+				
+						const subTotal = document.getElementById('sub-total').innerText;
+						var nilaiGrandTotal = parseInt(grandTotal.replace(/\D/g, ""));
+						var nilaiNominalUang = parseInt(nominalUang.replace(/\D/g, ''), 10);
+						var nilaiSubTotal = parseInt(subTotal.replace(/\D/g, ""));
+						const jenisPembayaran = $('#jenis_pembayaran').val();
+						if(jenisPembayaran == 'Cash') {
+							if(nilaiNominalUang < nilaiGrandTotal) {
+							alert('Uang Kurang');
+							return false;
+						}
+
+						if(nilaiSubTotal == 0) {
+							alert('Silahkan input barang terlebih dahulu');
+							return false;
+						}
+						}
+						
+					}
 
 					function refreshTime() {
 						var dateString = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -361,9 +411,13 @@
 							url: baseUrl + "kasir/barang_kode/" + kodeBarang,
 							dataType: "JSON",
 							success: function (response) {
-								if ($('#detail-barang').find('tr[data-id-barang="' + response.id_barang + '"]').length >
+								var findBarang = $('#detail-barang').find('tr[data-id-barang="' + response.id_barang + '"]');
+								if (findBarang.length >
 									0) {
-									alert('Silahkan input barang Lain');
+									var inputVal = findBarang.find("td:eq(2)").children();
+									var addValue = parseInt(inputVal.val())+1;
+									inputVal.val(addValue);
+									ubahJumlah(inputVal.get(0));
 								} else {
 									if (response.kode_barang == null) {
 										alert('Kode Barang tidak diketahui');
@@ -373,6 +427,20 @@
 								}
 							}
 						});
+					}
+
+
+					function checkVoucher() {
+						const kodeVoucher = $('#id-voucher').val();
+						const inputVoucher = $('#input-voucher').children();
+						// if () {
+							if(inputVoucher.find('input[value="'+kodeVoucher+'"]').length > 0) {
+								alert('Silahkan input voucher lain')
+							} else {
+								tambahVoucher();
+							}
+							
+						// }
 					}
 
 					function tambahVoucher() {
@@ -475,6 +543,7 @@
 						divHidden.appendChild(input);
 					}
 
+
 					function ubahJumlah(value) {
 						const formatter = new Intl.NumberFormat(['ban', 'id']);
 						const row = value.parentElement.parentElement;
@@ -487,7 +556,6 @@
 							success: function (response) {
 								// get data
 								const hargaBarang = response.harga_jual;
-								console.log(hargaBarang)
 								row.cells[3].innerHTML = 'Rp. ' + formatter.format(hargaBarang * valQty);
 								printHargaGlobal();
 							}

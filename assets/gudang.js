@@ -7,7 +7,7 @@ function tampilDataTable(data, baseUrl) {
         modalBarang(id, baseUrl);
     } else if(info == "stok"){
         modalStok(id, baseUrl);
-    } else if(info == "pembelian") {
+    } else if(info == "beli") {
         window.location.href = baseUrl+'gudang/detail_pembelian/'+id;
     } else if(info == "detail_pembelian") {
         modalDetailPembelian(id, baseUrl)
@@ -17,32 +17,65 @@ function tampilDataTable(data, baseUrl) {
 
 function enableForm(data) {
     var info = $(data).data("info");
+    console.log(info)
     if(info == "supplier") {
         $(".modal-body .form-control").prop('disabled', false);
     } else if(info == "barang") {
         $(".modal-body .form-control:not(#nama_supplier,#kode_barang)").prop('disabled', false);
-    } else {
+    } else if(info == "stok"){
         $(".modal-body .form-control:not(#tanggal_pembelian,#nama_barang)").prop('disabled', false);
+    } else if(info == "detail_pembelian") {
+        $(".modal-body .form-control:not(#kode_barang,#nama_barang,#nama_supplier)").prop('disabled', false);
+    } else if(info == "pembelian") {
+        $(".modal-body .form-control").prop('disabled', false);
+        $("#btn-edit-pembelian").prop('disabled', true);
+        $("#btn-submit-pembelian").prop('disabled', false);
+
     }
     
     $("#btn-edit").prop('disabled', true);
     $("#btn-submit").prop('disabled', false);
 }
 
+function modalEditPembelian(id, baseUrl) {
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"gudang/pembelian_id/"+id,
+        dataType : "JSON",
+        success: function(response) {
+            console.log(response)
+            $('#no_faktur').val(response.no_faktur);
+            $('#tanggal_pembelian').val(response.tgl_pembelian);
+            $('#ppn').val(response.ppn);
+            $('#jenis_pembayaran').val(response.jenis_pembayaran);
+            $('#form-edit-pembelian').attr("action", baseUrl+'gudang/update_pembelian/'+id)
+            $("#modalEditPembelian .form-control").prop('disabled', true);
+
+            $("#btn-edit-pembelian").attr('data-info', 'pembelian');
+            $("#btn-edit-pembelian").prop('disabled', false);
+            $("#btn-submit-pembelian").prop('disabled', true);
+        }
+    });
+}
 function modalDetailPembelian(id, baseUrl) {
     $.ajax({
         type: "POST",
-        url: baseUrl+"gudang/detail_pembelian/"+id,
+        url: baseUrl+"gudang/detail_pembelian_id/"+id,
         dataType : "JSON",
         success: function(response) {
+            console.log(response)
             $('#nama_supplier').val(response.nama_supplier);
-            $('#alamat').val(response.alamat);
-            $('#form-edit').attr("action", baseUrl+'gudang/update_supplier/'+id)
+            $('#kode_barang').val(response.kode_barang);
+            $('#nama_barang').val(response.nama_barang);
+            $('#discount').val(response.discount);
+            $('#jumlah_barang').val(response.jumlah_barang);
+            $('#form-edit').attr("action", baseUrl+'gudang/update_detail_pembelian/'+id)
             $('#modalEdit').modal('show');
             $("#modalEdit .form-control").prop('disabled', true);
 
-            $("#btn-edit").attr('data-info', 'supplier');
+            $("#btn-edit").attr('data-info', 'detail_pembelian');
             $("#btn-edit").prop('disabled', false);
+            $("#btn-submit").prop('disabled', true);
         }
     });
 }
@@ -61,6 +94,7 @@ function modalSupplier(id, baseUrl) {
 
             $("#btn-edit").attr('data-info', 'supplier');
             $("#btn-edit").prop('disabled', false);
+            $("#btn-submit").prop('disabled', true);
         }
     });
 }
@@ -85,6 +119,7 @@ function modalBarang(id, baseUrl) {
             $('#modalEdit').modal('show');
             $("#modalEdit .form-control").prop('disabled', true);
             $("#btn-edit").prop('disabled', false);
+            $("#btn-submit").prop('disabled', true);
         }
     });
 }
@@ -100,21 +135,20 @@ function modalStok(id, baseUrl) {
             $('#tanggal_pembelian').val(response.tanggal_pembelian);
             $('#nama_barang').val(response.nama_barang);
             $('#stok_barang').val(response.stok_barang);
-            var tanggalExpired = moment(response.tanggal_expired).format("DD-MM-YYYY");
-            var tanggalReturn = moment(response.tanggal_return).format("DD-MM-YYYY")
-            if(tanggalExpired == "Invalid date") {
-                tanggalExpired = null;
-            }
-            if(tanggalReturn == "Invalid date") {
-                tanggalReturn = null;
-            }
-            $('#tanggal_expired').val(tanggalExpired);
-            $('#tanggal_return').val(tanggalReturn);
+            // if(tanggalExpired == "Invalid date") {
+            //     tanggalExpired = null;
+            // }
+            // if(tanggalReturn == "Invalid date") {
+            //     tanggalReturn = null;
+            // }
+            $('#tanggal_expired').val(response.tanggalExpired);
+            $('#tanggal_return').val(response.tanggalReturn);
             // utility
             $('#form-edit').attr("action", baseUrl+'gudang/update_stok/'+id)
             $('#modalEdit').modal('show');
             $("#modalEdit .form-control").prop('disabled', true);
             $("#btn-edit").prop('disabled', false);
+            $("#btn-submit").prop('disabled', true);
         }
     });
 }

@@ -33,7 +33,7 @@
 <!-- Bootstrap core JavaScript-->
 <script src="<?=base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- User custom Javascript -->
-<script src="<?=base_url()?>assets/gudang.js"></script>
+<script src="<?=base_url()?>assets/kasir.js"></script>
 
 <!-- Typehead -->
 <script src="<?=base_url()?>assets/vendorother/typeahead/typeahead.js"></script>
@@ -41,8 +41,8 @@
 <script src="<?=base_url()?>assets/vendorother/datatables/jquery.dataTables.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/dataTables.bootstrap4.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-<script src="https://cdn.datatables.net/datetime/1.0.3/js/dataTables.dateTime.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/momentjs/moment.min.js"></script>
+<script src="<?=base_url()?>assets/vendorother/datatables/dataTables.dateTime.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/buttons.bootstrap4.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/jszip/jszip.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/pdfmake/pdfmake.min.js"></script>
@@ -60,7 +60,23 @@
 <script src="<?=base_url()?>assets/js/sb-admin-2.min.js"></script>
 <script>
 	$(document).ready(function () {
-		$('#dataTable').DataTable();
+		var table = $('#dataTable').DataTable({
+			"order": [
+				[1, 'asc']
+			]
+		});
+		
+		document.addEventListener("keydown", function (event) {
+			if (event.keyCode == 13) {
+				event.preventDefault();
+				$('#btn-barang').click();
+				return false;
+			} 
+			if (event.keyCode == 121) {
+				$('#btn-bayar').click();
+				return false;
+			}
+		})
 		// $('#modalInputSupplier').modal('show');
 		$('#kode_barang').typeahead({
 			source: function (query, process) {
@@ -110,6 +126,23 @@
 				return selectedItem;
 			}
 		});
+
+		table.on('order.dt search.dt', function () {
+			table.column(0, {
+				search: 'applied',
+				order: 'applied'
+			}).nodes().each(function (cell, i) {
+				cell.innerHTML = i + 1;
+			});
+		}).draw();
+		$('#dataTable tbody').on('click', 'tr', function () {
+			const baseUrl = "<?=base_url()?>";
+			tampilDataTable(this, baseUrl);
+
+		});
+		tanggalPenjualan = new DateTime($('#tgl_penjualan'));
+
+
 		$("#nominal_uang").on('keyup', function () {
 			var n = parseInt($(this).val().replace(/\D/g, ''), 10);
 			console.log(n)
@@ -118,7 +151,6 @@
 			} else {
 				$(this).val(n.toLocaleString());
 			}
-			//do something else as per updated question
 			printKembalian()
 		});
 	});

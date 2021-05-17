@@ -26,8 +26,8 @@
 					<td></td>
 						<td><?=$a->kode_anggota;?></td>
 						<td><?=$a->nama;?></td>
-						<td>Rp. <?=number_format($a->saldo_simpan,0, ',', '.');?></td>
-						<td><?=$a->saldo_pinjam;?></td>
+						<td>Rp. <?=number_format($a->saldo_simpan+$a->pokok,0, ',', '.');?></td>
+						<td>Rp. <?=number_format($a->saldo_pinjam,0 ,',','.');?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
