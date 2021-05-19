@@ -81,9 +81,8 @@ function rubah(angka){
 			max = null;
 		}
 		
-        var max = maxDate.val();
         var date = moment.utc(data[1], 'DD-MM-YYYY');
-		var tes = date.toDate();
+		
 
         if (
             ( min === null && max === null ) ||
@@ -222,7 +221,6 @@ function rubah(angka){
 		// row clicked
 		$('#dataTable tbody').on('click', 'tr', function () {
 			const baseUrl = "<?=base_url()?>";
-			console.log('tes')
 			tampilDataTable(this, baseUrl);
 				
 	

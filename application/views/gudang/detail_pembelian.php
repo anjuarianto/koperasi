@@ -7,7 +7,8 @@
 			<a href="<?=base_url();?>gudang/pembelian" class="btn btn-secondary btn-sm btn-icon-split"><span
 					class="icon text-white-50"><i class="fas fa-arrow-left"></i></span>
 				<span class="text">Kembali</span></a>
-			<button class="btn btn-warning btn-sm btn-icon-split" data-toggle="modal" onclick="modalEditPembelian(<?=$pembelian->id_pembelian?>, '<?=base_url()?>')"
+			<button class="btn btn-warning btn-sm btn-icon-split" data-toggle="modal"
+				onclick="modalEditPembelian(<?=$pembelian->id_pembelian?>, '<?=base_url()?>')"
 				data-target="#modalEditPembelian"><span class="icon text-white-50"><i class="fas fa-file"></i></span>
 				<span class="text">Edit</span></button>
 		</div>
@@ -135,8 +136,16 @@
 							</div>
 						</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" id="btn-edit">Edit</button>
+				<div class="modal-footer d-flex justify-content-between">
+				<div>
+				<button type="button" class="btn btn-warning btn-sm btn-icon-split" id="btn-return" onclick="modalReturn(this, '<?=base_url()?>')"><span class="icon text-white-50"><i
+								class="fas fa-file"></i></span>
+						<span class="text">Return Barang</span></button>
+					<button type="button" class="btn btn-sm btn-danger btn-icon-split" id="btn-edit"><span class="icon text-white-50"><i
+								class="fas fa-file"></i></span>
+						<span class="text">Edit</span></button>
+				</div>
+					
 					<input type="submit" class="btn btn-primary" id="btn-submit" value="Simpan!" disabled>
 					</form>
 				</div>
@@ -180,19 +189,96 @@
 						</div>
 						<div class="form-group">
 							<label for="jenis_pembayaran">Jenis Pembayaran</label>
-							<select type="text" name="jenis_pembayaran" id="jenis_pembayaran" disabled placeholder="Jenis Pembayaran"
-								class="form-control" required autocomplete="off">
-                                <option value="Cash">Cash</option>
-                                <option value="Kredit">Kredit</option>
-                            </select>
+							<select type="text" name="jenis_pembayaran" id="jenis_pembayaran" disabled
+								placeholder="Jenis Pembayaran" class="form-control" required autocomplete="off">
+								<option value="Cash">Cash</option>
+								<option value="Kredit">Kredit</option>
+							</select>
 						</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" id="btn-edit-pembelian">Edit</button>
+
+					<button type="button" class="btn btn-danger btn-split-icon" id="btn-edit-pembelian">Edit</button>
 					<input type="submit" class="btn btn-primary" id="btn-submit-pembelian" value="Simpan!" disabled>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<div class="modal fade" id="modalReturn" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Return Barang</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form method="post" id="form-return">
+					<div class="form-group">
+						<label for="tanggal_return">Tanggal</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+							</div>
+							<input type="text" class="form-control" name="tanggal_return" id="tanggal_return"
+								placeholder="Tanggal Return" class="form-control" autocomplete="off">
+						</div>
+					</div>
+					<div class="row">
+					<div class="form-group col">
+						<label for="no_faktur_return">No Faktur</label>
+                        <input type="text" class="form-control" name="no_faktur_return" id="no_faktur_return"
+							placeholder="Nomor Faktur" class="form-control" autocomplete="off" disabled>
+							
+					</div>
+					<div class="form-group col">
+						<label for="nama_barang_return">Nama Barang</label>
+						<input type="text" name="nama_barang_return" id="nama_barang_return" placeholder="Nama Barang"
+							class="form-control" required disabled autocomplete="off">
+					</div>
+					</div>
+
+					<div class="row">
+					<div class="form-group col">
+						<label for="harga_beli_return">Harga Beli</label>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">Rp</div>
+							</div>
+							<input type="text" name="harga_beli_return" id="harga_beli_return" placeholder="Harga Beli"
+								class="form-control" required disabled autocomplete="off">
+						</div>
+					</div>
+					<div class="form-group col">
+						<label for="jumlah_barang_return">Jumlah Barang</label>
+						<input type="text" name="jumlah_barang_return" id="jumlah_barang_return" placeholder="Jumlah Barang"
+							class="form-control" disabled autocomplete="off">
+					</div>
+					
+					</div>
+					
+					
+					<div class="form-group">
+						<label for="jumlah_return">Jumlah Return</label>
+						<input type="text" name="jumlah_return" id="jumlah_return" placeholder="Jumlah Barang"
+							class="form-control" autocomplete="off">
+					</div>
+					<div class="form-group">
+						<label for="memo">Memo</label>
+						<input type="text" name="memo" id="memo" placeholder="Memo"
+							class="form-control" autocomplete="off">
+					</div>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" class="btn btn-primary" id="btn-submit-return" value="Simpan!">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 	<?php $this->load->view('gudang/footer'); ?>

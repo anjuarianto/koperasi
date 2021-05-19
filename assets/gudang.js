@@ -74,6 +74,8 @@ function modalDetailPembelian(id, baseUrl) {
             $("#modalEdit .form-control").prop('disabled', true);
 
             $("#btn-edit").attr('data-info', 'detail_pembelian');
+            $("#btn-return").attr('data-info', 'return-pembelian');
+            $("#btn-return").data('id', response.id_detail_pembelian);
             $("#btn-edit").prop('disabled', false);
             $("#btn-submit").prop('disabled', true);
         }
@@ -98,6 +100,28 @@ function modalSupplier(id, baseUrl) {
         }
     });
 }
+
+function modalReturn(datas, baseUrl) {
+    var id = $(datas).data('id');
+    console.log(id)
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"gudang/return_pembelian_id/"+id,
+        dataType : "JSON",
+        success: function(response) {
+            $('#no_faktur_return').val(response.no_faktur);
+            $('#nama_barang_return').val(response.nama_barang);
+            $('#harga_beli_return').val(response.harga_beli);
+            $('#jumlah_barang_return').val(response.jumlah_barang);
+            $("#no_faktur_return,#nama_barang_return, #harga_beli_return").prop('disabled', true);
+            $('#form-return').attr("action", baseUrl+'gudang/aksi_return_pembelian/'+id)
+            $('#modalEdit').modal('hide');
+            $('#modalReturn').modal('show');
+        }
+    });
+    
+}
+
 
 function modalBarang(id, baseUrl) {
     $.ajax({
@@ -135,13 +159,11 @@ function modalStok(id, baseUrl) {
             $('#tanggal_pembelian').val(response.tanggal_pembelian);
             $('#nama_barang').val(response.nama_barang);
             $('#stok_barang').val(response.stok_barang);
-            // if(tanggalExpired == "Invalid date") {
-            //     tanggalExpired = null;
-            // }
-            // if(tanggalReturn == "Invalid date") {
-            //     tanggalReturn = null;
-            // }
-            $('#tanggal_expired').val(response.tanggalExpired);
+            if(tanggalExpired == "Invalid date") {
+                tanggalExpired = null;
+            }
+          
+            $('#tanggal_expired').val(response.tanggal_expired);
             $('#tanggal_return').val(response.tanggalReturn);
             // utility
             $('#form-edit').attr("action", baseUrl+'gudang/update_stok/'+id)

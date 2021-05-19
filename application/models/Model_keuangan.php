@@ -50,6 +50,18 @@ class Model_keuangan extends CI_Model {
 		return $query->result();
 	}
 
+    public function pembelian_kredit_id($id) {
+		$this->db->select('beli.*, sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100)) + sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))*beli.ppn/100 as total_harga_pembelian');
+		$this->db->from('tbl_pembelian as beli');
+		$this->db->join('tbl_detail_pembelian as detail', 'detail.id_pembelian = beli.id_pembelian');
+		$this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+        $this->db->where('jenis_pembayaran', 'Kredit');
+        $this->db->where('beli.id_pembelian', $id);
+		$this->db->group_by('beli.id_pembelian');
+		$query = $this->db->get();
+		return $query->row();
+	}
+
     public function pemasukan_global() {
         $this->db->select('masuk.tanggal, masuk.deskripsi_pemasukan, masuk.total_pemasukan');
         $this->db->from('tbl_pemasukan as masuk');
@@ -81,20 +93,21 @@ class Model_keuangan extends CI_Model {
     }
 
     public function rugi() {
-        $this->db->select('(sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100)) + sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))*beli.ppn/100) as total_harga_pembelian');
+        $this->db->select('sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100)) + sum(barang.harga_beli*detail.jumlah_barang - (barang.harga_beli*detail.jumlah_barang*detail.discount/100))*beli.ppn/100 as total_harga_pembelian');
 		$this->db->from('tbl_pembelian as beli');
 		$this->db->join('tbl_detail_pembelian as detail', 'detail.id_pembelian = beli.id_pembelian');
 		$this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
-		
+		$this->db->group_by('beli.id_pembelian');
 		$query = $this->db->get();
-		return $query->row();
+		return $query->result();
     }
 
     public function anggota() {
-        $this->db->select('user.id_user, user.nama, user.kode_anggota, user.satuan, user.pokok, sum(simpan.wajib+simpan.sukarela) as saldo_simpan, (select (pinjam.pinjaman-sum(angsuran)) from tbl_history_pinjam where id_pinjam = pinjam.id_pinjam order by tanggal_history_pinjam desc limit 1) as saldo_pinjam');
+        $this->db->select('user.id_user, user.nama, user.kode_anggota, user.satuan, user.pokok, sum(simpan.wajib+simpan.sukarela) as saldo_simpan, (select (pinjam.pinjaman-sum(angsuran)) from tbl_history_pinjam where id_pinjam = pinjam.id_pinjam order by tanggal_history_pinjam desc limit 1) as saldo_pinjam, (select nilai_shu from tbl_shu where periode = (year(curdate())-1) and id_user = shu.id_user) as shu_lalu, (select nilai_shu from tbl_shu where periode = year(curdate()) and id_user = shu.id_user) as shu');
         $this->db->from('tbl_user as user');
         $this->db->join('tbl_simpan as simpan', 'simpan.id_user = user.id_user', 'left');
         $this->db->join('tbl_pinjam as pinjam', 'pinjam.id_user = user.id_user', 'left');
+        $this->db->join('tbl_shu as shu', 'shu.id_user = user.id_user', 'left');
         $this->db->where('user.level = 5');
         $this->db->group_by('user.id_user');
         $query = $this->db->get();
@@ -102,12 +115,16 @@ class Model_keuangan extends CI_Model {
     }
 
     public function shu() {
-        $this->db->select('u.id_user, u.kode_anggota, s.nilai_shu,  s.periode,u.nama, u.kode_anggota, u.level');
-        $this->db->from('tbl_user as u');
-        $this->db->join('tbl_shu as s', 's.id_user = u.id_user', 'left');
-        $this->db->where('u.level = 5');
+        $this->db->select('shu.*, user.nama, user.kode_anggota,  user.id_user');
+        $this->db->from('tbl_shu as shu');
+        $this->db->join('tbl_user as user', 'user.id_user = shu.id_user', 'left');
+        
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function generate_periode_shu($data) {
+        $this->db->insert('tbl_shu', $data);
     }
 
     public function history_simpan($id) {

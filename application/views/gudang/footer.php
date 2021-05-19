@@ -65,11 +65,13 @@
 		function (settings, data, dataIndex) {
 			var min, max;
 			var filterColumn;
+			
 			if ($('#filterColumn').length) {
 				filterColumn = $('#filterColumn').val();
 			} else {
 				filterColumn = 1;
 			}
+
 			if (moment.utc($('#min').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
 				min = moment.utc($('#min').val(), 'DD-MM-YYYY').toDate();
 			} else {
@@ -81,11 +83,9 @@
 			} else {
 				max = null;
 			}
-
-			var max = maxDate.val();
+			
 			var date = moment.utc(data[filterColumn], 'DD-MM-YYYY');
-			var tes = date.toDate();
-
+		
 			if (
 				(min === null && max === null) ||
 				(min === null && date <= max) ||
@@ -98,6 +98,14 @@
 		}
 	);
 	$(document).ready(function () {
+		$('#jenis_pembayaran').on('change', function() {
+			if($(this).val() == "Kredit") {
+				$('#jatuh_tempo').show();
+			} else if($(this).val() == "Cash") {
+				$('#jatuh_tempo').hide();
+			}
+		})
+		
 		$('#input_barang').typeahead({
 			source: function (query, process) {
 				states = [];
@@ -171,7 +179,8 @@
 		tanggalExpired = new DateTime($('#tanggal_expired'));
 		tanggalReturn = new DateTime($('#tanggal_return'));
 		tanggalPembelian = new DateTime($('#tanggal_pembelian'));
-		$('#min, #max').on('change', function () {
+		tanggalJatuhTempo = new DateTime($('#tanggal_jatuh_tempo'));
+		$('#min, #max').on('change keyup', function () {
 			table.draw();
 		});
 		$('#filterColumn').on('change', function () {

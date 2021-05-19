@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_gudang extends CI_Model {
 
-	////////////////////////////////////////////barang
+
 	public function tambah_barang($data) {
 		$this->db->insert('tbl_barang', $data);
 	}
@@ -29,11 +29,15 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function stok_barang() {
-		$this->db->select('s.id_stok, b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, s.tanggal_return');
+		$this->db->select('s.*, b.nama_barang');
 		$this->db->from('tbl_stok as s');
 		$this->db->join('tbl_barang as b', 'b.id_barang = s.id_barang', 'left');
 		$query = $this->db->get();
 		return $query->result();
+	}
+
+	public function aksi_return_pembelian($data) {
+		$this->db->insert('tbl_return_pembelian', $data);
 	}
 
 	public function return_barang($id, $data) {
@@ -47,7 +51,7 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function detail_barang() {
-		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, kode_barang, harga_beli, harga_jual, (select sum(stok_barang) from tbl_stok where id_barang = st.id_barang and tanggal_return is null group by id_barang) as total_stok');
+		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, kode_barang, harga_beli, harga_jual, (select sum(stok_barang) from tbl_stok where id_barang = st.id_barang group by id_barang) as total_stok');
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_stok as st', 'st.id_barang = b.id_barang', 'left');
 		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier', 'left');
@@ -55,6 +59,27 @@ class Model_gudang extends CI_Model {
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+	public function return_pembelian() {
+		$this->db->select('return.*, detail.id_detail_pembelian, detail.id_barang, beli.no_faktur, barang.nama_barang, barang.harga_beli');
+		$this->db->from('tbl_return_pembelian as return');
+		$this->db->join('tbl_detail_pembelian as detail', 'return.id_detail_pembelian = detail.id_detail_pembelian', 'left');
+		$this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+		$this->db->join('tbl_pembelian as beli', 'beli.id_pembelian = detail.id_pembelian');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function return_pembelian_id($id) {
+		$this->db->select('detail.*, beli.no_faktur, beli.id_pembelian, barang.nama_barang, barang.harga_beli');
+		$this->db->from('tbl_detail_pembelian as detail');
+		$this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+		$this->db->join('tbl_pembelian as beli', 'beli.id_pembelian = detail.id_pembelian');
+		$this->db->where('detail.id_detail_pembelian', $id);
+		$query = $this->db->get();
+		return $query->row();
+	}
+
 
 	public function tambah_jumlah_barang($data) {
 		$query = $this->db->insert('tbl_barang', $data);
@@ -95,7 +120,7 @@ class Model_gudang extends CI_Model {
 
 	/////////////////////stok
 	public function stok_expired() {
-		$this->db->select('s.id_stok, b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, s.tanggal_return');
+		$this->db->select('s.*, b.nama_barang');
 		$this->db->from('tbl_stok as s');
 		$this->db->join('tbl_barang as b', 'b.id_barang = s.id_barang', 'left');
 		$this->db->where('s.tanggal_expired <= NOW() + INTERVAL 30 DAY and s.tanggal_expired >= NOW()');
@@ -104,17 +129,18 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function return_terakhir() {
-		$this->db->select('s.id_stok, b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, s.tanggal_return, beli.no_faktur');
-		$this->db->from('tbl_stok as s');
-		$this->db->join('tbl_barang as b', 'b.id_barang = s.id_barang', 'left');
-		$this->db->join('tbl_pembelian as beli', 'beli.id_pembelian = s.id_pembelian', 'left');
-		$this->db->where('s.tanggal_return is not NULL ');
+		$this->db->select('return.*, detail.id_detail_pembelian, detail.id_barang, beli.no_faktur, barang.nama_barang, barang.harga_beli');
+		$this->db->from('tbl_return_pembelian as return');
+		$this->db->join('tbl_detail_pembelian as detail', 'return.id_detail_pembelian = detail.id_detail_pembelian', 'left');
+		$this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+		$this->db->join('tbl_pembelian as beli', 'beli.id_pembelian = detail.id_pembelian');
+		$this->db->limit(5);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
 	public function stok_akan_habis() {
-		$this->db->select('s.id_stok, b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, s.tanggal_return, beli.no_faktur');
+		$this->db->select('s.id_stok, b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, beli.no_faktur');
 		$this->db->from('tbl_stok as s');
 		$this->db->join('tbl_barang as b', 'b.id_barang = s.id_barang', 'left');
 		$this->db->join('tbl_pembelian as beli', 'beli.id_pembelian = s.id_pembelian', 'left');
@@ -126,7 +152,6 @@ class Model_gudang extends CI_Model {
 	public function jumlah_total_stok() {
 		$this->db->select('sum(stok_barang) as jumlah_stok');
 		$this->db->from('tbl_stok');
-		$this->db->where('tanggal_return is null');
 		$query = $this->db->get();
 
 		$result = $query->row_array();
@@ -134,10 +159,20 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function stok_id($id) {
-		$this->db->select('s.id_stok, b.nama_barang, s.stok_barang, s.tanggal_pembelian, s.tanggal_expired, s.tanggal_return');
+		$this->db->select('s.*, b.nama_barang');
 		$this->db->from('tbl_stok as s');
 		$this->db->join('tbl_barang as b', 'b.id_barang = s.id_barang', 'left');
 		$this->db->where('s.id_stok', $id);
+		$query = $this->db->get();
+		return $query->row();
+	}
+
+	public function select_stok($id_pembelian, $id_barang) {
+		$this->db->select('s.*, b.nama_barang');
+		$this->db->from('tbl_stok as s');
+		$this->db->join('tbl_barang as b', 'b.id_barang = s.id_barang', 'left');
+		$this->db->where('s.id_pembelian', $id_pembelian);
+		$this->db->where('s.id_barang', $id_barang);
 		$query = $this->db->get();
 		return $query->row();
 	}
@@ -149,6 +184,11 @@ class Model_gudang extends CI_Model {
 
 	public function tambah_stok($data) {
 		$this->db->insert('tbl_stok', $data);
+	}
+
+	public function stok_return($id, $data) {
+		$this->db->where('id_detail_pembelian', $id);
+		$this->db->insert('tbl_detail_pembelian', $data);
 	}
 
 	public function transaksi_kredit() {
@@ -223,7 +263,7 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function detail_pembelian_id($id) {
-		$this->db->select('detail.id_detail_pembelian, detail.id_pembelian, barang.id_barang, barang.nama_barang, barang.kode_barang, supplier.nama_supplier, detail.jumlah_barang, detail.discount');
+		$this->db->select('detail.*, barang.id_barang, barang.nama_barang, barang.kode_barang, supplier.nama_supplier');
 		$this->db->from('tbl_detail_pembelian as detail');
 		$this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
 		$this->db->join('tbl_supplier as supplier', 'supplier.id_supplier = barang.id_supplier');

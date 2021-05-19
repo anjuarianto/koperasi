@@ -31,13 +31,18 @@
 						<tr>
 							<td>2</td>
 							<td>Pengeluaran</td>
-							<td>Rp. <?=number_format($pengeluaran->total_harga_pembelian,0,',','.')?></td>
+							<td><?php $total_pengeluaran = 0;
+                            foreach ($pengeluaran as $p) {
+                                # code...
+                                $total_pengeluaran += $p->total_harga_pembelian;
+                            }
+                            echo 'Rp. '.number_format($total_pengeluaran,0,',','.');?></td>
 						</tr>
 					</tbody>
 					<tfoot>
 						<tr>
 							<th colspan="2">Total</th>
-							<th>Rp. <?=number_format($total_pemasukan-$pengeluaran->total_harga_pembelian,0,',','.');?></th>
+							<th>Rp. <?=number_format($total_pemasukan-$total_pengeluaran,0,',','.');?></th>
 						</tr>
 					</tfoot>
 				</table>

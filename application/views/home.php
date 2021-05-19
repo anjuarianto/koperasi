@@ -7,7 +7,7 @@
 		<meta name="description" content="">
 		<meta name="author" content="">
 		<link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
-		<title>Login Page | Koperasi Kopassus</title>
+		<title>Login Page | Koperasi Tribuana</title>
 		<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/cover/">
 		<link href="<?=base_url()?>assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 		<link
@@ -76,7 +76,7 @@
 			<div class="content-input text-center">
 				<form action="<?=base_url()?>home/login" method="post">
 					<h2 class="text-white">Login</h2>
-					<h4 class="text-white">Koperasi Kopassus</h4>
+					<h4 class="text-white">Koperasi Tribuana</h4>
 					<div class="img-login text-center mb-4 mt-5"><img src="<?=base_url()?>assets/img/user.png" alt=""
 							class="shadow-sm"></div>
 					<div class="form-group"><input type="text" name="kode_anggota" id="kode_anggota" placeholder="Kode Anggota/Username"

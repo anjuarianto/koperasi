@@ -57,7 +57,7 @@
 						<td><?=$p->ppn?> %</td>
 						<td><?=$p->jenis_pembayaran?></td>
 						<?php if ($this->session->userdata('login_session')['level'] == 7) : ?>
-						<td><?=$p->jatuh_tempo?></td>
+						<td><?=date('d-m-Y', strtotime($p->jatuh_tempo))?></td>
 						<td><?=$p->status_kredit == 0 ? 'Belum Lunas' : 'Lunas' ?></td>
 						<?php endif ?>
 						<td>Rp. <?=number_format($p->total_harga_pembelian, 2, ',', '.')?></td>
@@ -69,6 +69,27 @@
 	</div>
 </div>
 
+<div class="modal fade" id="modalPembelian" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Pinjaman</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Verifikasi Transaksi Ini Sudah Lunas?</p>
+			<div class="modal-footer">
+			<a class="btn btn-dark btn-sm ml-auto my-0 btn-icon-split" id="btn-verif-lunas"><span class="icon text-white-50"><i class="fas fa-dollar-sign"></i></span>
+			<span class="text">Verifikasi Lunas</span></a>
+		
+		
+			</div>
+		</div>
+	</div>
+</div>
 
 <!-- End Content -->
 

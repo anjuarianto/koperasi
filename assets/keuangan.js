@@ -11,26 +11,54 @@ function tampilDataTable(data, baseUrl) {
         modalHistoryPinjam(id, baseUrl);
     } else if (info == "history_simpan") {
         modalHistorySimpan(id, baseUrl);
+    } else if(info == "beli") {
+        if(data.cells[6].innerText == "Belum Lunas") {
+            modalPembelian(id, baseUrl);
+        }
+        
     }
     
 }
 
+
+function submitFormSHU() {
+    $('#form-update-shu').submit();
+}
+
 function enableForm(data) {
     var info = $(data).data("info");
-    
     if(info == "history_simpan") {
         $(".modal-body .form-control:not(#kode_anggota)").prop('disabled', false);
     } else if(info == "history_pinjam") {
         $(".modal-body .form-control:not(#kode_anggota)").prop('disabled', false);
+    } else if(info == "edit-shu") {
+        console.log('tes')
+        $("#form-update-shu .input-shu").prop('disabled', false);
+        $('#btn-save-shu').prop('disabled', false)
+        $('#btn-edit-shu').hide()
+        $('#btn-cancel-shu').show();
     }
     
     $("#btn-edit").prop('disabled', true);
     $("#btn-submit").prop('disabled', false);
 }
 
+function cancelShu() {
+    $('#btn-edit-shu').show();
+    $('#btn-save-shu').prop('disabled', true);
+    $('#btn-cancel-shu').hide();
+    $("#form-update-shu .input-shu").prop('disabled', true);
+}
+
+function modalPembelian(id, baseUrl) {
+    
+    $('#btn-verif-lunas').attr("href", baseUrl+'keuangan/verifikasi_lunas/'+id)
+    $('#modalPembelian').modal('show');
+    
+}
+
 
 function modalPemasukan(id, baseUrl) {
-    
     $.ajax({
         type: "POST",
         url: baseUrl+"gudang/supplier_id/"+id,

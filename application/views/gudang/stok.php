@@ -13,7 +13,6 @@
 				<select class="form-control form-control-sm" id="filterColumn">
 					<option value="1">Tanggal Pembelian</option>
 					<option value="4">Tanggal Expired</option>
-					<option value="5">Tanggal Return</option>
 				</select>
 			</div>
 			<span> From </span>
@@ -47,7 +46,6 @@
 						<th>Nama Barang</th>
 						<th>Stok Barang</th>
 						<th>Tanggal Expired</th>
-						<th>Tanggal Return</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -58,7 +56,6 @@
 						<td><?=$s->nama_barang;?></td>
 						<td><?=$s->stok_barang;?></td>
 						<td><?=date('d-m-Y', strtotime($s->tanggal_expired))?></td>
-						<td><?=$s->tanggal_return ? date('d-m-Y', strtotime($s->tanggal_return)) : 'Kosong' ;?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -109,16 +106,6 @@
 							<input type="text" name="tanggal_expired" id="tanggal_expired" placeholder="Tanggal Expired"
 								class="form-control" required autocomplete="off">
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="harga_beli">Tanggal Return</label>
-						<div class="input-group">
-						<div class="input-group-prepend">
-								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
-							</div>
-						<input type="text" name="tanggal_return" id="tanggal_return" placeholder="Tanggal Return"
-							class="form-control" autocomplete="off">
-							</div>
 					</div>
 			</div>
 			<div class="modal-footer">

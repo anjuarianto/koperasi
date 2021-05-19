@@ -5,11 +5,31 @@ class Home extends CI_Controller {
 	public function __construct() {
         parent::__construct();
         $this->load->model('Auth_model', 'auth');
+		
     }
 
+	public function is_login() {
+		if($this->session->userdata('login_session')['level'] == 2) {
+			redirect('gudang');
+		} else if($this->session->userdata('login_session')['level'] == 3) {
+			redirect('kasir');
+		} else if($this->session->userdata('login_session')['level'] == 4) {
+			redirect('keuangan');
+		} else if($this->session->userdata('login_session')['level'] == 1) {
+			redirect('admin');
+		} else if ($this->session->userdata('login_session')['level'] == 6) {
+			redirect('keuangan');
+		} else if($this->session->userdata('login_session')['level'] == 7) {
+			redirect('keuangan');
+		}
+	}
 
 	public function index()
 	{
+		if($this->session->userdata('login_session')) {
+			$this->is_login();
+		}
+		
 		$this->load->view('home');
 	}
 

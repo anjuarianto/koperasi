@@ -121,7 +121,8 @@
 
 					<!-- Input Setelah Ada -->
 					<div class="row">
-						<div class="input-group input-group-sm col-3">
+					<div class="form-group col-3">
+					<div class="input-group input-group-sm">
 							<input type="text" name="input_barang" id="input_barang"
 								placeholder="Kode Barang/Nama Barang" style="z-index:1000" class="form-control typehead"
 								data-provide="typehead" autofocus autocomplete="off">
@@ -130,9 +131,17 @@
 									onclick="checkBarang()"><i class="fas fa-plus"></i></button>
 							</div>
 						</div>
+					</div>
+						
 
-						<div class="col">
-
+						<div class="form-group ml-auto col-3">
+						<div class="input-group input-group-sm" style="display: none;" id="jatuh_tempo">
+							<input type="text" name="jatuh_tempo" 
+								placeholder="Tanggal Jatuh Tempo" id="tanggal_jatuh_tempo" class="form-control" autofocus autocomplete="off">
+							<div class="input-group-append">
+								<div class="input-group-text"><i class="fas fa-calendar"></i></div>
+							</div>
+						</div>
 						</div>
 					</div>
 					<div class="mt-3">

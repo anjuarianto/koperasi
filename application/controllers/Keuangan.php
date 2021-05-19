@@ -136,8 +136,8 @@ class Keuangan extends CI_Controller {
     public function laba_rugi() {
         $data['judul'] = 'Daftar Pengeluaran | Keuangan';
         $data['pemasukan'] = $this->Model_keuangan->laba();
-        
         $data['pengeluaran'] = $this->Model_keuangan->rugi();
+        
         
         $this->load->view('keuangan/laba_rugi', $data);
     }
@@ -190,6 +190,39 @@ class Keuangan extends CI_Controller {
         redirect('keuangan/history_simpan/'.$id_user);
     }
 
+    public function update_shu() {
+        $id_user = $this->input->post('id_user');
+        $periode = $this->input->post('periode');
+        $nilai_shu = $this->input->post('nilai_shu');
+        
+        for ($i=0;$i<count($nilai_shu);$i++) {
+            if($nilai_shu[$i] != null) {
+                
+                $this->db->where('periode', $periode[$i]);
+                $this->db->where('id_user', $id_user[$i]);
+                $this->db->update('tbl_shu', array('nilai_shu'  => $nilai_shu[$i]));
+            }
+        }
+
+        redirect('keuangan/shu');
+        
+    }
+
+    public function generate_periode() {
+        $anggota = $this->Model_keuangan->anggota();
+        $periode = $this->input->post('input_periode');
+        foreach ($anggota as $anggota) {
+            $data = array(
+                'id_user' => $anggota->id_user,
+                'periode' => $periode,
+                'nilai_shu' => null
+            );
+            // print_r($data);
+            $this->Model_keuangan->generate_periode_shu($data);
+        }
+        redirect('keuangan/shu');
+    }
+
 
     public function input_shu($id) {
         $nilai_shu = $this->input->post('nilai_shu');
@@ -204,6 +237,13 @@ class Keuangan extends CI_Controller {
         
     }
 
+    public function verifikasi_lunas($id) {
+        $data = array('status_kredit' => 1);
+        $this->db->where('id_pembelian', $id);
+        $this->db->update('tbl_pembelian', $data);
+        redirect('keuangan/transaksi_pembelian_kredit');
+    }
+
     public function history_pinjam_id($id) {
         $data = $this->Model_keuangan->history_pinjam_id($id);
         echo json_encode($data);
@@ -211,6 +251,11 @@ class Keuangan extends CI_Controller {
 
     public function history_simpan_id($id) {
         $data = $this->Model_keuangan->history_simpan_id($id);
+        echo json_encode($data);
+    }
+
+    public function pembelian_kredit_id($id) {
+        $data = $this->Model_keuangan->pembelian_kredit_id($id);
         echo json_encode($data);
     }
 

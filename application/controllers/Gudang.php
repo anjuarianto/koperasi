@@ -52,7 +52,6 @@ class Gudang extends CI_Controller {
 		
 
 		$this->form_validation->set_message('required', '{field} tidak boleh kosong');
-		
 		// validation end
 		
 		// variable declaration start
@@ -156,12 +155,20 @@ class Gudang extends CI_Controller {
 		$tanggal_expired = $this->input->post('tanggal_expired');
 		$discount = $this->input->post('discount');
         
-		
+		if($jenis_pembayaran == "Kredit") {
+			$jatuh_tempo = $this->input->post('jatuh_tempo');
+			$status_kredit = 0;
+		} else {
+			$jatuh_tempo = null;
+			$status_kredit = null;
+		}
 		$pembelian = array(
 			'tgl_pembelian' => $tanggal_pembelian,
 			'no_faktur' => $no_faktur,
 			'jenis_pembayaran' => $jenis_pembayaran,
 			'ppn' => $ppn,
+			'status_kredit'		=> $status_kredit,
+			'jatuh_tempo'	=> $jatuh_tempo,
 			'user' => $this->session->userdata('login_session')['id_user']
 		);
 		
@@ -185,7 +192,7 @@ class Gudang extends CI_Controller {
 				"tanggal_pembelian" => $tanggal_pembelian,
 				"tanggal_expired"	=> $tanggal_expired[$i]
 			);
-			$this->Model_gudang->tambah_stok($stok);	
+			$this->Model_gudang->tambah_stok($stok);
 		}
 	
 		redirect('gudang/pembelian');
@@ -198,6 +205,43 @@ class Gudang extends CI_Controller {
 		);
 		$this->Model_gudang->return_barang($id, $data);
 		redirect('gudang/stok');
+	}
+
+	public function return_barang_all() {
+		$data['judul'] = 'Return Barang | Gudang';
+		$data['return_pembelian'] = $this->Model_gudang->return_pembelian();
+	
+		$this->load->view('gudang/return_pembelian', $data);
+	}
+
+	public function aksi_return_pembelian($id) {
+		$jumlah_return = $this->input->post('jumlah_return');
+		$data = array(
+			'id_detail_pembelian'	=> $id,
+			'jumlah_barang'			=> $jumlah_return,
+			'tanggal'				=> $this->input->post('tanggal_return'),
+			'memo'				=> $this->input->post('memo')
+		);
+		$id_pembelian = $this->Model_gudang->detail_pembelian_id($id)->id_pembelian;
+		$this->Model_gudang->aksi_return_pembelian($data);
+
+
+		$jumlah_barang = $this->Model_gudang->detail_pembelian_id($id)->jumlah_barang;
+		$data_jumlah_barang = array(
+			'jumlah_barang' => $jumlah_barang-$jumlah_return
+		);
+		$this->Model_gudang->update_detail_pembelian($id, $data_jumlah_barang);
+
+		$id_barang = $this->Model_gudang->detail_pembelian_id($id)->id_barang;
+		
+		$stok_awal = $this->Model_gudang->select_stok($id_pembelian, $id_barang)->stok_barang;
+		$data_stok = array(
+			'stok_barang' => $stok_awal-$jumlah_return
+		);
+		$this->db->where('id_pembelian', $id_pembelian);
+		$this->db->where('id_barang', $id_barang);
+		$this->db->update('tbl_stok', $data_stok);
+		redirect('gudang/detail_pembelian/'.$id_pembelian);
 	}
 
 	public function update_supplier($id) {
@@ -220,15 +264,10 @@ class Gudang extends CI_Controller {
 	}
 
 	public function update_stok($id) {
-		if($this->input->post('tanggal_return') == "") {
-			$tanggal_return = NULL;
-		} else {
-			$tanggal_return = $this->input->post('tanggal_return');
-		}
+	
 		$data = array(
 			'tanggal_expired' => $this->input->post('tanggal_expired'),
 			'stok_barang' => $this->input->post('stok_barang'),
-			'tanggal_return' => $tanggal_return
 		);
 		
 		$this->Model_gudang->update_stok($id, $data);
@@ -305,6 +344,11 @@ class Gudang extends CI_Controller {
 
 	public function supplier_all() {
 		$data = $this->Model_gudang->supplier();
+		echo json_encode($data);
+	}
+
+	public function return_pembelian_id($id) {
+		$data = $this->Model_gudang->return_pembelian_id($id);
 		echo json_encode($data);
 	}
 

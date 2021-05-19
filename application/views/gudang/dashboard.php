@@ -187,7 +187,7 @@
                         <?php endforeach; ?>
 						<?php else : ?>
                             <tr>
-                                <td colspan="2" class="text-center">
+                                <td colspan="3" class="text-center">
                                     Tidak ada Stok Tipis
                                 </td>
                             </tr>
@@ -216,13 +216,14 @@
                         <?php foreach ($return_terakhir as $rt) : ?>
                             <tr>
                                 <td><strong><?= $rt->nama_barang ?></strong></td>
-                                <td><?= $rt->stok_barang ?></td>
+                                <td><?= $rt->jumlah_barang
+                                 ?></td>
                                 <td><?= $rt->no_faktur ?></td>
                             </tr>
                         <?php endforeach; ?>
 						<?php else : ?>
                             <tr>
-                                <td colspan="2" class="text-center">
+                                <td colspan="3" class="text-center">
                                     Tidak ada Barang Return
                                 </td>
                             </tr>
