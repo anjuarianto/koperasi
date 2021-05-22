@@ -14,6 +14,15 @@ class Model_keuangan extends CI_Model {
 		return $query->result();
 	}
 
+    public function profile($id) {
+		$this->db->select('*');
+		$this->db->from('tbl_user');
+		$this->db->where('id_user', $id);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
     public function pemasukan() {
         $query = $this->db->get('tbl_pemasukan');
         return $query->result();
@@ -132,6 +141,7 @@ class Model_keuangan extends CI_Model {
         $this->db->from('tbl_simpan as simpan');
         $this->db->join('tbl_user as user', 'simpan.id_user = user.id_user');
         $this->db->where('simpan.id_user', $id);
+        $this->db->order_by('tanggal', 'desc');
         $query = $this->db->get();
         return $query->result();
     }
@@ -192,7 +202,7 @@ class Model_keuangan extends CI_Model {
         $this->db->select('user.id_user, user.kode_anggota, user.nama, pinjam.*');
         $this->db->from('tbl_user as user');
         $this->db->join('tbl_pinjam as pinjam', 'user.id_user = pinjam.id_user');
-        $this->db->where('user.level = 5');
+        $this->db->where('pinjam.id_pinjam', $id);
         $query = $this->db->get();
         return $query->row();
     }

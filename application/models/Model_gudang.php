@@ -8,6 +8,15 @@ class Model_gudang extends CI_Model {
 		$this->db->insert('tbl_barang', $data);
 	}
 
+	public function profile($id) {
+		$this->db->select('*');
+		$this->db->from('tbl_user');
+		$this->db->where('id_user', $id);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
 	public function barang()
 	{
 		$this->db->select('*');

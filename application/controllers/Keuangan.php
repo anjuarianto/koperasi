@@ -6,6 +6,8 @@ class Keuangan extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->model('Model_keuangan');
+        cek_login();
+		is_keuangan();
     }
     
     public function index() {
@@ -15,6 +17,28 @@ class Keuangan extends CI_Controller {
         $data['daftar_anggota'] = count($this->Model_keuangan->anggota());
         $this->load->view('keuangan/dashboard', $data);
     }
+
+    public function profile() {
+		$data = $this->Model_keuangan->profile($this->session->userdata('login_session')['id_user']);
+		$this->load->view('profile/profile', $data);
+	}
+
+	public function edit_profile() {
+		$data = $this->Model_keuangan->profile($this->session->userdata('login_session')['id_user']);
+		$this->load->view('profile/edit_profile', $data);
+	}
+
+	public function aksi_edit_profile($id) {
+		$data = array(
+			'nama' => $this->input->post('nama'),
+			'email' => $this->input->post('email'),
+			'satuan' => $this->input->post('satuan'),
+			'jabatan' => $this->input->post('jabatan'),
+		);
+		$this->db->where('id_user', $id);
+		$this->db->update('tbl_user', $data);
+		redirect('keuangan/profile');
+	}
 
     public function simpan() {
         $data['judul'] = 'Data Simpanan Anggota | Keuangan';
@@ -32,6 +56,7 @@ class Keuangan extends CI_Controller {
         $data['judul'] = 'Data Pinjaman Anggota | Keuangan';
         $data['pinjaman'] = $this->Model_keuangan->pinjam_id($id);
         $data['history_pinjam'] = $this->Model_keuangan->history_pinjam($id);
+        
         
         $this->load->view('keuangan/history_pinjam', $data);
     }
@@ -163,7 +188,7 @@ class Keuangan extends CI_Controller {
             'angsuran' => $this->input->post('angsuran')
         );
         $this->Model_keuangan->aksi_bayar_pinjam($data);
-        redirect('keuangan/pinjam/'.$id);
+        redirect('keuangan/history_pinjam/'.$id);
     }
 
     public function update_history_pinjam($id) {

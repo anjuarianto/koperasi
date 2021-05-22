@@ -16,18 +16,13 @@
 	<link
 		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 		rel="stylesheet">
-	<!-- selectpicker -->
-	
+
 	<!-- Custom styles for this template-->
 	<link href="<?=base_url()?>assets/css/sb-admin-2.min.css" rel="stylesheet">
-
-	<link href="<?=base_url()?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="<?=base_url()?>assets/vendorother/datatables/dataTables.dateTime.min.css">
-	<link rel="stylesheet" href="<?=base_url()?>assets/vendorother/typeahead/typeahead.css">
-	<style>
-		.typeahead { z-index: 1051; }
-	</style>
 	
+	<link rel="stylesheet" href="<?=base_url()?>assets/vendorother/datatables/dataTables.dateTime.min.css">	
+    <link href="<?=base_url()?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 </head>
 
 <body id="page-top">
@@ -51,58 +46,37 @@
 
 			<!-- Nav Item - Dashboard -->
 			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>gudang">
+				<a class="nav-link" href="<?=base_url()?>anggota">
 					<i class="fas fa-fw fa-tachometer-alt"></i>
 					<span>Dashboard</span></a>
 			</li>
 
-			<!-- Divider -->
-			<hr class="sidebar-divider">
 
-			<!-- Heading -->
+	
+	
+            <!-- Divider -->
+			<hr class="sidebar-divider">
+            <!-- Heading -->
 			<div class="sidebar-heading">
-				Gudang
+				Simpan Pinjam
 			</div>
 			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>gudang/barang">
-					<i class="fas fa-fw fa-folder"></i>
-					<span>Barang</span></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>gudang/supplier">
-					<i class="fas fa-fw fa-truck"></i>
-					<span>Supplier</span></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>gudang/stok">
-					<i class="fas fa-fw fa-layer-group"></i>
-					<span>Stok</span></a>
-			</li>
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseMaster" aria-expanded="true" aria-controls="collapseMaster">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Simpan Pinjam</span>
+                </a>
+                <div id="collapseMaster" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-light py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Simpan Pinjam:</h6>
+                        <a class="collapse-item" href="<?= base_url(); ?>anggota/simpan">Simpanan</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>anggota/pinjam">Pinjaman</a>
+                    </div>
+                </div>
+            </li>
+			
+	
 
-
-
-			<!-- Divider -->
-			<hr class="sidebar-divider">
-
-			<!-- Heading -->
-			<div class="sidebar-heading">
-				Transaksi
-			</div>
-
-			<!-- Nav Item - Pages Collapse Menu -->
-			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>gudang/pembelian">
-					<i class="fas fa-fw fa-cart-arrow-down"></i>
-					<span>Pembelian</span></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>gudang/return_barang_all">
-					<i class="fas fa-fw fa-cart-arrow-down"></i>
-					<span>Return Barang</span></a>
-			</li>
-
-		
-
+        
 
 			<!-- Divider -->
 			<hr class="sidebar-divider d-none d-md-block">
@@ -160,18 +134,16 @@
 						<li class="nav-item dropdown no-arrow">
 							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span
-									class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$this->session->userdata('login_session')['name'];?></span>
+								<span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$this->session->userdata('login_session')['name'];?></span>
 								<img class="img-profile rounded-circle" src="<?=base_url()?>assets/img/user.png">
 							</a>
 							<!-- Dropdown - User Information -->
 							<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
 								aria-labelledby="userDropdown">
-								<a class="dropdown-item" href="<?=base_url()?>gudang/profile">
+								<a class="dropdown-item" href="<?=base_url()?>anggota/profile">
 									<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
 									Profile
 								</a>
-							
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
 									<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

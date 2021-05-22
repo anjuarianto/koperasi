@@ -21,6 +21,8 @@ class Home extends CI_Controller {
 			redirect('keuangan');
 		} else if($this->session->userdata('login_session')['level'] == 7) {
 			redirect('keuangan');
+		} else if($this->session->userdata('login_session')['level'] == 5) {
+			redirect('anggota');
 		}
 	}
 
@@ -98,7 +100,7 @@ class Home extends CI_Controller {
 					'timestamp' => time()
 				);
 				$this->session->set_userdata('login_session', $userdata);
-
+				buat_log('User login ke dalam sistem', $user_db['id_user']);
 				// redirect user ke dashboard sesuai role
 				if($user_db['level'] == 2) {
 					redirect('gudang');
@@ -112,7 +114,10 @@ class Home extends CI_Controller {
 					redirect('keuangan');
 				} else if($user_db['level'] == 7) {
 					redirect('keuangan');
+				} else if($user_db['level'] == 5) {
+					redirect('anggota');
 				}
+				
 				
 			} else {
 				// password salah
@@ -128,6 +133,7 @@ class Home extends CI_Controller {
 
 	public function logout()
     {
+		buat_log('User logout dari sistem', $this->session->userdata('login_session')['id_user']);
 		$this->session->unset_userdata('login_session');
 		$this->session->sess_destroy();
 		redirect('home');	

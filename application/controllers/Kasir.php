@@ -23,6 +23,28 @@ class Kasir extends CI_Controller {
         $this->load->view('kasir/transaksi', $data);
     }
 
+    public function profile() {
+		$data = $this->Model_kasir->profile($this->session->userdata('login_session')['id_user']);
+		$this->load->view('profile/profile', $data);
+	}
+
+	public function edit_profile() {
+		$data = $this->Model_kasir->profile($this->session->userdata('login_session')['id_user']);
+		$this->load->view('profile/edit_profile', $data);
+	}
+
+	public function aksi_edit_profile($id) {
+		$data = array(
+			'nama' => $this->input->post('nama'),
+			'email' => $this->input->post('email'),
+			'satuan' => $this->input->post('satuan'),
+			'jabatan' => $this->input->post('jabatan'),
+		);
+		$this->db->where('id_user', $id);
+		$this->db->update('tbl_user', $data);
+		redirect('kasir/profile');
+	}
+
     
 
     public function bayar() {

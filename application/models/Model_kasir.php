@@ -45,6 +45,15 @@ class Model_kasir extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function profile($id) {
+		$this->db->select('*');
+		$this->db->from('tbl_user');
+		$this->db->where('id_user', $id);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
     
 
     public function supplier() {

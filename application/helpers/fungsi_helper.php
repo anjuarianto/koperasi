@@ -9,6 +9,15 @@ function cek_login()
     }
 }
 
+function buat_log($pesan, $id_user) {
+    $ci = get_instance();
+    $data = array(
+        'deskripsi' => $pesan,
+        'id_user' => $id_user,
+    );
+    $ci->db->insert('tbl_log', $data);
+}
+
 function is_operator()
 {
     $ci = get_instance();
@@ -27,7 +36,8 @@ function is_kasir()
 
 function is_keuangan() {
     $ci = get_instance();
-    if ($ci->session->userdata('login_session')['level'] != '4') {
+    $level = $ci->session->userdata('login_session')['level'];
+    if (!($level == '6' or $level == '7' or $level == '4') ) {
         redirect('errors/notfound');
     } 
 }
@@ -36,6 +46,13 @@ function is_admin()
 {
     $ci = get_instance();
     if($ci->session->userdata('login_session')['level'] != '1') {
+        redirect('errors/notfound');
+    }
+}
+
+function is_anggota() {
+    $ci = get_instance();
+    if($ci->session->userdata('login_session')['level'] != '5') {
         redirect('errors/notfound');
     }
 }
