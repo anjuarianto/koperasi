@@ -59,6 +59,10 @@ class Kasir extends CI_Controller {
         // Deklarasi Voucher
         if($id_voucher) {
             $voucher = implode(',', $id_voucher);
+            for($i=0;$i<count($id_voucher);$i++) {
+                $data_voucher = array('status' => 1);
+                $this->Model_kasir->update_voucher($id_voucher[$i], $data_voucher);
+            };
         } else {
             $voucher = null;
         }
@@ -72,10 +76,7 @@ class Kasir extends CI_Controller {
             'user'  => $this->session->userdata('login_session')['id_user']
         );
 
-        for($i=0;$i<count($id_voucher);$i++) {
-            $data_voucher = array('status' => 1);
-            $this->Model_kasir->update_voucher($id_voucher[$i], $data_voucher);
-        };
+        
         $this->Model_kasir->tambah_penjualan($penjualan);
 
         // Data insert ke table Detail Penjualan
@@ -93,6 +94,7 @@ class Kasir extends CI_Controller {
             $data = array('stok_barang' => $updateStok);
             $this->Model_kasir->update_stok($result['id_stok'], $data);
         }
+        $this->cetak_struk($id_barang, $jumlah_barang);
         redirect('kasir');
     }
 
@@ -173,8 +175,101 @@ class Kasir extends CI_Controller {
         $this->load->view('kasir/voucher', $data);
     }
 
-    public function cetak_struk() {
-        $this->load->view('kasir/cetak_struk');
+    public function cetak_struk($id_barang, $qty) {
+        
+        $this->load->library('escpos');
+
+        $nama_printer = "isi_nama_printer_disini";
+        // membuat connector printer ke shared printer bernama "printer_a" (yang telah disetting sebelumnya)
+        $connector = new Escpos\PrintConnectors\WindowsPrintConnector($nama_printer);
+ 
+        // membuat objek $printer agar dapat di lakukan fungsinya
+        $printer = new Escpos\Printer($connector);
+ 
+        // membuat fungsi untuk membuat 1 baris tabel, agar dapat dipanggil berkali-kali dgn mudah
+        function buatBaris4Kolom($kolom1, $kolom2, $kolom3, $kolom4) {
+            // Mengatur lebar setiap kolom (dalam satuan karakter)
+            $lebar_kolom_1 = 12;
+            $lebar_kolom_2 = 8;
+            $lebar_kolom_3 = 8;
+            $lebar_kolom_4 = 9;
+ 
+            // Melakukan wordwrap(), jadi jika karakter teks melebihi lebar kolom, ditambahkan \n 
+            $kolom1 = wordwrap($kolom1, $lebar_kolom_1, "\n", true);
+            $kolom2 = wordwrap($kolom2, $lebar_kolom_2, "\n", true);
+            $kolom3 = wordwrap($kolom3, $lebar_kolom_3, "\n", true);
+            $kolom4 = wordwrap($kolom4, $lebar_kolom_4, "\n", true);
+ 
+            // Merubah hasil wordwrap menjadi array, kolom yang memiliki 2 index array berarti memiliki 2 baris (kena wordwrap)
+            $kolom1Array = explode("\n", $kolom1);
+            $kolom2Array = explode("\n", $kolom2);
+            $kolom3Array = explode("\n", $kolom3);
+            $kolom4Array = explode("\n", $kolom4);
+ 
+            // Mengambil jumlah baris terbanyak dari kolom-kolom untuk dijadikan titik akhir perulangan
+            $jmlBarisTerbanyak = max(count($kolom1Array), count($kolom2Array), count($kolom3Array), count($kolom4Array));
+ 
+            // Mendeklarasikan variabel untuk menampung kolom yang sudah di edit
+            $hasilBaris = array();
+ 
+            // Melakukan perulangan setiap baris (yang dibentuk wordwrap), untuk menggabungkan setiap kolom menjadi 1 baris 
+            for ($i = 0; $i < $jmlBarisTerbanyak; $i++) {
+ 
+                // memberikan spasi di setiap cell berdasarkan lebar kolom yang ditentukan, 
+                $hasilKolom1 = str_pad((isset($kolom1Array[$i]) ? $kolom1Array[$i] : ""), $lebar_kolom_1, " ");
+                $hasilKolom2 = str_pad((isset($kolom2Array[$i]) ? $kolom2Array[$i] : ""), $lebar_kolom_2, " ");
+ 
+                // memberikan rata kanan pada kolom 3 dan 4 karena akan kita gunakan untuk harga dan total harga
+                $hasilKolom3 = str_pad((isset($kolom3Array[$i]) ? $kolom3Array[$i] : ""), $lebar_kolom_3, " ", STR_PAD_LEFT);
+                $hasilKolom4 = str_pad((isset($kolom4Array[$i]) ? $kolom4Array[$i] : ""), $lebar_kolom_4, " ", STR_PAD_LEFT);
+ 
+                // Menggabungkan kolom tersebut menjadi 1 baris dan ditampung ke variabel hasil (ada 1 spasi disetiap kolom)
+                $hasilBaris[] = $hasilKolom1 . " " . $hasilKolom2 . " " . $hasilKolom3 . " " . $hasilKolom4;
+            }
+ 
+            // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
+            return implode($hasilBaris, "\n") . "\n";
+        }   
+ 
+        // Membuat judul
+        $printer->initialize();
+        $printer->selectPrintMode(Escpos\Printer::MODE_DOUBLE_HEIGHT); // Setting teks menjadi lebih besar
+        $printer->setJustification(Escpos\Printer::JUSTIFY_CENTER); // Setting teks menjadi rata tengah
+        $printer->text("Nama Toko\n");
+        $printer->text("\n");
+ 
+        // Data transaksi
+        $printer->initialize();
+        $printer->text("Kasir : ".$nama_kasir."\n");
+        $printer->text("Waktu : ".date("d-m-Y h:i:s")."\n");
+ 
+        // Membuat tabel
+        $printer->initialize(); // Reset bentuk/jenis teks
+        $printer->text("----------------------------------------\n");
+        $printer->text(buatBaris4Kolom("Barang", "qty", "Harga", "Subtotal"));
+        $printer->text("----------------------------------------\n");
+        $total = 0;
+        for($i=0;$i<count($id_barang);$i++) {
+            $nama_barang = $this->Model_kasir->barang_id($id_barang[$i])["nama_barang"];
+            $harga_jual = $this->Model_kasir->barang_id($id_barang[$i])["harga_jual"];
+            $sub_total = (int)$qty[$i] * (int)$harga_jual;
+            $total += $sub_total;
+            $printer->text(buatBaris4Kolom($nama_barang, $qty[$i], $harga_jual, $sub_total));
+        };
+        
+        
+        $printer->text("----------------------------------------\n");
+        $printer->text(buatBaris4Kolom('', '', "Total", $total));
+        $printer->text("\n");
+ 
+         // Pesan penutup
+        $printer->initialize();
+        $printer->setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer->text("Terima kasih telah berbelanja\n");
+ 
+        $printer->feed(5); // mencetak 5 baris kosong agar terangkat (pemotong kertas saya memiliki jarak 5 baris dari toner)
+        $printer->close();
+        
     }
 
     public function barang_kode($input) {
