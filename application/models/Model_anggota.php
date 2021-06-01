@@ -88,5 +88,16 @@ class Model_anggota extends CI_Model {
         $query = $this->db->get();
         return $query->row();
     }
+    
+    public function history_transaksi($kode_anggota) {
+        $this->db->select('jual.*, sum(detail.jumlah_barang*barang.harga_jual) as total_harga_pembelian');
+        $this->db->from('tbl_penjualan as jual');
+        $this->db->join('tbl_detail_penjualan as detail', 'jual.id_penjualan = detail.id_penjualan');
+        $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+        $this->db->where('jual.kode_anggota', $kode_anggota);
+        $this->db->group_by('id_penjualan');
+        $query = $this->db->get();
+        return $query->result();
+    }
 
 }

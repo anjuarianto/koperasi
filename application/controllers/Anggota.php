@@ -18,6 +18,12 @@ class Anggota extends CI_Controller {
         $this->load->view('anggota/dashboard', $data);
     }
 
+    public function history_transaksi() {
+        $data['judul'] = 'History Transaksi';
+        $data['transaksi'] = $this->Model_anggota->history_transaksi($this->session->userdata('login_session')['kode_anggota']);
+        $this->load->view('anggota/history_transaksi', $data);
+    }
+
     public function profile() {
 		$data = $this->Model_anggota->profile($this->session->userdata('login_session')['id_user']);
 		$this->load->view('profile/profile', $data);

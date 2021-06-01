@@ -73,6 +73,12 @@
                     </div>
                 </div>
             </li>
+
+			<li class="nav-item">
+				<a class="nav-link" href="<?=base_url()?>anggota/history_transaksi">
+					<i class="fas fa-fw fa-tachometer-alt"></i>
+					<span>History Transaksi</span></a>
+			</li>
 			
 	
 
