@@ -11,16 +11,20 @@
 			<a href="<?=base_url();?>kasir/penjualan" class="btn btn-secondary btn-sm btn-icon-split"><span
 					class="icon text-white-50"><i class="fas fa-arrow-left"></i></span>
 				<span class="text">Kembali</span></a>
+				<?php if($penjualan != "") : ?>
 			<button class="btn btn-warning btn-sm btn-icon-split" data-toggle="modal"
 				onclick="modalEditPenjualan(<?=$penjualan->id_penjualan?>, '<?=base_url()?>')"
 				data-target="#modalEditPenjualan"><span class="icon text-white-50"><i class="fas fa-file"></i></span>
 				<span class="text">Edit</span></button>
+				<?php endif ?>
 				
 		</div>
 
 	</div>
 	<div class="card-body">
-
+	<?php if($penjualan == "" ) :?>
+	<h3>Tidak ada data ditemukan</h3>
+	<?php else : ?>
 		<table>
 			<tr>
 				<td>No. Struk</td>
@@ -125,6 +129,7 @@
 			</table>
 		</div>
 	</div>
+	<?php endif; ?>
 
 
 	<!-- Modal Detail Barang -->

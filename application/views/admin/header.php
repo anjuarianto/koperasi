@@ -57,10 +57,18 @@
 				Master Data
 			</div>
 			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>admin/user">
-					<i class="fas fa-fw fa-user"></i>
-					<span>User</span></a>
-			</li>
+                <a class="nav-link collapsed " href="#" data-toggle="collapse" data-target="#collapseMaster" aria-expanded="true" aria-controls="collapseMaster">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>User</span>
+                </a>
+                <div id="collapseMaster" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-light py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Simpan Pinjam:</h6>
+                        <a class="collapse-item" href="<?= base_url(); ?>admin/anggota">Anggota</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>admin/operator">Operator</a>
+                    </div>
+                </div>
+            </li>
 			<li class="nav-item">
 				<a class="nav-link" href="<?=base_url()?>admin/barang">
 					<i class="fas fa-fw fa-folder"></i>
@@ -76,29 +84,6 @@
 					<i class="fas fa-fw fa-credit-card"></i>
 					<span>Voucher</span></a>
 			</li>
-
-
-
-			<!-- Divider -->
-			<hr class="sidebar-divider">
-
-			<!-- Heading -->
-			<div class="sidebar-heading">
-				Transaksi
-			</div>
-
-			<!-- Nav Item - Pages Collapse Menu -->
-			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>admin/pengeluaran">
-					<i class="fas fa-fw fa-angle-double-right"></i>
-					<span>Pengeluaran</span></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="<?=base_url()?>admin/pemasukan">
-					<i class="fas fa-fw fa-angle-double-left"></i>
-					<span>Pemasukan</span></a>
-			</li>
-
 
 			<!-- Divider -->
 			<hr class="sidebar-divider d-none d-md-block">
@@ -163,15 +148,12 @@
 							<!-- Dropdown - User Information -->
 							<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
 								aria-labelledby="userDropdown">
-								<a class="dropdown-item" href="#">
-									<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-									Profile
-								</a>
-								<a class="dropdown-item" href="#">
+								
+								<a class="dropdown-item" href="<?=base_url()?>admin/db_sync">
 									<i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
 									Settings
 								</a>
-								<a class="dropdown-item" href="#">
+								<a class="dropdown-item" href="<?=base_url()?>admin/activity_log">
 									<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
 									Activity Log
 								</a>
@@ -182,12 +164,6 @@
 								</a>
 							</div>
 						</li>
-
 					</ul>
-
 				</nav>
-				<!-- End of Topbar -->
-				<div class="container-fluid mb-4 p-3 shadow bg-white">
-					<!-- Page Heading -->
-					<h1 class="h3 text-primary"><?=$judul?></h1>
-				</div>
+				

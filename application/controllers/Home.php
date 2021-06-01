@@ -133,7 +133,10 @@ class Home extends CI_Controller {
 
 	public function logout()
     {
-		buat_log('User logout dari sistem', $this->session->userdata('login_session')['id_user']);
+		if($this->session->userdata('login_session' != null)) {
+			buat_log('User logout dari sistem', $this->session->userdata('login_session')['id_user']);
+		}
+		
 		$this->session->unset_userdata('login_session');
 		$this->session->sess_destroy();
 		redirect('home');	

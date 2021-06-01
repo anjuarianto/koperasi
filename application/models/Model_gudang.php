@@ -31,7 +31,7 @@ class Model_gudang extends CI_Model {
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_stok as st', 'st.id_barang = b.id_barang', 'left');
 		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier');
-		$this->db->where('b.id_barang', $id);
+		$this->db->where('b.id_barang', (int)$id);
 		$this->db->group_by('id_barang');
 		$query = $this->db->get();
 		return $query->row();

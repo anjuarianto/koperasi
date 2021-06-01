@@ -176,10 +176,12 @@ class Kasir extends CI_Controller {
     }
 
     public function cetak_struk($id_barang, $qty) {
-        
+        // var_dump($id_barang);
+        // var_dump($qty);
+        // die;
         $this->load->library('escpos');
 
-        $nama_printer = "isi_nama_printer_disini";
+        $nama_printer = "printer_a";
         // membuat connector printer ke shared printer bernama "printer_a" (yang telah disetting sebelumnya)
         $connector = new Escpos\PrintConnectors\WindowsPrintConnector($nama_printer);
  
@@ -239,6 +241,7 @@ class Kasir extends CI_Controller {
         $printer->text("\n");
  
         // Data transaksi
+        $nama_kasir = $this->session->userdata('login_session')['name'];
         $printer->initialize();
         $printer->text("Kasir : ".$nama_kasir."\n");
         $printer->text("Waktu : ".date("d-m-Y h:i:s")."\n");

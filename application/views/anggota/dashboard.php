@@ -49,7 +49,7 @@
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-success text-uppercase mb-1">
 								SHU</div>
-							<div class="h5 mb-0 font-weight-bold text-gray-800"><?='Rp. '.number_format($shu->nilai_shu,0,',','.')?></div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800"><?= $shu == "" ?'Rp. 0' : 'Rp. '.number_format($shu->nilai_shu,0,',','.')  ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
