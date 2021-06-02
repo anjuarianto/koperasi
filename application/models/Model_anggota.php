@@ -100,4 +100,25 @@ class Model_anggota extends CI_Model {
         return $query->result();
     }
 
+    public function detail_penjualan($id) {
+        $this->db->select('detail.*, barang.id_barang, barang.nama_barang, barang.kode_barang, barang.harga_jual, (barang.harga_jual*detail.jumlah_barang) as harga_total_barang');
+        $this->db->from('tbl_detail_penjualan as detail');
+        $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang', 'left');
+        $this->db->where('detail.id_penjualan', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
+    public function penjualan_id($id) {
+        $this->db->select('jual.*, user.nama, sum(detail.jumlah_barang*barang.harga_jual) as total_harga_penjualan');
+        $this->db->from('tbl_penjualan as jual');
+        $this->db->join('tbl_detail_penjualan as detail', 'jual.id_penjualan = detail.id_penjualan');
+        $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+        $this->db->join('tbl_user as user', 'user.id_user = jual.user');
+        $this->db->where('jual.id_penjualan', $id);
+        $this->db->group_by('id_penjualan');
+        $query = $this->db->get();
+        return $query->row();
+    }
+
 }

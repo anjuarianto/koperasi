@@ -25,12 +25,21 @@ class Anggota extends CI_Controller {
     }
 
     public function profile() {
-		$data = $this->Model_anggota->profile($this->session->userdata('login_session')['id_user']);
+        $data['judul'] = 'Profile | Anggota';
+		$data['profile'] = $this->Model_anggota->profile($this->session->userdata('login_session')['id_user']);
 		$this->load->view('profile/profile', $data);
 	}
 
+    public function detail_transaksi($id) {
+        $data['penjualan'] = $this->Model_anggota->penjualan_id($id);
+        $data['detail_penjualan'] = $this->Model_anggota->detail_penjualan($id);
+        $this->load->view('anggota/detail_transaksi', $data);
+        
+    }
+
 	public function edit_profile() {
-		$data = $this->Model_anggota->profile($this->session->userdata('login_session')['id_user']);
+        $data['judul'] = 'Edit Profile | Anggota';
+		$data['profile'] = $this->Model_anggota->profile($this->session->userdata('login_session')['id_user']);
 		$this->load->view('profile/edit_profile', $data);
 	}
 

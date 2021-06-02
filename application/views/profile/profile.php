@@ -18,13 +18,12 @@ if($level_user == 2) {
     $role = 'Anggota';
     $this->load->view('anggota/header'); 
 }
-
 ?>
 
 <div class="card p-2 shadow-sm border-bottom-primary">
     <div class="card-header bg-white">
         <h4 class="h5 align-middle m-0 font-weight-bold text-primary">
-            <?=$nama?>
+            <?=$profile->nama?>
         </h4>
     </div>
     <div class="card-body">
@@ -38,19 +37,19 @@ if($level_user == 2) {
                 <table class="table">
                     <tr>
                         <th width="200"><?=$level_user == 5 ? 'NRP' : 'Username'?></th>
-                        <td><?=$kode_anggota?></td>
+                        <td><?=$profile->kode_anggota?></td>
                     </tr>
                     <tr>
                         <th>Email</th>
-                        <td><?=$email?></td>
+                        <td><?=$profile->email?></td>
                     </tr>
                     <tr>
                         <th>Satuan</th>
-                        <td><?=$satuan?></td>
+                        <td><?=$profile->satuan?></td>
                     </tr>
                     <tr>
                         <th>Jabatan</th>
-                        <td><?=$jabatan?></td>
+                        <td><?=$profile->jabatan?></td>
                     </tr>
                     <tr>
                         <th>Role</th>
@@ -70,7 +69,6 @@ if($level_user == 2) {
 } else if($level_user == 4 or $level_user == 6 or $level_user == 7) {
     $this->load->view('keuangan/footer'); 
 } else if($level_user == 5) {
-    $this->load->view('kasir/footer'); 
+    $this->load->view('anggota/footer'); 
 }
-
 ?>

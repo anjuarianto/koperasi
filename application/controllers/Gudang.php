@@ -26,12 +26,14 @@ class Gudang extends CI_Controller {
 	}
 
 	public function profile() {
-		$data = $this->Model_gudang->profile($this->session->userdata('login_session')['id_user']);
+		$data['judul'] = 'Profile | Gudang';
+		$data['profile'] = $this->Model_gudang->profile($this->session->userdata('login_session')['id_user']);
 		$this->load->view('profile/profile', $data);
 	}
 
 	public function edit_profile() {
-		$data = $this->Model_gudang->profile($this->session->userdata('login_session')['id_user']);
+		$data['judul'] = 'Edit Profile | Gudang';
+		$data['profile'] = $this->Model_gudang->profile($this->session->userdata('login_session')['id_user']);
 		$this->load->view('profile/edit_profile', $data);
 	}
 

@@ -79,8 +79,6 @@
 					<i class="fas fa-fw fa-tachometer-alt"></i>
 					<span>History Transaksi</span></a>
 			</li>
-			
-	
 
         
 

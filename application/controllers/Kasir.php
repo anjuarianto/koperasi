@@ -24,12 +24,14 @@ class Kasir extends CI_Controller {
     }
 
     public function profile() {
-		$data = $this->Model_kasir->profile($this->session->userdata('login_session')['id_user']);
+        $data['judul'] = 'Profile | Kasir';
+		$data['profile'] = $this->Model_kasir->profile($this->session->userdata('login_session')['id_user']);
 		$this->load->view('profile/profile', $data);
 	}
 
 	public function edit_profile() {
-		$data = $this->Model_kasir->profile($this->session->userdata('login_session')['id_user']);
+        $data['judul'] = 'Edit Profile | Kasir';
+		$data['profile'] = $this->Model_kasir->profile($this->session->userdata('login_session')['id_user']);
 		$this->load->view('profile/edit_profile', $data);
 	}
 

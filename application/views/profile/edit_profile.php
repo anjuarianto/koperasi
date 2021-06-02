@@ -29,7 +29,7 @@ if($level_user == 2) {
                 </h4>
             </div>
             <div class="card-body">
-                <form action="<?=base_url().$statusuri?>/aksi_edit_profile/<?=$id_user?>" method="post">
+                <form action="<?=base_url().$statusuri?>/aksi_edit_profile/<?=$profile->id_user?>" method="post">
                 <div class="row form-group">
                     <label class="col-md-3 text-md-right" for="foto">Foto</label>
                     <div class="col-md-9">
@@ -52,7 +52,7 @@ if($level_user == 2) {
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-fw fa-user"></i></span>
                             </div>
-                            <input value="<?=$kode_anggota?>" name="kode_anggota" disabled id="kode_anggota" type="text" class="form-control" placeholder="Username...">
+                            <input value="<?=$profile->kode_anggota?>" name="kode_anggota" disabled id="kode_anggota" type="text" class="form-control" placeholder="Username...">
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@ if($level_user == 2) {
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-fw fa-user"></i></span>
                             </div>
-                            <input value="<?=$nama?>" name="nama" id="nama" type="text" class="form-control" placeholder="Nama Anda...">
+                            <input value="<?=$profile->nama?>" name="nama" id="nama" type="text" class="form-control" placeholder="Nama Anda...">
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@ if($level_user == 2) {
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-fw fa-envelope"></i></span>
                             </div>
-                            <input value="<?=$email?>" name="email" id="email" type="text" class="form-control" placeholder="Email...">
+                            <input value="<?=$profile->email?>" name="email" id="email" type="text" class="form-control" placeholder="Email...">
                         </div>
                     </div>
                 </div>
@@ -86,7 +86,7 @@ if($level_user == 2) {
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-fw fa-user"></i></span>
                             </div>
-                            <input value="<?=$satuan?>" name="satuan" id="satuan" type="text" class="form-control" placeholder="Satuan...">
+                            <input value="<?=$profile->satuan?>" name="satuan" id="satuan" type="text" class="form-control" placeholder="Satuan...">
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@ if($level_user == 2) {
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-fw fa-user"></i></span>
                             </div>
-                            <input value="<?=$jabatan?>" name="jabatan" id="jabatan" type="text" class="form-control" placeholder="Jabatan...">
+                            <input value="<?=$profile->jabatan?>" name="jabatan" id="jabatan" type="text" class="form-control" placeholder="Jabatan...">
                         </div>
                     </div>
                 </div>

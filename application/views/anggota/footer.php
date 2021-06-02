@@ -138,36 +138,6 @@ function rubah(angka){
 
 		// custom option datatable
 		var table = $('#dataTable').DataTable({
-			"footerCallback": function ( row, data, start, end, display ) {
-            var api = this.api(), data;
- 
-            // Remove the formatting to get integer data for summation
-			
-            var intVal = function ( i ) {
-                return typeof i === 'string' ?
-                    i.replace(/\D/g, "")*1 :
-                    typeof i === 'number' ?
-                        i : 0;
-            };
-
-			total = api
-                .column(3)
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
-				console.log(total)
-
-				pageTotal = api
-                .column( 3, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
-
-				$( api.column( 3 ).footer() ).html('Rp. '+ rubah(total));
-       
-        },
 			"scrollY": "30rem",
 			"scrollCollapse": true,
 			buttons: [{
@@ -222,8 +192,6 @@ function rubah(angka){
 		$('#dataTable tbody').on('click', 'tr', function () {
 			const baseUrl = "<?=base_url()?>";
 			tampilDataTable(this, baseUrl);
-				
-	
 
 		});
 		// edit-button clicked
