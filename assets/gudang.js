@@ -10,7 +10,9 @@ function tampilDataTable(data, baseUrl) {
     } else if(info == "beli") {
         window.location.href = baseUrl+'gudang/detail_pembelian/'+id;
     } else if(info == "detail_pembelian") {
-        modalDetailPembelian(id, baseUrl)
+        modalDetailPembelian(id, baseUrl);
+    } else if(info == "rak") {
+        modalRak(id, baseUrl);
     }
     
 }
@@ -91,6 +93,24 @@ function modalSupplier(id, baseUrl) {
             $('#nama_supplier').val(response.nama_supplier);
             $('#alamat').val(response.alamat);
             $('#form-edit').attr("action", baseUrl+'gudang/update_supplier/'+id)
+            $('#modalEdit').modal('show');
+            $("#modalEdit .form-control").prop('disabled', true);
+
+            $("#btn-edit").attr('data-info', 'supplier');
+            $("#btn-edit").prop('disabled', false);
+            $("#btn-submit").prop('disabled', true);
+        }
+    });
+}
+
+function modalRak(id, baseUrl) {
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"gudang/rak_id/"+id,
+        dataType : "JSON",
+        success: function(response) {
+            $('#nama_rak').val(response.nama_rak);
+            $('#form-edit').attr("action", baseUrl+'gudang/update_rak/'+id)
             $('#modalEdit').modal('show');
             $("#modalEdit .form-control").prop('disabled', true);
 

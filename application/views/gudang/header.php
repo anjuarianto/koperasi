@@ -78,6 +78,11 @@
 					<i class="fas fa-fw fa-layer-group"></i>
 					<span>Stok</span></a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="<?=base_url()?>gudang/rak">
+					<i class="fas fa-fw fa-clipboard-list"></i>
+					<span>Rak</span></a>
+			</li>
 
 
 
@@ -106,6 +111,17 @@
 
 			<!-- Divider -->
 			<hr class="sidebar-divider d-none d-md-block">
+			<div class="sidebar-heading">
+				Transaksi
+			</div>
+
+			<!-- Nav Item - Pages Collapse Menu -->
+			<li class="nav-item">
+				<a class="nav-link" href="<?=base_url()?>gudang/print_harga">
+					<i class="fas fa-fw fa-cart-arrow-down"></i>
+					<span>Print Harga</span></a>
+			</li>
+
 
 			<!-- Sidebar Toggler (Sidebar) -->
 			<div class="text-center d-none d-md-inline">

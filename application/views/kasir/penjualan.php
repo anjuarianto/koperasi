@@ -5,7 +5,7 @@
 <!-- Main content -->
 <div class="card shadow border-bottom-primary">
 	<div class="card-header bg-primary">
-		<h6 class="m-0 font-weight-bold text-white">Tabel Daftar Penjualan</h6>
+		<h6 class="m-0 font-weight-bold text-white">Daftar Penjualan</h6>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
@@ -13,9 +13,10 @@
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 				<tr>
+				<th></th>
 				<th>No. Struk</th>
-					<th>Tanggal Pembelian</th>
-					<th>Total Harga Pembelian</th>
+					<th>Tanggal</th>
+					<th>Total Harga</th>
 					<th>Voucher</th>
 					<th>Nominal Uang</th>
 					<th>Kembalian</th>
@@ -24,8 +25,9 @@
 			<tbody>
 				<?php foreach ($penjualan as $p) : ?>
 				<tr data-info="penjualan" data-id="<?=$p->id_penjualan?>">
+				<td></td>
 				<td><?=$p->id_penjualan?></td>
-					<td><?=$p->tgl_penjualan;?></td>
+					<td><?=date('d-m-Y', strtotime($p->tgl_penjualan));?></td>
 					<td>Rp. <?=number_format($p->total_harga_pembelian, 2, ',', '.')?></td>
 					<td><?=$p->kode_voucher?></td>
 					<td>Rp. <?=number_format($p->nominal_uang, 2, ',','.')?></td>

@@ -17,6 +17,9 @@
 		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 		rel="stylesheet">
 
+	<link href="<?=base_url()?>assets/vendorother/alertify/css/alertify.min.css" rel="stylesheet">
+	<link href="<?=base_url()?>assets/vendorother/alertify/css/themes/bootstrap.min.css" rel="stylesheet">
+
 	<!-- Custom styles for this template-->
 	<link href="<?=base_url()?>assets/css/sb-admin-2.min.css" rel="stylesheet">
 
@@ -354,12 +357,12 @@
 						const jenisPembayaran = $('#jenis_pembayaran').val();
 						if(jenisPembayaran == 'Cash') {
 							if(nilaiNominalUang < nilaiGrandTotal) {
-							alert('Uang Kurang');
+								alertify.error('Uang Kurang');
 							return false;
 						}
 
 						if(nilaiSubTotal == 0) {
-							alert('Silahkan input barang terlebih dahulu');
+							alertify.error('Silahkan input barang terlebih dahulu');
 							return false;
 						}
 						}
@@ -385,7 +388,7 @@
 							success: function (response) {
 								// get data
 								if (response == null) {
-									alert('Data anggota tidak ditemukan')
+									alertify.error('Data anggota tidak ditemukan')
 								} else {
 									document.getElementById('detail-kode-anggota').innerHTML =
 										'<input type="hidden" name="kode_anggota" value="' + response.kode_anggota +
@@ -413,13 +416,15 @@
 									ubahJumlah(inputVal.get(0));
 								} else {
 									if (response.kode_barang == null) {
-										alert('Kode Barang tidak diketahui');
+										alertify.error('Kode Barang tidak diketahui');
 									} else {
 										functionTambahBarang();
 									}
 								}
+								$('#kode_barang').val('');
 							}
 						});
+						
 					}
 
 
@@ -428,10 +433,11 @@
 						const inputVoucher = $('#input-voucher').children();
 						// if () {
 							if(inputVoucher.find('input[value="'+kodeVoucher+'"]').length > 0) {
-								alert('Silahkan input voucher lain')
+								alertify.error('Silahkan input voucher lain')
 							} else {
 								tambahVoucher();
 							}
+							$('#id-voucher').val('');
 							
 						// }
 					}
@@ -448,7 +454,7 @@
 							dataType: "JSON",
 							success: function (response) {
 								if (response == null) {
-									alert('Data Voucher tidak ditemukan')
+									alertify.error('Data Voucher tidak ditemukan')
 								} else {
 									if (response.status == 0) {
 										inputVoucher.append(
@@ -458,7 +464,7 @@
 										voucher.html('Rp. ' + formatter.format(totalVoucher));
 										printGrandTotal();
 									} else {
-										alert('Voucher Sudah Digunakan')
+										alertify.error('Voucher Sudah Digunakan')
 									}
 
 								}

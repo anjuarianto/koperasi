@@ -286,7 +286,10 @@ class Keuangan extends CI_Controller {
         echo json_encode($data);
     }
 
-    
+    public function anggota_all() {
+        $data = $this->Model_keuangan->anggota();
+        echo json_encode($data);
+    }
 
 
 }

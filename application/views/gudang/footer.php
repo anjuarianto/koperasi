@@ -39,6 +39,7 @@
 
 <!-- Typehead -->
 <script src="<?=base_url()?>assets/vendorother/typeahead/typeahead.js"></script>
+<script src="<?=base_url()?>assets/vendorother/alertify/alertify.js"></script>
 <!-- Page level plugins -->
 <script src="<?=base_url()?>assets/vendorother/datatables/jquery.dataTables.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/dataTables.bootstrap4.min.js"></script>
@@ -101,7 +102,7 @@
 		$('#jenis_pembayaran').on('change', function() {
 			if($(this).val() == "Kredit") {
 				$('#jatuh_tempo').show();
-			} else if($(this).val() == "Cash") {
+			} else if($(this).val() == "Cash" || $(this).val() == "Konsiniasi") {
 				$('#jatuh_tempo').hide();
 			}
 		})
@@ -189,7 +190,7 @@
 
 		// custom option datatable
 		var table = $('#dataTable').DataTable({
-			"scrollY": "30rem",
+			// "scrollY": "30rem",
 			"scrollCollapse": true,
 			buttons: [{
 				extend: 'collection',

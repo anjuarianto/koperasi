@@ -65,6 +65,31 @@ class Gudang extends CI_Controller {
 		
 	}
 
+	public function rak() {
+		$data['judul'] = 'Daftar Rak | Gudang';
+		$data['rak'] = $this->Model_gudang->rak();
+		$data["script"] = "";
+		$this->load->view('gudang/rak', $data);
+	}
+
+	public function aksi_tambah_rak() {
+		$data = array(
+			'nama_rak'	=> $this->input->post('nama_rak')
+		);
+
+		$this->Model_gudang->tambah_rak($data);
+		redirect('gudang/rak');
+	}
+
+	public function update_rak($id) {
+		$data = array(
+			'nama_rak'	=> $this->input->post('nama_rak')
+		);
+
+		$this->Model_gudang->update_rak($id, $data);
+		redirect('gudang/rak');
+	}
+
 	public function aksi_tambah_barang() {
 
 		// validation start
@@ -373,6 +398,11 @@ class Gudang extends CI_Controller {
 
 	public function return_pembelian_id($id) {
 		$data = $this->Model_gudang->return_pembelian_id($id);
+		echo json_encode($data);
+	}
+
+	public function rak_id($id) {
+		$data = $this->Model_gudang->rak_id($id);
 		echo json_encode($data);
 	}
 

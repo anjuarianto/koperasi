@@ -1,13 +1,13 @@
 <?php $this->load->view('keuangan/header');?>
 
 <div class="card shadow mb-4 border-bottom-primary">
-	<div class="card-header py-3 bg-primary">
-		<h6 class="m-0 font-weight-bold text-white">Detail Pembelian</h6>
-	</div>
-	<div class="card-body">
-		<a href="<?=base_url();?>keuangan/simpan" class="btn btn-secondary btn-sm mt-2 mb-4 btn-icon-split"><span
+	<div class="card-header bg-primary d-flex justify-content-between">
+		<h6 class="m-0 font-weight-bold text-white my-auto">Detail Pembelian</h6>
+		<a href="<?=base_url();?>keuangan/simpan" class="btn btn-dark btn-sm btn-icon-split"><span
 				class="icon text-white-50"><i class="fas fa-arrow-left"></i></span>
 			<span class="text">Kembali</span></a>
+	</div>
+	<div class="card-body">
 		<table>
 			<tr>
 				<td>Nama Anggota</td>
@@ -77,9 +77,9 @@
 	<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
 		aria-hidden="true">
 		<div class="modal-dialog modal-dialog-scrollable" role="document">
-			<div class="modal-content">
+			<div class="modal-content border-bottom-primary">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalScrollableTitle">Input Simpanan</h5>
+					<h5 class="modal-title" id="exampleModalScrollableTitle">Detail Simpanan</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>

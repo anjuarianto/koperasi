@@ -1,21 +1,23 @@
 <?php $this->load->view('keuangan/header');?>
 <?php $saldo = $pinjaman->pinjaman?>
 <div class="card shadow mb-4 border-bottom-primary">
-	<div class="card-header py-3 bg-primary">
-		<h6 class="m-0 font-weight-bold text-white">Detail Pembelian</h6>
-	</div>
-	<div class="card-body">
-		<a href="<?=base_url();?>keuangan/pinjam" class="btn btn-secondary btn-sm mt-2 mb-4 btn-icon-split"><span
+	<div class="card-header bg-primary d-flex justify-content-between">
+		<h6 class="my-auto font-weight-bold text-white">Detail Pembelian</h6>
+		<div class="btn-group">
+		<a href="<?=base_url();?>keuangan/pinjam" class="btn btn-dark btn-sm ml-1 btn-icon-split"><span
 				class="icon text-white-50"><i class="fas fa-arrow-left"></i></span>
 			<span class="text">Kembali</span></a>
-		<button class="btn btn-success btn-sm mt-2 mb-4 btn-icon-split" data-toggle="modal" data-target="#modalHistoryPinjam"><span
+		<button class="btn btn-success btn-sm ml-1 btn-icon-split" data-toggle="modal" data-target="#modalHistoryPinjam"><span
 				class="icon text-white-50"><i class="fas fa-dollar-sign"></i></span>
 			<span class="text">Bayar</span></button>
 			<?php if($pinjaman->status == 0) : ?>
-			<a href="<?=base_url()?>keuangan/aksi_pinjam_lunas/<?=$pinjaman->id_pinjam?>" onclick="return confirm('Ubah status menjadi lunas?')" class="btn btn-warning btn-sm mt-2 mb-4 btn-icon-split"><span
+			<a href="<?=base_url()?>keuangan/aksi_pinjam_lunas/<?=$pinjaman->id_pinjam?>" onclick="return confirm('Ubah status menjadi lunas?')" class="btn btn-warning btn-sm ml-1 btn-icon-split"><span
 				class="icon text-white-50"><i class="fas fa-dollar-sign"></i></span>
 			<span class="text">Lunas</span></a>
 			<?php endif ?>
+		</div>
+	</div>
+	<div class="card-body">
 		<table>
 			<tr>
 				<td>Nama Anggota</td>
@@ -85,9 +87,9 @@
 	<div class="modal fade" id="modalHistoryPinjam" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable" role="document">
-		<div class="modal-content">
+		<div class="modal-content border-bottom-primary">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Pinjaman</h5>
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Bayar Cicilan</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -135,9 +137,9 @@
 <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable" role="document">
-		<div class="modal-content">
+		<div class="modal-content border-bottom-primary">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Pinjaman</h5>
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Detail Pinjaman</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>

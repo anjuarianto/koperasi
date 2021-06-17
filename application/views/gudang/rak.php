@@ -2,10 +2,10 @@
 
 <div class="card shadow mb-4 border-bottom-primary ">
 	<div class="card-header bg-primary d-flex justify-content-between">
-		<h6 class="m-0 font-weight-bold text-light my-auto">Tabel Supplier</h6>
+		<h6 class="m-0 font-weight-bold text-light my-auto">Tabel Rak</h6>
 		<button class="btn btn-sm btn-dark btn-icon-split" data-toggle="modal"
 				data-target="#modalInputSupplier"><span class="icon text-white-50"><i class="fas fa-plus"></i></span>
-				<span class="text">Tambah Supplier</span></button>
+				<span class="text">Tambah Rak</span></button>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
@@ -13,17 +13,15 @@
 				aria-describedby="dataTable_info" style="width: 100%;">
 				<thead class="thead-light">
 					<tr>
-						<th></th>
-						<th>Nama Supplier</th>
-						<th>Alamat</th>
+						<th>No. </th>
+						<th>Nama Rak</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($supplier as $s) : ?>
-					<tr data-info="supplier" data-id="<?=$s->id_supplier?>">
+					<?php foreach ($rak as $s) : ?>
+					<tr data-info="rak" data-id="<?=$s->id_rak?>">
 						<td></td>
-						<td><?=$s->nama_supplier;?></td>
-						<td><?=$s->alamat;?></td>
+						<td><?=$s->nama_rak;?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -40,24 +38,18 @@
 	<div class="modal-dialog modal-dialog-scrollable" role="document">
 		<div class="modal-content border-bottom-primary">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalScrollableTitle">Detail Supplier</h5>
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Detail Rak</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<form action="<?=base_url()?>gudang/aksi_tambah_supplier" method="post">
+				<form action="<?=base_url()?>gudang/aksi_tambah_rak" method="post">
 					<div class="form-group">
-						<label for="nama_supplier">Nama Supplier</label>
-						<input type="text" class="form-control" name="nama_supplier" placeholder="Nama Supplier"
+						<label for="nama_rak">Nama Rak</label>
+						<input type="text" name="nama_rak" placeholder="Nama Rak"
 							class="form-control" required autocomplete="off">
-						<span style="font-size: 10px; color: red"><?=form_error('nama_supplier')?></span>
-					</div>
-					<div class="form-group">
-						<label for="alamat">Alamat</label>
-						<textarea type="textarea" name="alamat" placeholder="Alamat" class="form-control"
-							value="<?=set_value('alamat')?>" rows="5"></textarea>
-						<span style="font-size: 10px; color: red"><?=form_error('alamat')?></span>
+						<span style="font-size: 10px; color: red"><?=form_error('nama_rak')?></span>
 					</div>
 			</div>
 			<div class="modal-footer">
@@ -75,7 +67,7 @@
 	<div class="modal-dialog modal-dialog-scrollable" role="document">
 		<div class="border-bottom-primary modal-content">
 			<div class="modal-header ">
-				<h5 class="modal-title" id="exampleModalScrollableTitle">Detail Supplier</h5>
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Detail Rak</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -83,21 +75,14 @@
 			<div class="modal-body">
 				<form method="post" id="form-edit">
 					<div class="form-group">
-						<label for="nama_supplier">Nama Supplier</label>
-						<input type="text" class="form-control" name="nama_supplier" id="nama_supplier"
-							placeholder="Nama Supplier" class="form-control" value="<?=set_value('nama_supplier')?>"
+						<label for="nama_rak">Nama Rak</label>
+						<input type="text" id="nama_rak" class="form-control" name="nama_rak" placeholder="Nama Rak" class="form-control" value="<?=set_value('nama_rak')?>"
 							disabled>
-						<span style="font-size: 10px; color: red"><?=form_error('nama_supplier')?></span>
-					</div>
-					<div class="form-group">
-						<label for="alamat">Alamat</label>
-						<textarea type="textarea" name="alamat" id="alamat" placeholder="Alamat" class="form-control"
-							value="<?=set_value('alamat')?>" rows="5" disabled></textarea>
-						<span style="font-size: 10px; color: red"><?=form_error('alamat')?></span>
+						<span style="font-size: 10px; color: red"><?=form_error('nama_rak')?></span>
 					</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" id="btn-edit" data-info="supplier">Edit</button>
+				<button type="button" class="btn btn-danger" id="btn-edit" data-info="rak">Edit</button>
 				<input type="submit" class="btn btn-primary" id="btn-submit" value="Simpan!" disabled="disabled">
 				</form>
 			</div>

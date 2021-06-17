@@ -68,6 +68,7 @@
 		<!-- Pending Requests Card Example -->
 		
 	</div>
+
 </div>
 <!-- /.container-fluid -->
 <?php $this->load->view('keuangan/footer');?>

@@ -18,7 +18,6 @@ function detailVoucher(data) {
         url: baseUrl+"kasir/voucher_id/"+id,
         dataType : "JSON",
         success: function(response) {
-            if(response.status == 0)
             $('#id_voucher').val(response.id_voucher);
             $('#nama_anggota').val(response.nama);
             $('#bulan').val(response.bulan);

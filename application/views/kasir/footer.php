@@ -37,6 +37,9 @@
 
 <!-- Typehead -->
 <script src="<?=base_url()?>assets/vendorother/typeahead/typeahead.js"></script>
+
+<!-- Alertify -->
+<script src="<?=base_url()?>assets/vendorother/alertify/alertify.js"></script>
 <!-- Page level plugins -->
 <script src="<?=base_url()?>assets/vendorother/datatables/jquery.dataTables.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/dataTables.bootstrap4.min.js"></script>
@@ -65,6 +68,7 @@
 				[1, 'asc']
 			]
 		});
+
 		
 		document.addEventListener("keydown", function (event) {
 			if (event.keyCode == 13) {

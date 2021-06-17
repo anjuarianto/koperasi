@@ -3,7 +3,7 @@
 <!-- end header -->
 <div class="card shadow border-bottom-primary mb-4">
 	<div class="card-header bg-primary">
-		<h6 class="m-0 font-weight-bold text-white">Tabel Barang</h6>
+		<h6 class="m-0 font-weight-bold text-white">Daftar Barang</h6>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">

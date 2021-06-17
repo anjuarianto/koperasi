@@ -45,7 +45,7 @@
 <div class="modal fade" id="modalInputPinjaman" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable" role="document">
-		<div class="modal-content">
+		<div class="modal-content border-bottom-primary">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Pinjaman</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -57,7 +57,7 @@
 					<div class="form-group">
 						<label for="kode_anggota">NRP</label>
                         <div class="input-group">
-                        <input type="text" name="kode_anggota" placeholder="NRP" class="form-control typeahead" autocomplete="off" data-provide="typeahead" required>
+                        <input type="text" name="kode_anggota" id="kode_anggota" placeholder="NRP" class="form-control typeahead" autocomplete="off" data-provide="typeahead" required>
                         <div class="input-group-append">
                         <button type="button" class="btn btn-outline-primary" id="btn-input-barang"><i
 										class="fas fa-search"></i></button>

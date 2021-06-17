@@ -72,9 +72,9 @@
 <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog" role="document">
-		<div class="modal-content">
+		<div class="modal-content border-bottom-primary">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Detail Barang</h5>
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Detail Stok</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>

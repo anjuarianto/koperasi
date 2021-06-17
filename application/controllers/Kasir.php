@@ -10,11 +10,6 @@ class Kasir extends CI_Controller {
     }
 
     public function index() {
-        // $data['judul'] = 'Dashboard | Kasir';
-		// $data['stok'] = $this->Model_kasir->jumlah_total_stok();
-		// $data['jumlah_transaksi'] = $this->Model_kasir->jumlah_transaksi();
-		// $data['barang'] = count($this->Model_kasir->barang());
-        // $this->load->view('kasir/dashboard', $data);
         
         $data['judul'] = 'Tampilan Kasir | Kasir';
         $data['no_struk'] = $this->Model_kasir->last_penjualan();
@@ -177,6 +172,7 @@ class Kasir extends CI_Controller {
         $this->load->view('kasir/voucher', $data);
     }
 
+
     public function cetak_struk($id_barang, $qty) {
         // var_dump($id_barang);
         // var_dump($qty);
@@ -194,9 +190,9 @@ class Kasir extends CI_Controller {
         function buatBaris4Kolom($kolom1, $kolom2, $kolom3, $kolom4) {
             // Mengatur lebar setiap kolom (dalam satuan karakter)
             $lebar_kolom_1 = 12;
-            $lebar_kolom_2 = 8;
-            $lebar_kolom_3 = 8;
-            $lebar_kolom_4 = 9;
+            $lebar_kolom_2 = 3;
+            $lebar_kolom_3 = 5;
+            $lebar_kolom_4 = 8;
  
             // Melakukan wordwrap(), jadi jika karakter teks melebihi lebar kolom, ditambahkan \n 
             $kolom1 = wordwrap($kolom1, $lebar_kolom_1, "\n", true);
@@ -239,7 +235,7 @@ class Kasir extends CI_Controller {
         $printer->initialize();
         $printer->selectPrintMode(Escpos\Printer::MODE_DOUBLE_HEIGHT); // Setting teks menjadi lebih besar
         $printer->setJustification(Escpos\Printer::JUSTIFY_CENTER); // Setting teks menjadi rata tengah
-        $printer->text("Nama Toko\n");
+        $printer->text("Primkop Tribuana\n");
         $printer->text("\n");
  
         // Data transaksi
@@ -250,9 +246,9 @@ class Kasir extends CI_Controller {
  
         // Membuat tabel
         $printer->initialize(); // Reset bentuk/jenis teks
-        $printer->text("----------------------------------------\n");
+        $printer->text("--------------------------------\n");
         $printer->text(buatBaris4Kolom("Barang", "qty", "Harga", "Subtotal"));
-        $printer->text("----------------------------------------\n");
+        $printer->text("--------------------------------\n");
         $total = 0;
         for($i=0;$i<count($id_barang);$i++) {
             $nama_barang = $this->Model_kasir->barang_id($id_barang[$i])["nama_barang"];
@@ -263,8 +259,8 @@ class Kasir extends CI_Controller {
         };
         
         
-        $printer->text("----------------------------------------\n");
-        $printer->text(buatBaris4Kolom('', '', "Total", $total));
+        $printer->text("--------------------------------\n");
+        $printer->text(buatBaris4Kolom('Total', '', "", $total));
         $printer->text("\n");
  
          // Pesan penutup
@@ -276,6 +272,70 @@ class Kasir extends CI_Controller {
         $printer->close();
         
     }
+
+    public function tes() {
+    // me-load library escpos
+    $this->load->library('escpos');
+ 
+    // membuat connector printer ke shared printer bernama "printer_a" (yang telah disetting sebelumnya)
+    $connector = new Escpos\PrintConnectors\WindowsPrintConnector("192.168.43.253/printer_a");
+
+    // membuat objek $printer agar dapat di lakukan fungsinya
+    $printer = new Escpos\Printer($connector);
+
+
+    /* ---------------------------------------------------------
+     * Teks biasa | text()
+     */
+    $printer->initialize();
+    $printer->text("Ini teks biasa \n");
+    $printer->text("\n");
+
+    /* ---------------------------------------------------------
+     * Select print mode | selectPrintMode()
+     */
+    // Printer::MODE_FONT_A
+    $printer->initialize();
+    $printer->selectPrintMode(Escpos\Printer::MODE_FONT_A);
+    $printer->text("teks dengan MODE_FONT_A \n");
+    $printer->text("\n");
+
+    // Printer::MODE_FONT_B
+    $printer->initialize();
+    $printer->selectPrintMode(Escpos\Printer::MODE_FONT_B);
+    $printer->text("teks dengan MODE_FONT_B \n");
+    $printer->text("\n");
+
+    // Printer::MODE_EMPHASIZED
+    $printer->initialize();
+    $printer->selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+    $printer->text("teks dengan MODE_EMPHASIZED \n");
+    $printer->text("\n");
+
+    // Printer::MODE_DOUBLE_HEIGHT
+    $printer->initialize();
+    $printer->selectPrintMode(Escpos\Printer::MODE_DOUBLE_HEIGHT);
+    $printer->text("teks dengan MODE_DOUBLE_HEIGHT \n");
+    $printer->text("\n");
+
+    // Printer::MODE_DOUBLE_WIDTH
+    $printer->initialize();
+    $printer->selectPrintMode(Escpos\Printer::MODE_DOUBLE_WIDTH);
+    $printer->text("teks dengan MODE_DOUBLE_WIDTH \n");
+    $printer->text("\n");
+
+    // Printer::MODE_UNDERLINE
+    $printer->initialize();
+    $printer->selectPrintMode(Escpos\Printer::MODE_UNDERLINE);
+    $printer->text("teks dengan MODE_UNDERLINE \n");
+    $printer->text("\n");
+
+    /* ---------------------------------------------------------
+     * Menyelesaikan printer
+     */
+    $printer->feed(4); // mencetak 2 baris kosong, agar kertas terangkat ke atas
+    $printer->close();
+}
 
     public function barang_kode($input) {
 		$data = $this->Model_kasir->barang_kode($input);

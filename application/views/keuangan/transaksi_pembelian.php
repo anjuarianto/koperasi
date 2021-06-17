@@ -72,9 +72,9 @@
 <div class="modal fade" id="modalPembelian" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable" role="document">
-		<div class="modal-content">
+		<div class="modal-content border-bottom-primary">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalScrollableTitle">Input Pinjaman</h5>
+				<h5 class="modal-title" id="exampleModalScrollableTitle">Verifikasi Lunas</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -82,7 +82,7 @@
 			<div class="modal-body">
 				<p>Verifikasi Transaksi Ini Sudah Lunas?</p>
 			<div class="modal-footer">
-			<a class="btn btn-dark btn-sm ml-auto my-0 btn-icon-split" id="btn-verif-lunas"><span class="icon text-white-50"><i class="fas fa-dollar-sign"></i></span>
+			<a class="btn btn-primary btn-sm ml-auto my-0 btn-icon-split" id="btn-verif-lunas"><span class="icon text-white-50"><i class="fas fa-dollar-sign"></i></span>
 			<span class="text">Verifikasi Lunas</span></a>
 		
 		

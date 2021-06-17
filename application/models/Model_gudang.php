@@ -17,11 +17,34 @@ class Model_gudang extends CI_Model {
 		return $query->row();
 	}
 
+	public function rak() {
+		$query = $this->db->get('tbl_rak');
+
+		return $query->result();
+	}
+
+	public function rak_id($id) {
+		$this->db->where('id_rak', $id);
+		$query = $this->db->get('tbl_rak');
+
+		return $query->row();
+	}
+
+	public function tambah_rak($data) {
+		$this->db->insert('tbl_rak', $data);
+	}
+
+	public function update_rak($id, $data) {
+		$this->db->where('id_rak', $id);
+		$this->db->update('tbl_rak', $data);
+	}
+
 	public function barang()
 	{
 		$this->db->select('*');
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier');
+		$this->db->join('tbl_rak as r', 'r.id_rak = b.rak');
 		$query = $this->db->get();
         return $query->result();
 	}
@@ -60,10 +83,11 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function detail_barang() {
-		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, kode_barang, harga_beli, harga_jual, (select sum(stok_barang) from tbl_stok where id_barang = st.id_barang group by id_barang) as total_stok');
+		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, kode_barang,r.nama_rak, harga_beli, harga_jual, (select sum(stok_barang) from tbl_stok where id_barang = st.id_barang group by id_barang) as total_stok');
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_stok as st', 'st.id_barang = b.id_barang', 'left');
 		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier', 'left');
+		$this->db->join('tbl_rak as r', 'r.id_rak = b.id_rak', 'left');
 		$this->db->group_by('id_barang');
 		$query = $this->db->get();
 		return $query->result();

@@ -96,26 +96,27 @@ function rubah(angka){
     }
 );
 	$(document).ready(function () {
-		$('#input_barang').typeahead({
+		$('#kode_anggota').typeahead({
 			source: function (query, process) {
 				states = [];
 				map = {};
 				hasil = [];
 				data = [];
-				$.getJSON('<?=base_url()?>gudang/barang_all', function (barang) {
-					$.each(barang, function (key, val) {
+				$.getJSON('<?=base_url()?>keuangan/anggota_all', function (anggota) {
+					console.log(anggota);
+					$.each(anggota, function (key, val) {
 						data.push(val);
 					});
-					$.each(data, function (i, barang) {
-						const hasil = barang.nama_barang + ' | ' + barang.kode_barang;
-						map[hasil] = barang;
+					$.each(data, function (i, anggota) {
+						const hasil = anggota.kode_anggota + ' | ' + anggota.nama;
+						map[hasil] = anggota;
 						states.push(hasil);
 					});
 					process(states);
 				});
 			},
 			updater: function (item) {
-				selectedItem = map[item].kode_barang;
+				selectedItem = map[item].kode_anggota;
 				return selectedItem;
 			}
 		});
