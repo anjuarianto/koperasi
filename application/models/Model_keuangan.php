@@ -123,6 +123,17 @@ class Model_keuangan extends CI_Model {
         return $query->result();
     }
 
+    public function voucher_keluar() {
+        $this->db->select('jual.id_penjualan, jual.tgl_penjualan, jual.kode_anggota, jual.kode_voucher, sum(detail.jumlah_barang*barang.harga_jual) as total_harga_penjualan');
+        $this->db->from('tbl_penjualan as jual');
+        $this->db->join('tbl_detail_penjualan as detail', 'jual.id_penjualan = detail.id_penjualan');
+        $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+        $this->db->group_by('id_penjualan');
+        $this->db->where('kode_voucher IS NOT NULL');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function shu() {
         $this->db->select('shu.*, user.nama, user.kode_anggota,  user.id_user');
         $this->db->from('tbl_shu as shu');

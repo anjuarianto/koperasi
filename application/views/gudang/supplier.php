@@ -49,13 +49,13 @@
 				<form action="<?=base_url()?>gudang/aksi_tambah_supplier" method="post">
 					<div class="form-group">
 						<label for="nama_supplier">Nama Supplier</label>
-						<input type="text" class="form-control" name="nama_supplier" placeholder="Nama Supplier"
-							class="form-control" required autocomplete="off">
+						<input type="text" class="form-control kapital" name="nama_supplier" placeholder="Nama Supplier"
+							required autocomplete="off">
 						<span style="font-size: 10px; color: red"><?=form_error('nama_supplier')?></span>
 					</div>
 					<div class="form-group">
 						<label for="alamat">Alamat</label>
-						<textarea type="textarea" name="alamat" placeholder="Alamat" class="form-control"
+						<textarea type="textarea" name="alamat" placeholder="Alamat" class="form-control kapital"
 							value="<?=set_value('alamat')?>" rows="5"></textarea>
 						<span style="font-size: 10px; color: red"><?=form_error('alamat')?></span>
 					</div>
@@ -84,14 +84,14 @@
 				<form method="post" id="form-edit">
 					<div class="form-group">
 						<label for="nama_supplier">Nama Supplier</label>
-						<input type="text" class="form-control" name="nama_supplier" id="nama_supplier"
-							placeholder="Nama Supplier" class="form-control" value="<?=set_value('nama_supplier')?>"
+						<input type="text" class="form-control kapital" name="nama_supplier" id="nama_supplier"
+							placeholder="Nama Supplier" value="<?=set_value('nama_supplier')?>"
 							disabled>
 						<span style="font-size: 10px; color: red"><?=form_error('nama_supplier')?></span>
 					</div>
 					<div class="form-group">
 						<label for="alamat">Alamat</label>
-						<textarea type="textarea" name="alamat" id="alamat" placeholder="Alamat" class="form-control"
+						<textarea type="textarea" name="alamat" id="alamat" placeholder="Alamat" class="form-control kapital"
 							value="<?=set_value('alamat')?>" rows="5" disabled></textarea>
 						<span style="font-size: 10px; color: red"><?=form_error('alamat')?></span>
 					</div>

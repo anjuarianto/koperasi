@@ -76,7 +76,7 @@ class Admin extends CI_Controller {
 
         move_uploaded_file($file_name_with_full_path, $url_dir);
 
-        $post = array('extra_info' => '123456','file_contents'=> $cFile);;
+        $post = array('extra_info' => '123456','file_contents'=> $cFile);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST,1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);

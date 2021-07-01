@@ -290,7 +290,6 @@
 		const row = val.parentElement.parentElement.parentElement;
 		const valQty = row.cells[2].children[0].value;
 		const valDisc = row.cells[3].children.item(0).children[0].value;
-		console.log(valDisc)
 		const idBarang = row.getAttribute("data-id-barang");
 		$.ajax({
 			type: "POST",

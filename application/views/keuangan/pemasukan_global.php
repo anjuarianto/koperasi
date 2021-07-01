@@ -87,7 +87,9 @@
 					<div class="form-group <?=form_error('nama_barang') ? 'has-error' : null ?>">
 						<label for="deskripsi_pemasukan">Deskripsi Pemasukan</label>
 						<select class="form-control" name="deskripsi_pemasukan">
-							<option value="Contoh Deskripsi Pemasukan Satu">Contoh Deskripsi Pemasukan Satu</option>
+						<option value="Pemasukan Sewa Kios">Pemasukan Sewa Kios</option>
+							<option value="Pemasukan Voucher Dari Pusat">Pemasukan Voucher Dari Pusat</option>
+							<option value="Contoh Deskripsi Pemasukan Satu">Pemasukan Lain Lain</option>
 						</select>
 					</div>
 					<div class="form-group">

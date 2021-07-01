@@ -98,8 +98,11 @@ class Keuangan extends CI_Controller {
         $this->load->view('keuangan/transaksi_pembelian', $data);
     }
 
-    public function verifikasi_kredit() {
-        
+    public function voucher_keluar() {
+        $data['judul'] = 'Daftar Voucher Keluar | Keuangan';
+        $data['penjualan'] = $this->Model_keuangan->voucher_keluar();
+       
+        $this->load->view('keuangan/voucher_keluar', $data);
     }
 
     public function pengeluaran() {

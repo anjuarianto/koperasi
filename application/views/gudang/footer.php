@@ -62,11 +62,12 @@
 <!-- Custom scripts for all pages-->
 <script src="<?=base_url()?>assets/js/sb-admin-2.min.js"></script>
 <script>
+	const baseUrl = "<?=base_url()?>";
 	$.fn.dataTable.ext.search.push(
 		function (settings, data, dataIndex) {
 			var min, max;
 			var filterColumn;
-			
+
 			if ($('#filterColumn').length) {
 				filterColumn = $('#filterColumn').val();
 			} else {
@@ -84,9 +85,9 @@
 			} else {
 				max = null;
 			}
-			
+
 			var date = moment.utc(data[filterColumn], 'DD-MM-YYYY');
-		
+
 			if (
 				(min === null && max === null) ||
 				(min === null && date <= max) ||
@@ -98,15 +99,62 @@
 			return false;
 		}
 	);
+
 	$(document).ready(function () {
-		$('#jenis_pembayaran').on('change', function() {
-			if($(this).val() == "Kredit") {
+		$('#jenis_pembayaran').on('change', function () {
+			if ($(this).val() == "Kredit") {
 				$('#jatuh_tempo').show();
-			} else if($(this).val() == "Cash" || $(this).val() == "Konsiniasi") {
+			} else if ($(this).val() == "Cash" || $(this).val() == "Konsiniasi") {
 				$('#jatuh_tempo').hide();
 			}
-		})
-		
+		});
+
+		$('input[type=text], textarea').on('input', function () {
+			this.value = this.value.toUpperCase();
+		});
+
+		$('#kategori').on('change', function () {
+			$('#pilihan_kategori').html('');	
+			if ($(this).val() == "all") {
+				$('#container-pilihan').hide();
+
+			} else if ($(this).val() == "rak") {
+				$('#container-pilihan').show();
+				// disini kasih request ajax
+				$.ajax({
+					type: "POST",
+					url: baseUrl + "gudang/rak_all",
+					dataType: "JSON",
+					success: function (response) {
+						// get data
+						response.forEach(element => {
+							$('#pilihan_kategori')
+								.append('<option value="'+ element.id_rak +'">'+ element.nama_rak +'</option>')
+						});
+					}
+
+				});
+			} else if ($(this).val() == "supplier") {
+				$('#container-pilihan').show();
+				$.ajax({
+					type: "POST",
+					url: baseUrl + "gudang/supplier_all",
+					dataType: "JSON",
+					success: function (response) {
+	
+						response.forEach(element => {
+							$('#pilihan_kategori')
+								.append('<option value="'+ element.id_supplier +'">'+ element.nama_supplier +'</option>')
+						});
+					}
+				});
+			} else if ($(this).val() == "custom") {
+				$('#container-pilihan').show();
+			}
+		});
+
+
+
 		$('#input_barang').typeahead({
 			source: function (query, process) {
 				states = [];
@@ -142,7 +190,8 @@
 						data.push(val);
 					});
 					$.each(data, function (i, supplier) {
-						const hasil = supplier.nama_supplier + ' | ' + supplier.id_supplier;
+						const hasil = supplier.nama_supplier + ' | ' + supplier
+							.id_supplier;
 						map[hasil] = supplier;
 						states.push(hasil);
 					});
@@ -189,7 +238,7 @@
 		});
 
 		// custom option datatable
-		var table = $('#dataTable').DataTable({
+		var table = $('#dataTable, #dataTable2').DataTable({
 			// "scrollY": "30rem",
 			"scrollCollapse": true,
 			buttons: [{

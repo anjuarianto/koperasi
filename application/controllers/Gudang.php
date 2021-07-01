@@ -60,6 +60,7 @@ class Gudang extends CI_Controller {
 		$data['judul'] = 'Daftar Barang | Gudang';
 		$data['barang'] = $this->Model_gudang->detail_barang();
 		$data['supplier'] = $this->Model_gudang->supplier();
+		$data['stok'] = $this->Model_gudang->stok_barang();
 		$data["script"] = "";
 		$this->load->view('gudang/barang', $data);
 		
@@ -347,8 +348,22 @@ class Gudang extends CI_Controller {
 		redirect('gudang/detail_pembelian/'.$id);
 	}
 
-	public function test() {
-		$this->load->view('test');
+	public function print_harga() {
+		$data['judul'] = "Cetak Harga | Gudang";
+		$data['rak'] = $this->Model_gudang->rak();
+		$data['supplier'] = $this->Model_gudang->supplier();
+		$data['barang'] = $this->Model_gudang->barang();
+		$this->load->view('gudang/print_harga', $data);
+	}
+
+	public function print_view() {
+		
+		$kategori = $this->input->post('kategori');
+		$param = $this->input->post('param');
+
+		$data['barang'] = $this->Model_gudang->print_barang($kategori, $param);
+
+		$this->load->view('gudang/cetak_harga', $data);
 	}
 
 	public function cetak_harga($id) {
@@ -403,6 +418,11 @@ class Gudang extends CI_Controller {
 
 	public function rak_id($id) {
 		$data = $this->Model_gudang->rak_id($id);
+		echo json_encode($data);
+	}
+
+	public function rak_all() {
+		$data = $this->Model_gudang->rak_all();
 		echo json_encode($data);
 	}
 

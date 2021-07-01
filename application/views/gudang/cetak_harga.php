@@ -89,15 +89,19 @@
 </head>
 
 <body>
-	<div class="border">
+<?php foreach ($barang as $b) : ?>
+    <div class="border">
 		<div class="harga-barang">
-			Rp. <?=number_format($harga_jual, 0, ',', '.')?>
+            <?=$b->nama_barang?>
 		</div>
         <hr>
 		<div class="nama-barang">
-			<?=$nama_barang?>
+            Rp. <?=number_format($b->harga_jual, 0, ',', '.')?>
+			
 		</div>
 	</div>
+<?php endforeach ?>
+	
 </body>
 
 <script>

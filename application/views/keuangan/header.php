@@ -101,6 +101,7 @@
 						<?php if($this->session->userdata('login_session')['level'] == 4)  : ?>
                         <a class="collapse-item" href="<?= base_url(); ?>keuangan/pengeluaran">Pengeluaran</a>
                         <a class="collapse-item" href="<?= base_url(); ?>keuangan/transaksi_pembelian">Transaksi Pembelian</a>
+						<a class="collapse-item" href="<?= base_url(); ?>keuangan/voucher_keluar">Voucher</a>
 						<?php endif; ?>
 						<?php if($this->session->userdata('login_session')['level'] == 7)  : ?>
 						<a class="collapse-item" href="<?= base_url(); ?>keuangan/transaksi_pembelian_kredit">Transaksi (Kredit)</a>

@@ -30,6 +30,13 @@ class Model_gudang extends CI_Model {
 		return $query->row();
 	}
 
+	public function rak_all() {
+		
+		$query = $this->db->get('tbl_rak');
+
+		return $query->result();
+	}
+
 	public function tambah_rak($data) {
 		$this->db->insert('tbl_rak', $data);
 	}
@@ -39,12 +46,27 @@ class Model_gudang extends CI_Model {
 		$this->db->update('tbl_rak', $data);
 	}
 
+	public function print_barang($kategori, $param) {
+		if($kategori == "supplier") {
+			$this->db->where('id_supplier', $param);	
+		} else if($kategori == "rak") {
+			$this->db->where('id_rak', $param);
+		} else if($kategori == "custom") {
+			
+		}
+		
+		$this->db->select('b.id_barang, b.nama_barang, b.harga_jual');
+		$this->db->from('tbl_barang as b');
+			
+		$query = $this->db->get();
+        return $query->result();
+	}
+
 	public function barang()
 	{
 		$this->db->select('*');
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier');
-		$this->db->join('tbl_rak as r', 'r.id_rak = b.rak');
 		$query = $this->db->get();
         return $query->result();
 	}
