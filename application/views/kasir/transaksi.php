@@ -25,6 +25,12 @@
 
 	<link href="<?=base_url()?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+	<style>
+		body {
+			background: #f8f9fc;
+		}
+	</style>
+
 </head>
 
 <body id="page-top">

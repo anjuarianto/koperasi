@@ -95,12 +95,12 @@ class WindowsPrintConnector implements PrintConnector
     /**
      * Valid printer name.
      */
-    const REGEX_PRINTERNAME = "/^[\d\w-]+(\s[\d\w-]+)*$/";
+    const REGEX_PRINTERNAME = "/^[\d\w\-]+(\s[\d\w\-]+)*$/";
 
     /**
      * Valid smb:// URI containing hostname & printer with optional user & optional password only.
      */
-    const REGEX_SMB = "/^smb:\/\/([\s\d\w-]+(:[\s\d\w-+]+)?@)?([\d\w-]+\.)*[\d\w-]+\/([\d\w-]+\/)?[\d\w-]+(\s[\d\w-]+)*$/";
+    const REGEX_SMB = "/^smb:\/\/([\s\d\w\-]+(:[\s\d\w\-+]+)?@)?([\d\w\-]+\.)*[\d\w\-]+\/([\d\w\-]+\/)?[\d\w\-]+(\s[\d\w\-]+)*$/";
 
     /**
      * @param string $dest
@@ -170,7 +170,7 @@ class WindowsPrintConnector implements PrintConnector
         $data = implode($this -> buffer);
         $this -> buffer = null;
             $this -> finalizeWin($data);
-            die;
+            // die;
         if ($this -> platform == self::PLATFORM_WIN) {
         } elseif ($this -> platform == self::PLATFORM_LINUX) {
             $this -> finalizeLinux($data);

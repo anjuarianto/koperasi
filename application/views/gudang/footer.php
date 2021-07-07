@@ -62,7 +62,6 @@
 <!-- Custom scripts for all pages-->
 <script src="<?=base_url()?>assets/js/sb-admin-2.min.js"></script>
 <script>
-	const baseUrl = "<?=base_url()?>";
 	$.fn.dataTable.ext.search.push(
 		function (settings, data, dataIndex) {
 			var min, max;

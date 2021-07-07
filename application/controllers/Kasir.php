@@ -228,7 +228,7 @@ class Kasir extends CI_Controller {
             }
  
             // Hasil yang berupa array, disatukan kembali menjadi string dan tambahkan \n disetiap barisnya.
-            return implode($hasilBaris, "\n") . "\n";
+            return implode("\n", $hasilBaris) . "\n";
         }   
  
         // Membuat judul
@@ -267,7 +267,8 @@ class Kasir extends CI_Controller {
         $printer->initialize();
         $printer->setJustification(Escpos\Printer::JUSTIFY_CENTER);
         $printer->text("Terima kasih telah berbelanja\n");
- 
+
+        
         $printer->feed(5); // mencetak 5 baris kosong agar terangkat (pemotong kertas saya memiliki jarak 5 baris dari toner)
         $printer->close();
         

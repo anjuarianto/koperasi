@@ -46,67 +46,7 @@
 </div>
 
 <!-- end datatable -->
-<!-- datatable stok -->
-<div class="card shadow mb-4 border-bottom-primary">
-	<div class="card-header bg-primary">
-		<h6 class="m-0 font-weight-bold text-white">Tabel Stok</h6>
-	</div>
-	<div class="card-body">
-		<div class="row w-20">
-			<div class="form-group col-sm-2">
-				<select class="form-control form-control-sm" id="filterColumn">
-					<option value="1">Tanggal Pembelian</option>
-					<option value="4">Tanggal Expired</option>
-				</select>
-			</div>
-			<span> From </span>
-			<div class="form-group col-sm-2 mx-2">
-				<div class="input-group">
-					<div class="input-group-prepend">
-						<div class="input-group-text"><i class="fas fa-calendar"></i></div>
-					</div>
 
-					<input type="text" id="min" class="form-control form-control-sm ">
-				</div>
-			</div>
-			<span> to </span>
-			<div class="form-group col-sm-2 mx-2">
-				<div class="input-group">
-					<div class="input-group-prepend">
-						<div class="input-group-text"><i class="fas fa-calendar"></i></div>
-					</div>
-					<input type="text" id="max" class="form-control form-control-sm ">
-				</div>
-			</div>
-		</div>
-
-		<div class="table-responsive">
-			<table class="table table-sm table-hover table-striped dataTable" id="dataTable2" width="100%"
-				cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
-				<thead class="thead-light">
-					<tr>
-						<th>No</th>
-						<th>Tanggal Pembelian</th>
-						<th>Nama Barang</th>
-						<th>Stok Barang</th>
-						<th>Tanggal Expired</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ($stok as $s) : ?>
-					<tr data-info="stok" data-id="<?=$s->id_stok?>">
-						<td></td>
-						<td><?=date('d-m-Y', strtotime($s->tanggal_pembelian))?></td>
-						<td><?=$s->nama_barang;?></td>
-						<td><?=$s->stok_barang;?></td>
-						<td><?=date('d-m-Y', strtotime($s->tanggal_expired))?></td>
-					</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
 
 <!-- Modal Form Input Barang -->
 <div class="modal fade" id="modalInputBarang" tabindex="-1" role="dialog" aria-labelledby="modalInputBarang"
