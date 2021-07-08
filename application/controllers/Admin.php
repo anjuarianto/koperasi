@@ -36,7 +36,7 @@ class Admin extends CI_Controller {
         );
 
         $this->Model_admin->aksi_tambah_user($data);
-        redirect('admin/user');
+        redirect('admin/operator');
     }
 
 

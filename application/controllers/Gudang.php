@@ -368,7 +368,7 @@ class Gudang extends CI_Controller {
 
 	public function cetak_harga($id) {
 		$data = $this->Model_gudang->barang_id($id);
-		$this->load->view('gudang/cetak_harga', $data);
+		$this->load->view('gudang/cetak_harga_satuan', $data);
 	}
 
 	public function barang_id($id) {
