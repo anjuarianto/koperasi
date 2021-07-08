@@ -48,7 +48,11 @@
 	</div>
 </div>
 <!-- End Content -->
-
+<script>
+const baseUrl = "<?=base_url();?>"
+</script>
 <!-- Start Footer -->
 <?php $this->load->view('gudang/footer'); ?>
 <!-- End Footer -->
+
+
