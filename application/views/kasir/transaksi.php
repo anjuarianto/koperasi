@@ -414,8 +414,8 @@
 							dataType: "JSON",
 							success: function (response) {
 								var findBarang = $('#detail-barang').find('tr[data-id-barang="' + response.id_barang + '"]');
-								if (findBarang.length >
-									0) {
+								
+								if (findBarang.length > 0) {
 									var inputVal = findBarang.find("td:eq(2)").children();
 									var addValue = parseInt(inputVal.val())+1;
 									inputVal.val(addValue);
@@ -423,6 +423,8 @@
 								} else {
 									if (response.kode_barang == null) {
 										alertify.error('Kode Barang tidak diketahui');
+									} else if(response.total_stok == null || response.total_stok == 0) {
+										alertify.error('Stok Barang Habis');
 									} else {
 										functionTambahBarang();
 									}
@@ -517,7 +519,7 @@
 									} else if (i == 2) {
 										var td = document.createElement("TD");
 										td.innerHTML =
-											'<input type="number" min="0" class="form-control form-control-sm" name="jumlah_barang[]" onchange="ubahJumlah(this)" onkeyup="ubahJumlah(this)" value="1">';
+											'<input type="number" min="0" max="'+response.total_stok+'" class="form-control form-control-sm" name="jumlah_barang[]" onchange="ubahJumlah(this)" onkeyup="ubahJumlah(this)" value="1">';
 										trEl.appendChild(td);
 									} else if (i == 3) {
 										var td = document.createElement("TD");

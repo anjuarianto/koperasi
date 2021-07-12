@@ -2,15 +2,15 @@
 <?php $saldo = $pinjaman->pinjaman?>
 <div class="card shadow mb-4 border-bottom-primary">
 	<div class="card-header bg-primary d-flex justify-content-between">
-		<h6 class="my-auto font-weight-bold text-white">Detail Pembelian</h6>
+		<h6 class="my-auto font-weight-bold text-white">Detail Simpanan Anggota</h6>
 		<div class="btn-group">
 		<a href="<?=base_url();?>keuangan/pinjam" class="btn btn-dark btn-sm ml-1 btn-icon-split"><span
 				class="icon text-white-50"><i class="fas fa-arrow-left"></i></span>
 			<span class="text">Kembali</span></a>
+			<?php if($pinjaman->status == 0) : ?>
 		<button class="btn btn-success btn-sm ml-1 btn-icon-split" data-toggle="modal" data-target="#modalHistoryPinjam"><span
 				class="icon text-white-50"><i class="fas fa-dollar-sign"></i></span>
 			<span class="text">Bayar</span></button>
-			<?php if($pinjaman->status == 0) : ?>
 			<a href="<?=base_url()?>keuangan/aksi_pinjam_lunas/<?=$pinjaman->id_pinjam?>" onclick="return confirm('Ubah status menjadi lunas?')" class="btn btn-warning btn-sm ml-1 btn-icon-split"><span
 				class="icon text-white-50"><i class="fas fa-dollar-sign"></i></span>
 			<span class="text">Lunas</span></a>

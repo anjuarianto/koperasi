@@ -177,7 +177,7 @@
 
 <script>
 	const baseUrl = "<?=base_url()?>";
-
+	
 	function checkBarang() {
 		const kodeBarang = $('#input_barang').val();
 		$.ajax({
@@ -187,11 +187,14 @@
 			success: function (response) {
 				if ($('#detail-barang').find('tr[data-id-barang="' + response.id_barang + '"]').length > 0) {
 					alert('Silahkan input barang Lain');
+					$('#input_barang').val('');
 				} else {
 					if (response.kode_barang == null) {
 						alert('Kode Barang tidak diketahui');
+						$('#input_barang').val('');
 					} else {
 						functionTambahBarang();
+						$('#input_barang').val('');
 					}
 				}
 			}
@@ -250,8 +253,10 @@
 					}
 				}
 				printHargaGlobal();
+				
 			}
 		});
+		
 	}
 
 	function addHiddenInput(idBarang) {

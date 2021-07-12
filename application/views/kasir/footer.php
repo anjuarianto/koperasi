@@ -62,6 +62,36 @@
 <!-- Custom scripts for all pages-->
 <script src="<?=base_url()?>assets/js/sb-admin-2.min.js"></script>
 <script>
+	$.fn.dataTable.ext.search.push(
+		function (settings, data, dataIndex) {
+			var min, max;
+			if (moment.utc($('#min').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
+				min = moment.utc($('#min').val(), 'DD-MM-YYYY').toDate();
+			} else {
+				min = null;
+			}
+
+			if (moment.utc($('#max').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
+				max = moment.utc($('#max').val(), 'DD-MM-YYYY').toDate();
+			} else {
+				max = null;
+			}
+
+			var date = moment.utc(data[1], 'DD-MM-YYYY');
+
+
+			if (
+				(min === null && max === null) ||
+				(min === null && date <= max) ||
+				(min <= date && max === null) ||
+				(min <= date && date <= max)
+			) {
+				return true;
+			}
+			return false;
+		}
+	);
+	
 	$(document).ready(function () {
 		var table = $('#dataTable').DataTable({
 			"order": [
@@ -69,13 +99,13 @@
 			]
 		});
 
-		
+
 		document.addEventListener("keydown", function (event) {
 			if (event.keyCode == 13) {
 				event.preventDefault();
 				$('#btn-barang').click();
 				return false;
-			} 
+			}
 			if (event.keyCode == 121) {
 				$('#btn-bayar').click();
 				return false;
@@ -129,6 +159,16 @@
 				selectedItem = map[item].kode_anggota;
 				return selectedItem;
 			}
+		});
+		minDate = new DateTime($('#min'), {
+			format: 'DD-MM-YYYY',
+		});
+		maxDate = new DateTime($('#max'), {
+			format: 'DD-MM-YYYY'
+		});
+
+		$('#min, #max').on('change keyup', function () {
+			table.draw();
 		});
 
 		table.on('order.dt search.dt', function () {

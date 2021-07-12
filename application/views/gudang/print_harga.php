@@ -19,7 +19,6 @@
 						<option value="supplier">Supplier</option>
 						<option value="rak">Rak</option>
 						<option value="all">All</option>
-						<option value="custom">Custom</option>
 					</select>
 				</div>
 			</div>
@@ -54,5 +53,3 @@ const baseUrl = "<?=base_url();?>"
 <!-- Start Footer -->
 <?php $this->load->view('gudang/footer'); ?>
 <!-- End Footer -->
-
-

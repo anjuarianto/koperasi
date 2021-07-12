@@ -17,7 +17,7 @@ class Admin extends CI_Controller {
             'jumlah_barang' => count($this->Model_admin->barang()),
             'jumlah_supplier' => count($this->Model_admin->supplier()),
             'jumlah_user' => count($this->Model_admin->anggota()),
-            'jumlah_voucher' => 'belum ada',
+            'jumlah_stok' => 'belum ada',
             'jumlah_transaksi_keluar' => count($this->Model_admin->pengeluaran()),
             'jumlah_transaksi_masuk' => count($this->Model_admin->pemasukan())
         );
@@ -29,7 +29,7 @@ class Admin extends CI_Controller {
             'nama'  => $this->input->post('nama'),
             'kode_anggota'  => $this->input->post('username'),
             'email'  => $this->input->post('email'),
-            'password'  => $this->input->post('password'),
+            'password'  => password_hash($this->input->post('password'), PASSWORD_DEFAULT),            
             'satuan'  => $this->input->post('satuan'),
             'jabatan'  => $this->input->post('jabatan'),
             'level'  => $this->input->post('level'),

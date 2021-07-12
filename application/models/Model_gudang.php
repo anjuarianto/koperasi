@@ -144,7 +144,7 @@ class Model_gudang extends CI_Model {
 		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, b.kode_barang, harga_beli, harga_jual, sum(st.stok_barang) as total_stok');
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_stok as st', 'st.id_barang = b.id_barang', 'left');
-		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier');
+		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier', 'left');
 		$this->db->where('b.kode_barang', $input);
 		$query = $this->db->get();
 		return $query->row();

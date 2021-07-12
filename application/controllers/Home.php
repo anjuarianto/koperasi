@@ -142,4 +142,88 @@ class Home extends CI_Controller {
 		redirect('home');	
         
     }
+
+	public function read() {
+		$dir = "c://Users/THINKPAD/Desktop/Create DB/";
+		
+
+		if (is_dir($dir)) {
+			if ($dh = opendir($dir)) {
+				while (($file = readdir($dh)) !== false) {
+					if($file != ".." && $file != ".") {
+	
+						$this->update_stok($dir.$file);
+					}
+				}
+				closedir($dh);
+			}
+		}
+
+		
+	}
+
+	public function fetch($csv, $file) {
+		$handle = fopen($csv,"r");
+		while (($row = fgetcsv($handle, 10000, ",")) != FALSE) //get row vales
+		{
+			$data = array(
+				'kode_barang'	=> $row[1],
+				'nama_barang'	=> $row[2],
+				'harga_beli'	=> str_replace(',', '',$row[3]),
+				'harga_jual'	=> str_replace(',', '',$row[4]),
+				'id_supplier'	=> rtrim($file, '.csv')
+			);
+			
+			$this->db->insert('tbl_barang', $data);
+
+
+		}
+	}
+
+	public function read_supplier() {
+		$handle = fopen("c://Users/THINKPAD/Desktop/Create DB/SUPPLIER.csv","r");
+		while (($row = fgetcsv($handle, 10000, ",")) != FALSE) //get row vales
+		{
+			$data = array(
+				'id_supplier'	=> $row[0],
+				'nama_supplier'	=> $row[1],
+			);
+			
+			$this->db->insert('tbl_supplier', $data);
+
+
+		}
+	}
+
+	public function update_supplier() {
+		$supplier = $this->db->get('tbl_supplier')	->result();
+		foreach ($supplier as $key => $value) {
+			$data = array('id_supplier' => $value->id_supplier);
+			$this->db->where('id_supplier', $value->nama_supplier);
+			$this->db->update('tbl_barang', $data);
+		}
+	}
+
+	public function update_stok($csv) {
+		$handle = fopen($csv,"r");
+		while (($row = fgetcsv($handle, 10000, ",")) != FALSE) //get row vales
+		{
+			$this->db->where('kode_barang', $row[1]);
+			$barang = $this->db->get('tbl_barang')->row();
+			if($barang->id_barang != "") {
+				$data = array(
+					'id_barang'	=> $barang->id_barang,
+					'id_pembelian'	=> 1,
+					'stok_barang'	=> $row[7],
+					'tanggal_pembelian'	=> date("Y-m-d"),
+					'tanggal_expired'	=> NULL,
+				);
+				
+				$this->db->insert('tbl_stok', $data);
+			}
+			
+
+
+		}
+	}
 }

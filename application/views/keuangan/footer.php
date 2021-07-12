@@ -59,42 +59,43 @@
 <!-- Custom scripts for all pages-->
 <script src="<?=base_url()?>assets/js/sb-admin-2.min.js"></script>
 <script>
-function rubah(angka){
-   var reverse = angka.toString().split('').reverse().join(''),
-   ribuan = reverse.match(/\d{1,3}/g);
-   ribuan = ribuan.join('.').split('').reverse().join('');
-   return ribuan;
- }
+	function rubah(angka) {
+		var reverse = angka.toString().split('').reverse().join(''),
+			ribuan = reverse.match(/\d{1,3}/g);
+		ribuan = ribuan.join('.').split('').reverse().join('');
+		return ribuan;
+	}
 
 	$.fn.dataTable.ext.search.push(
-    function( settings, data, dataIndex ) {
-		var min, max;
-		if(moment.utc($('#min').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
-			min = moment.utc($('#min').val(), 'DD-MM-YYYY').toDate();
-		} else {
-			min = null;
-		}
+		function (settings, data, dataIndex) {
+			var min, max;
+			if (moment.utc($('#min').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
+				min = moment.utc($('#min').val(), 'DD-MM-YYYY').toDate();
+			} else {
+				min = null;
+			}
 
-		if(moment.utc($('#max').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
-			max = moment.utc($('#max').val(), 'DD-MM-YYYY').toDate();
-		} else {
-			max = null;
-		}
-		
-        var date = moment.utc(data[1], 'DD-MM-YYYY');
-		
+			if (moment.utc($('#max').val(), 'DD-MM-YYYY').toDate() != "Invalid Date") {
+				max = moment.utc($('#max').val(), 'DD-MM-YYYY').toDate();
+			} else {
+				max = null;
+			}
 
-        if (
-            ( min === null && max === null ) ||
-            ( min === null && date <= max ) ||
-            ( min <= date   && max === null ) ||
-            ( min <= date   && date <= max )
-        ) {
-            return true;
-        }
-        return false;
-    }
-);
+			var date = moment.utc(data[1], 'DD-MM-YYYY');
+
+
+			if (
+				(min === null && max === null) ||
+				(min === null && date <= max) ||
+				(min <= date && max === null) ||
+				(min <= date && date <= max)
+			) {
+				return true;
+			}
+			return false;
+		}
+	);
+	
 	$(document).ready(function () {
 		$('#kode_anggota').typeahead({
 			source: function (query, process) {
@@ -121,54 +122,57 @@ function rubah(angka){
 			}
 		});
 
-		
 
-		
+
+
 		minDate = new DateTime($('#min'), {
 			format: 'DD-MM-YYYY',
 		});
 		maxDate = new DateTime($('#max'), {
 			format: 'DD-MM-YYYY'
-			});
+		});
 
 		tanggal = new DateTime($('#tanggal'));
 		jatuhTempo = new DateTime($('#jatuh_tempo'));
 		historyPinjam = new DateTime($('#tanggal_pinjam'));
 
-		
+
 
 		// custom option datatable
 		var table = $('#dataTable').DataTable({
-			"footerCallback": function ( row, data, start, end, display ) {
-            var api = this.api(), data;
- 
-            // Remove the formatting to get integer data for summation
-			
-            var intVal = function ( i ) {
-                return typeof i === 'string' ?
-                    i.replace(/\D/g, "")*1 :
-                    typeof i === 'number' ?
-                        i : 0;
-            };
+			"footerCallback": function (row, data, start, end, display) {
+				var api = this.api(),
+					data;
 
-			total = api
-                .column(3)
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
+				// Remove the formatting to get integer data for summation
+
+				var intVal = function (i) {
+					return typeof i === 'string' ?
+						i.replace(/\D/g, "") * 1 :
+						typeof i === 'number' ?
+						i : 0;
+				};
+
+				total = api
+					.column(3)
+					.data()
+					.reduce(function (a, b) {
+						return intVal(a) + intVal(b);
+					}, 0);
 				console.log(total)
 
 				pageTotal = api
-                .column( 3, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
+					.column(3, {
+						page: 'current'
+					})
+					.data()
+					.reduce(function (a, b) {
+						return intVal(a) + intVal(b);
+					}, 0);
 
-				$( api.column( 3 ).footer() ).html('Rp. '+ rubah(total));
-       
-        },
+				$(api.column(3).footer()).html('Rp. ' + rubah(total));
+
+			},
 			"scrollY": "30rem",
 			"scrollCollapse": true,
 			buttons: [{
@@ -199,9 +203,9 @@ function rubah(angka){
 			"order": [
 				[1, 'asc']
 			],
-			
+
 		});
-		
+
 
 		// order number automatic
 		table.on('order.dt search.dt', function () {
@@ -213,7 +217,7 @@ function rubah(angka){
 			});
 		}).draw();
 
-		
+
 		$('#min, #max').on('change keyup', function () {
 			table.draw();
 		});
@@ -223,8 +227,8 @@ function rubah(angka){
 		$('#dataTable tbody').on('click', 'tr', function () {
 			const baseUrl = "<?=base_url()?>";
 			tampilDataTable(this, baseUrl);
-				
-	
+
+
 
 		});
 		// edit-button clicked

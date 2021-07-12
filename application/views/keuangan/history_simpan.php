@@ -2,7 +2,7 @@
 
 <div class="card shadow mb-4 border-bottom-primary">
 	<div class="card-header bg-primary d-flex justify-content-between">
-		<h6 class="m-0 font-weight-bold text-white my-auto">Detail Pembelian</h6>
+		<h6 class="m-0 font-weight-bold text-white my-auto">Detail Simpanan Anggota</h6>
 		<a href="<?=base_url();?>keuangan/simpan" class="btn btn-dark btn-sm btn-icon-split"><span
 				class="icon text-white-50"><i class="fas fa-arrow-left"></i></span>
 			<span class="text">Kembali</span></a>
