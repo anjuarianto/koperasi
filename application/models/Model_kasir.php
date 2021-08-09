@@ -39,11 +39,32 @@ class Model_kasir extends CI_Model {
     }
 
     public function voucher() {
-        $this->db->select('v.*, u.nama');
+        $this->db->select('v.*, u.kode_anggota');
         $this->db->from('tbl_voucher as v');
         $this->db->join('tbl_user as u', 'u.id_user = v.id_user');
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function belanja_anggota() {
+        $this->db->select('jual.*, user.nama, sum(detail.jumlah_barang*barang.harga_jual) as total_harga_pembelian');
+        $this->db->from('tbl_penjualan as jual');
+        $this->db->join('tbl_detail_penjualan as detail', 'jual.id_penjualan = detail.id_penjualan');
+        $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+        $this->db->join('tbl_user user', 'user.kode_anggota = jual.kode_anggota', 'left');
+        $this->db->group_by('jual.kode_anggota');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function total_jenis_transaksi() {
+        $this->db->select('jual.kode_anggota, jual.jenis_pembayaran, sum(detail.jumlah_barang*barang.harga_jual) as total');
+        $this->db->from('tbl_penjualan jual');
+        $this->db->join('tbl_detail_penjualan detail', 'detail.id_penjualan = jual.id_penjualan', 'left');
+        $this->db->join('tbl_barang barang', 'detail.id_barang = barang.id_barang', 'left');
+        $this->db->group_by('jual.id_penjualan');
+        $query = $this->db->get();
+        return $query->result_array();
     }
 
     public function profile($id) {
@@ -117,6 +138,17 @@ class Model_kasir extends CI_Model {
         $this->db->where('voucher.id_voucher', $id);
         $query = $this->db->get();
         return $query->row();
+    }
+
+    public function voucher_keluar() {
+        $this->db->select('jual.id_penjualan, jual.tgl_penjualan, jual.kode_anggota, jual.kode_voucher');
+        $this->db->from('tbl_penjualan as jual');
+        $this->db->join('tbl_detail_penjualan as detail', 'jual.id_penjualan = detail.id_penjualan');
+        $this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
+        $this->db->group_by('id_penjualan');
+        $this->db->where('kode_voucher IS NOT NULL');
+        $query = $this->db->get();
+        return $query->result_array();
     }
 
     public function tambah_penjualan($data) {

@@ -69,6 +69,11 @@
 					<i class="fas fa-fw fa-credit-card"></i>
 					<span>Voucher</span></a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="<?=base_url()?>kasir/belanja_anggota">
+					<i class="fas fa-fw fa-user"></i>
+					<span>Belanja Anggota</span></a>
+			</li>
 
 			<!-- Divider -->
 			<hr class="sidebar-divider">

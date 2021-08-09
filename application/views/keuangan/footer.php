@@ -83,7 +83,6 @@
 
 			var date = moment.utc(data[1], 'DD-MM-YYYY');
 
-
 			if (
 				(min === null && max === null) ||
 				(min === null && date <= max) ||

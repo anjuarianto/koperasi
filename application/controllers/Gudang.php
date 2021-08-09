@@ -356,6 +356,39 @@ class Gudang extends CI_Controller {
 		$this->load->view('gudang/print_harga', $data);
 	}
 
+	public function satuan() {
+		$data['judul'] = "Master Satuan | Gudang";
+		$data['satuan'] = $this->Model_gudang->satuan();
+		
+		$this->load->view('gudang/satuan', $data);
+	}
+
+	public function satuan_id($id) {
+		$data = $this->Model_gudang->satuan_id($id);
+		echo json_encode($data);
+	}
+
+
+	public function aksi_tambah_satuan() {
+		$data = array(
+			"nama_satuan" => $this->input->post('nama_satuan')
+		);
+
+		$this->Model_gudang->tambah_satuan($data);
+		redirect('gudang/satuan');
+	}
+
+	public function update_satuan($id) {
+		$data = array(
+			'nama_satuan' => $this->input->post('nama_satuan')
+		);
+
+		$this->Model_gudang->update_satuan($id, $data);
+		redirect('gudang/satuan');
+	}
+
+
+
 	public function print_view() {
 		
 		$kategori = $this->input->post('kategori');

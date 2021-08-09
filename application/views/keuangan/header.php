@@ -85,6 +85,7 @@
                         <h6 class="collapse-header">Pemasukan:</h6>
                         <a class="collapse-item" href="<?= base_url(); ?>keuangan/pemasukan">Pemasukan</a>
                         <a class="collapse-item" href="<?= base_url(); ?>keuangan/penjualan">Transaksi Penjualan</a>
+                        <a class="collapse-item" href="<?= base_url(); ?>keuangan/belanja_anggota">Belanja Anggota</a>
                     </div>
                 </div>
             </li>

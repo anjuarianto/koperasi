@@ -146,7 +146,6 @@ class Kasir extends CI_Controller {
         // Update Stok
         $result = $this->Model_kasir->get_stok($id_barang);
         $updateStok = ($result['stok_barang'] + $jumlahawal) - $jumlah_barang;
-     
         $data = array('stok_barang' => $updateStok);
         $this->Model_kasir->update_stok($result['id_stok'], $data);
 
@@ -170,6 +169,14 @@ class Kasir extends CI_Controller {
         $data['judul'] = "Daftar Voucher | Kasir";
         $data['voucher'] = $this->Model_kasir->voucher();
         $this->load->view('kasir/voucher', $data);
+    }
+
+    public function belanja_anggota() {
+        $data['judul'] = 'Daftar Belanja Anggota';
+        $data['belanja'] = $this->Model_kasir->belanja_anggota();
+        $data['total_jenis_transaksi'] = $this->Model_kasir->total_jenis_transaksi();
+        $data['voucher_keluar'] = $this->Model_kasir->voucher_keluar();
+        $this->load->view('kasir/belanja_anggota', $data);
     }
 
 

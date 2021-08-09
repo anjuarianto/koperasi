@@ -143,41 +143,302 @@ class Home extends CI_Controller {
         
     }
 
-	public function read() {
+	
+
+	public function eksekusi() {
+		if (function_exists("set_time_limit") == TRUE AND @ini_get("safe_mode") == 0)
+			{
+				@set_time_limit(0);
+			}
 		$dir = "c://Users/THINKPAD/Desktop/Create DB/";
 		
+		// $this->read($dir, "RAK/");
+		$this->read($dir, "SUPPLIER/");
+		// $this->insert_supplier($dir, "SUPPLIER/");
+		echo "Process Completed";
+		
+	}
 
+	public function read($dir, $input) {
+		$dir = $dir.$input;
 		if (is_dir($dir)) {
 			if ($dh = opendir($dir)) {
 				while (($file = readdir($dh)) !== false) {
 					if($file != ".." && $file != ".") {
-	
-						$this->update_stok($dir.$file);
+						if($input == "RAK/") {
+							$this->fetch_rak($dir.$file ,$file);
+							// $this->insert_rak($file);
+						} else {
+							$this->fetch_supplier($dir.$file ,$file);
+							// $this->insert_supplier($file);
+						}
+						
 					}
 				}
 				closedir($dh);
+				
 			}
 		}
-
-		
 	}
 
 	public function fetch($csv, $file) {
 		$handle = fopen($csv,"r");
+		$file = rtrim($file, '.csv');
+		
 		while (($row = fgetcsv($handle, 10000, ",")) != FALSE) //get row vales
 		{
 			$data = array(
 				'kode_barang'	=> $row[1],
 				'nama_barang'	=> $row[2],
 				'harga_beli'	=> str_replace(',', '',$row[3]),
-				'harga_jual'	=> str_replace(',', '',$row[4]),
-				'id_supplier'	=> rtrim($file, '.csv')
+				'harga_jual'	=> str_replace(',', '',$row[4])
 			);
+		}
+
+	}
+
+	public function insert_rak($file) {
+		$file = rtrim($file, '.csv');
+		$query = $this->db->insert('tbl_rak', array('nama_rak' => $file));
+	}
+
+	public function insert_supplier($file) {
+		$file = rtrim($file, '.csv');
+		$query = $this->db->insert('tbl_supplier', array('nama_supplier' => $file));
+	}
+
+
+	public function fetch_supplier($csv, $file) {
+		$handle = fopen($csv,"r");
+		$file = rtrim($file, '.csv');
+		
+		while (($row = fgetcsv($handle, 10000, ",")) != FALSE) //get row vales
+		{
+			switch ($file) {
+				case "ABAH":
+				$id_rak = 1;
+				break;
+				case "AJI":
+				$id_rak = 2;
+				break;
+				case "ANUGRAH":
+				$id_rak = 3;
+				break;
+				case "AR":
+				$id_rak = 4;
+				break;
+				case "ATK":
+				$id_rak = 5;
+				break;
+				case "BU FILDA":
+				$id_rak = 6;
+				break;
+				case "BU MUS":
+				$id_rak = 7;
+				break;
+				case "CADET":
+				$id_rak = 8;
+				break;
+				case "DIAMOND":
+				$id_rak = 9;
+				break;
+				case "ELEKTRO":
+				$id_rak = 10;
+				break;
+				case "ERBIN":
+				$id_rak = 11;
+				break;
+				case "FERNIS":
+				$id_rak = 12;
+				break;
+				case "GLICO":
+				$id_rak = 13;
+				break;
+				case "KARSILAN":
+				$id_rak = 14;
+				break;
+				case "KASIR":
+				$id_rak = 15;
+				break;
+				case "KOPERASI":
+				$id_rak = 16;
+				break;
+				case "KOSMETIK":
+				$id_rak = 17;
+				break;
+				case "MIE":
+				$id_rak = 18;
+				break;
+				case "MINUMAN":
+				$id_rak = 19;
+				break;
+				case "OBAT":
+				$id_rak = 20;
+				break;
+				case "PANGKAT":
+				$id_rak = 21;
+				break;
+				case "PERKAKAS":
+				$id_rak = 22;
+				break;
+				case "PUJI":
+				$id_rak = 23;
+				break;
+				case "RADEN":
+				$id_rak = 24;
+				break;
+				case "RJ":
+				$id_rak = 25;
+				break;
+				case "ROKOK":
+				$id_rak = 26;
+				break;
+				case "ROTI":
+				$id_rak = 27;
+				break;
+				case "SNACK":
+				$id_rak = 28;
+				break;
+				case "SO GOOD":
+				$id_rak = 29;
+				break;
+				case "SUSU":
+				$id_rak = 30;
+				break;
+				case "U7E":
+				$id_rak = 31;
+				break;
+				case "WALLS":
+				$id_rak = 32;
+				break;
+				case "WARNI":
+				$id_rak = 33;
+				break;
+				case "YUNUS":
+				$id_rak = 34;
+				break;
+				default:
+				}
+
+				
+			$this->db->select('*');
+			$this->db->from('tbl_barang');
+			$this->db->where('kode_barang', $row[1]);
+			$data = $this->db->get()->row_array();
+
+
+			$update = array('id_supplier' => $id_rak);
+
+			if($data) {
+				$this->update_supplier($data['id_barang'], $update);
+			}
+		}
+	}
+
+	public function fetch_rak($csv, $file) {
+		$handle = fopen($csv,"r");
+		$file = rtrim($file, '.csv');
+		while (($row = fgetcsv($handle, 10000, ",")) != FALSE) //get row vales
+		{
+			switch ($file) {
+				case "ATK":
+					$id_rak = 1;
+					break;
+				case "DIAMOND":
+					$id_rak = 2;
+					break;
+				case "ELEKTRO":
+					$id_rak = 3;
+					break;
+				case "KASIR":
+					$id_rak = 4;
+					break;
+				case "KOPERASI":
+					$id_rak = 5;
+					break;
+				case "KOSMETIK":
+					$id_rak = 6;
+					break;
+				case "MIE":
+					$id_rak = 7;
+					break;
+				case "MINUMAN":
+					$id_rak = 8;
+					break;
+				case "OBAT":
+					$id_rak = 9;
+					break;
+				case "PANGKAT":
+					$id_rak = 10;
+					break;
+				case "PERKAKAS":
+					$id_rak = 11;
+					break;
+				case "RAK 1":
+					$id_rak = 12;
+					break;
+				case "RAK 2":
+					$id_rak = 13;
+					break;
+				case "RAK 3":
+					$id_rak = 14;
+					break;
+				case "RAK 4":
+					$id_rak = 15;
+					break;
+				case "RAK 5":
+					$id_rak = 16;
+					break;
+				case "RAK 6":
+					$id_rak = 17;
+					break;
+				case "RAK 7":
+					$id_rak = 18;
+					break;
+				case "RAK 8":
+					$id_rak = 19;
+					break;
+				case "ROKOK":
+					$id_rak = 20;
+					break;
+				case "ROTI":
+					$id_rak = 21;
+					break;
+				case "SNACK":
+					$id_rak = 22;
+					break;
+				case "SO GOOD":
+					$id_rak = 23;
+					break;
+				case "SUSU":
+					$id_rak = 24;
+					break;
+				case "WALLS":
+					$id_rak = 25;
+					break;
+				default:
+			}
 			
-			$this->db->insert('tbl_barang', $data);
+			$this->db->select('*');
+			$this->db->from('tbl_barang');
+			$this->db->where('kode_barang', $row[1]);
+			$data = $this->db->get()->row_array();
+
+			$update = array('id_rak' => $id_rak);
+
+			if($data) {
+				$this->update_rak($data['id_barang'], $update);
+			}
+			// $this->db->insert('tbl_barang', $data);
 
 
 		}
+	}
+
+
+	public function update_rak($id_barang, $data) {
+		$this->db->where('id_barang', $id_barang);
+		$this->db->update('tbl_barang', $data);
 	}
 
 	public function read_supplier() {
@@ -189,19 +450,16 @@ class Home extends CI_Controller {
 				'nama_supplier'	=> $row[1],
 			);
 			
-			$this->db->insert('tbl_supplier', $data);
+			// $this->db->insert('tbl_supplier', $data);
 
 
 		}
 	}
 
-	public function update_supplier() {
-		$supplier = $this->db->get('tbl_supplier')	->result();
-		foreach ($supplier as $key => $value) {
-			$data = array('id_supplier' => $value->id_supplier);
-			$this->db->where('id_supplier', $value->nama_supplier);
-			$this->db->update('tbl_barang', $data);
-		}
+	public function update_supplier($id_barang, $data) {
+		$this->db->where('id_barang', $id_barang);
+		$this->db->update('tbl_barang', $data);
+		
 	}
 
 	public function update_stok($csv) {
@@ -226,4 +484,30 @@ class Home extends CI_Controller {
 
 		}
 	}
+
+	public function print_switch() {
+		$this->db->select('*');
+		$this->db->from('tbl_supplier');
+		$result = $this->db->get()->result();
+		echo 'switch ($supplier) {';
+		echo "<br>";
+		foreach ($result as $variable) {
+			echo 'case "'.$variable->nama_supplier.'":';
+			echo "<br>";
+			echo '$id_rak = '.$variable->id_supplier.';';
+			echo "<br>";
+			echo 'break;';
+
+				echo "<br>";
+			
+		}
+		
+		
+
+		echo 'default:';
+    	echo "<br>";
+		echo '}';
+		
+	}
+
 }

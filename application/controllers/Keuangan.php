@@ -172,6 +172,14 @@ class Keuangan extends CI_Controller {
         $this->load->view('keuangan/laba_rugi', $data);
     }
 
+    public function belanja_anggota() {
+        $data['judul'] = 'Daftar Belanja Anggota | Keuangan';
+        $data['belanja'] = $this->Model_keuangan->belanja_anggota();
+        $data['total_jenis_transaksi'] = $this->Model_keuangan->total_jenis_transaksi();
+        $data['voucher_anggota'] = $this->Model_keuangan->voucher_anggota();
+        $this->load->view('keuangan/belanja_anggota', $data);
+    }
+
     public function aksi_tambah_pinjam() {
         $data = array(
             'id_user'  => $this->Model_keuangan->get_id_user($this->input->post('kode_anggota')),

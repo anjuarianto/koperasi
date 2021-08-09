@@ -36,6 +36,10 @@ class Model_admin extends CI_Model {
         $this->db->insert('tbl_user', $data);
     }
 
+    public function edit_user($data) {
+
+    }
+
     public function supplier() {
         $query = $this->db->get('tbl_supplier');
         return $query->result();
@@ -68,7 +72,7 @@ class Model_admin extends CI_Model {
     }
 
     public function voucher() {
-        $this->db->select('v.*, u.nama');
+        $this->db->select('v.*, u.kode_anggota');
         $this->db->from('tbl_voucher as v');
         $this->db->join('tbl_user as u', 'u.id_user = v.id_user');
         $query = $this->db->get();

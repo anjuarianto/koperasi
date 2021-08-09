@@ -69,6 +69,11 @@
 					<span>Barang</span></a>
 			</li>
 			<li class="nav-item">
+				<a class="nav-link" href="<?=base_url()?>gudang/satuan">
+					<i class="fas fa-fw fa-folder"></i>
+					<span>Satuan</span></a>
+			</li>
+			<li class="nav-item">
 				<a class="nav-link" href="<?=base_url()?>gudang/supplier">
 					<i class="fas fa-fw fa-truck"></i>
 					<span>Supplier</span></a>

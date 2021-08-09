@@ -173,5 +173,13 @@ class Admin extends CI_Controller {
         redirect('admin/voucher');
     }
 
+    public function id_user($id) {
+        $this->db->select('*');
+        $this->db->from('tbl_user');
+        $this->db->where('id_user', '1');
+        $result = $this->db->get()->row();
+        echo json_encode($result);
+    }
+
      
 }

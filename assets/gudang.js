@@ -13,13 +13,14 @@ function tampilDataTable(data, baseUrl) {
         modalDetailPembelian(id, baseUrl);
     } else if(info == "rak") {
         modalRak(id, baseUrl);
+    } else if(info == 'satuan') {
+        modalSatuan(id, baseUrl);
     }
     
 }
 
 function enableForm(data) {
     var info = $(data).data("info");
-    console.log(info)
     if(info == "supplier") {
         $(".modal-body .form-control").prop('disabled', false);
     } else if(info == "barang") {
@@ -111,6 +112,24 @@ function modalRak(id, baseUrl) {
         success: function(response) {
             $('#nama_rak').val(response.nama_rak);
             $('#form-edit').attr("action", baseUrl+'gudang/update_rak/'+id)
+            $('#modalEdit').modal('show');
+            $("#modalEdit .form-control").prop('disabled', true);
+
+            $("#btn-edit").attr('data-info', 'supplier');
+            $("#btn-edit").prop('disabled', false);
+            $("#btn-submit").prop('disabled', true);
+        }
+    });
+}
+
+function modalSatuan(id, baseUrl) {
+    $.ajax({
+        type: "POST",
+        url: baseUrl+"gudang/satuan_id/"+id,
+        dataType : "JSON",
+        success: function(response) {
+            $('#nama_rak').val(response.nama_satuan);
+            $('#form-edit').attr("action", baseUrl+'gudang/update_satuan/'+id)
             $('#modalEdit').modal('show');
             $("#modalEdit .form-control").prop('disabled', true);
 

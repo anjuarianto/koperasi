@@ -152,6 +152,27 @@ class Model_gudang extends CI_Model {
 
 
 
+	// Satuan
+	public function satuan() {
+		$query = $this->db->get('tbl_satuan');
+		return $query->result();
+	}
+
+	public function satuan_id($id) {
+		$query = $this->db->get_where('tbl_satuan', array('id_satuan' => $id));
+		return $query->row();
+	}
+
+	public function tambah_satuan($data) {
+		$this->db->insert('tbl_satuan', $data);
+	}
+
+	public function update_satuan($id, $data) {
+		$this->db->where('id_satuan', $id);
+		$this->db->update('tbl_satuan', $data);
+	}
+
+
 	////////////////////////supplier
 	public function supplier() {
 		$query = $this->db->get('tbl_supplier');

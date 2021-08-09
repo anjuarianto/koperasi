@@ -17,7 +17,7 @@
 				<thead class="thead-light">
 					<tr>
                         <th>ID</th>
-						<th>Nama Anggota </th>
+						<th>Kode Anggota</th>
 						<th>Bulan</th>
 						<th>Tahun</th>
 						<th>Status</th>
@@ -27,7 +27,7 @@
 					<?php foreach ($voucher as $s) : ?>
 					<tr>
                         <td><?=$s->id_voucher;?></td>
-						<td><?=$s->nama;?></td>
+						<td><?=$s->kode_anggota;?></td>
 						<td><?=$s->bulan;?></td>
 						<td><?=$s->tahun;?></td>
 						<td><?=$s->status == 0 ? 'Aktif' : 'Hangus' ?></td>

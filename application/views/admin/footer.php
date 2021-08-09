@@ -29,14 +29,17 @@
 	</div>
 </div>
 
+
 <!-- Bootstrap core JavaScript-->
 <script src="<?=base_url()?>assets/vendor/jquery/jquery.min.js"></script>
+
+
 <script src="<?=base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script src="<?=base_url()?>assets/vendor/jquery/jquery.js"></script>
 <script src="<?=base_url()?>assets/vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="<?=base_url()?>assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+<script src="<?=base_url()?>assets/admin.js"></script>
 <!-- Core plugin JavaScript-->
 <script src="<?=base_url()?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 
@@ -45,7 +48,11 @@
 <script>
 		$(document).ready(function() {
   			$('#dataTable').DataTable();
-            $('#modalInputSupplier').modal('show');
+            // $('#modalInputSupplier').modal('show');
+			$('#dataTable tbody').on('click', 'tr', function () {
+			const baseUrl = "<?=base_url()?>";
+			tampilDataTable(this, baseUrl);
+		});
 		});
 
 	</script>
