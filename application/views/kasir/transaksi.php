@@ -208,7 +208,8 @@
 										<tr>
 											<th>Item</th>
 											<th>Harga</th>
-											<th style="width: 20%">Qty</th>
+											<th style="width: 10%">Qty</th>
+											<th style="width: 5%">#</th>
 											<th>Total</th>
 											<th></th>
 										</tr>
@@ -217,7 +218,7 @@
 									</tbody>
 									<tfoot>
 										<tr>
-											<th colspan="3">Total</th>
+											<th colspan="4">Total</th>
 											<th id="harga-total-barang">Rp. 0</th>
 											<th></th>
 										</tr>
@@ -500,13 +501,14 @@
 							dataType: "JSON",
 							success: function (response) {
 								// get data
+								console.log(response)
 								addHiddenInput(response.id_barang);
 								const tbodyEl = document.getElementById('detail-barang');
 								const trEl = document.createElement("TR");
 								trEl.setAttribute('data-id-barang', response.id_barang);
 								tbodyEl.appendChild(trEl);
 
-								for (i = 0; i < 5; i++) {
+								for (i = 0; i < 6; i++) {
 									if (i == 0) {
 										var td = document.createElement("TD");
 										td.innerHTML = response.nama_barang;
@@ -519,13 +521,17 @@
 									} else if (i == 2) {
 										var td = document.createElement("TD");
 										td.innerHTML =
-											'<input type="number" min="0" max="'+response.total_stok+'" class="form-control form-control-sm" name="jumlah_barang[]" onchange="ubahJumlah(this)" onkeyup="ubahJumlah(this)" value="1">';
+											'<input type="number" min="0" max="'+ response.total_stok +'" class="form-control form-control-sm" name="jumlah_barang[]" onchange="ubahJumlah(this)" onkeyup="ubahJumlah(this)" value="1">';
 										trEl.appendChild(td);
 									} else if (i == 3) {
 										var td = document.createElement("TD");
-										td.innerHTML = 'Rp. ' + formatter.format(response.harga_jual);
+										td.innerHTML = response.nama_satuan
 										trEl.appendChild(td);
 									} else if (i == 4) {
+										var td = document.createElement("TD");
+										td.innerHTML = 'Rp. ' + formatter.format(response.harga_jual);
+										trEl.appendChild(td);
+									} else if (i == 5) {
 										var td = document.createElement("TD");
 										td.innerHTML =
 											'<button type="button" onclick="hapusBarang(this)" data-id="' + response
@@ -563,7 +569,7 @@
 							success: function (response) {
 								// get data
 								const hargaBarang = response.harga_jual;
-								row.cells[3].innerHTML = 'Rp. ' + formatter.format(hargaBarang * valQty);
+								row.cells[4].innerHTML = 'Rp. ' + formatter.format(hargaBarang * valQty);
 								printHargaGlobal();
 							}
 						});
@@ -578,7 +584,7 @@
 						var resHargaTotal = 0;
 						const tRow = document.getElementById('detail-barang').children;
 						for (i = 0; i < tRow.length; i++) {
-							var totalHarga = tRow[i].children[3].innerText;
+							var totalHarga = tRow[i].children[4].innerText;
 							var res = parseInt(totalHarga.replace(/\D/g, ""));
 							resHargaTotal += res;
 						}

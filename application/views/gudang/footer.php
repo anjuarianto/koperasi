@@ -48,6 +48,7 @@
 <script src="<?=base_url()?>assets/vendorother/datatables/dataTables.dateTime.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/buttons.bootstrap4.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/jszip/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/pdfmake/pdfmake.min.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/pdfmake/vfs_fonts.js"></script>
 <script src="<?=base_url()?>assets/vendorother/datatables/buttons/js/buttons.html5.min.js"></script>
@@ -100,6 +101,12 @@
 	);
 
 	$(document).ready(function () {
+		$('#rak-input, #satuan-input, #supplier-input').select2({
+        	dropdownParent: $('#modalInputBarang')
+    	});
+		$('#rak-edit, #satuan-edit, #supplier-edit').select2({
+        	dropdownParent: $('#modalEdit')
+    	});
 		$('#jenis_pembayaran').on('change', function () {
 			if ($(this).val() == "Kredit") {
 				$('#jatuh_tempo').show();
@@ -174,31 +181,6 @@
 			},
 			updater: function (item) {
 				selectedItem = map[item].kode_barang;
-				return selectedItem;
-			}
-		});
-
-		$('#input_nama_supplier').typeahead({
-			source: function (query, process) {
-				states = [];
-				map = {};
-				hasil = [];
-				data = [];
-				$.getJSON('<?=base_url()?>gudang/supplier_all', function (supplier) {
-					$.each(supplier, function (key, val) {
-						data.push(val);
-					});
-					$.each(data, function (i, supplier) {
-						const hasil = supplier.nama_supplier + ' | ' + supplier
-							.id_supplier;
-						map[hasil] = supplier;
-						states.push(hasil);
-					});
-					process(states);
-				});
-			},
-			updater: function (item) {
-				selectedItem = map[item].id_supplier;
 				return selectedItem;
 			}
 		});

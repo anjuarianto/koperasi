@@ -28,7 +28,7 @@ function enableForm(data) {
     } else if(info == "stok"){
         $(".modal-body .form-control:not(#tanggal_pembelian,#nama_barang)").prop('disabled', false);
     } else if(info == "detail_pembelian") {
-        $(".modal-body .form-control:not(#kode_barang,#nama_barang,#nama_supplier)").prop('disabled', false);
+        $(".modal-body .form-control:not(#kode_barang,#nama_barang, #nama_satuan, #nama_supplier)").prop('disabled', false);
     } else if(info == "pembelian") {
         $(".modal-body .form-control").prop('disabled', false);
         $("#btn-edit-pembelian").prop('disabled', true);
@@ -46,7 +46,6 @@ function modalEditPembelian(id, baseUrl) {
         url: baseUrl+"gudang/pembelian_id/"+id,
         dataType : "JSON",
         success: function(response) {
-            console.log(response)
             $('#no_faktur').val(response.no_faktur);
             $('#tanggal_pembelian').val(response.tgl_pembelian);
             $('#ppn').val(response.ppn);
@@ -72,6 +71,7 @@ function modalDetailPembelian(id, baseUrl) {
             $('#nama_barang').val(response.nama_barang);
             $('#discount').val(response.discount);
             $('#jumlah_barang').val(response.jumlah_barang);
+            $('#nama_satuan').val(response.nama_satuan);
             $('#form-edit').attr("action", baseUrl+'gudang/update_detail_pembelian/'+id)
             $('#modalEdit').modal('show');
             $("#modalEdit .form-control").prop('disabled', true);
@@ -172,9 +172,14 @@ function modalBarang(id, baseUrl) {
             // get data
             $('#nama_barang').val(response.nama_barang);
             $('#kode_barang').val(response.kode_barang);
-            $('#nama_supplier').val(response.nama_supplier);
             $('#harga_beli').val(response.harga_beli);
             $('#harga_jual').val(response.harga_jual);
+            $('#supplier-edit').val(response.id_supplier);
+            $('#rak-edit').val(response.id_rak);
+            $('#satuan-edit').val(response.id_satuan);
+            $('#satuan-edit').trigger('change');
+            $('#supplier-edit').trigger('change');
+            $('#rak-edit').trigger('change');
 
             // utility
             $('#btn-cetak-harga').attr("href", baseUrl+'gudang/cetak_harga/'+id);

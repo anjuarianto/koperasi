@@ -29,7 +29,7 @@
 						<td><?=$b->kode_barang;?></td>
 						<td>Rp. <?=$b->harga_beli;?></td>
 						<td>Rp. <?=$b->harga_jual;?></td>
-						<td><?=$b->total_stok == null ? 0 : $b->total_stok?></td>
+						<td><?=$b->total_stok == null ? 0 : $b->total_stok?> </td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>

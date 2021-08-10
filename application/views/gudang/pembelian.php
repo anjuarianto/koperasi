@@ -93,9 +93,10 @@
 							<table class="table table-striped table-sm table-hover dataTable">
 								<thead class="thead-dark">
 									<tr class="bg-info">
-										<th style="width:45%">Nama Barang</th>
+										<th style="width:40%">Nama Barang</th>
 										<th style="width:15%">Tanggal Expired</th>
 										<th style="width:10%">Qty</th>
+										<th style="width:5%">#</th>
 										<th style="width:10%">Discount</th>
 										<th style="width:15%">Harga</th>
 										<th style="width: 5%;"></th>
@@ -105,7 +106,7 @@
 								</tbody>
 								<tfoot>
 									<tr class="bg-dark text-white">
-										<th colspan="4">Total</th>
+										<th colspan="5">Total</th>
 										<th id="harga-total-barang" colspan="2"></th>
 									</tr>
 								</tfoot>
@@ -218,7 +219,7 @@
 				trEl.setAttribute('data-id-barang', response.id_barang);
 				tbodyEl.appendChild(trEl);
 
-				for (i = 0; i < 6; i++) {
+				for (i = 0; i < 7; i++) {
 					if (i == 0) {
 						var td = document.createElement("TD");
 						td.innerHTML = response.nama_barang;
@@ -236,14 +237,18 @@
 						trEl.appendChild(td);
 					} else if (i == 3) {
 						var td = document.createElement("TD");
+						td.innerHTML = response.nama_satuan;
+						trEl.appendChild(td);
+					}else if (i == 4) {
+						var td = document.createElement("TD");
 						td.innerHTML =
 							'<div class="input-group input-group-sm"><input type="number" min="0" max="100" class="form-control form-control-sm" name="discount[]" onchange="ubahDiscount(this)" onkeyup="ubahDiscount(this)"><div class="input-group-append"><div class="input-group-text">%</div></div>';
 						trEl.appendChild(td);
-					} else if (i == 4) {
+					} else if (i == 5) {
 						var td = document.createElement("TD");
 						td.innerHTML = 'Rp. ' + formatter.format(response.harga_beli);
 						trEl.appendChild(td);
-					} else if (i == 5) {
+					} else if (i == 6) {
 						var td = document.createElement("TD");
 						td.innerHTML =
 							'<button type="button" onclick="hapusBarang(this)" data-id="' + response
@@ -272,7 +277,7 @@
 	function ubahJumlah(value) {
 		const formatter = new Intl.NumberFormat(['ban', 'id']);
 		const row = value.parentElement.parentElement;
-		const valDisc = row.cells[3].children.item(0).children[0].value;
+		const valDisc = row.cells[4].children.item(0).children[0].value;
 		const valQty = row.cells[2].children[0].value;
 		const idBarang = row.getAttribute("data-id-barang");
 		$.ajax({
@@ -283,7 +288,7 @@
 				// get data
 				const hargaBarang = response.harga_beli;
 				const totalDisc = (hargaBarang * valDisc * valQty) / 100;
-				row.cells[4].innerHTML = 'Rp. ' + formatter.format((hargaBarang * valQty) - totalDisc);
+				row.cells[5].innerHTML = 'Rp. ' + formatter.format((hargaBarang * valQty) - totalDisc);
 				printHargaGlobal();
 			}
 
@@ -294,7 +299,7 @@
 		const formatter = new Intl.NumberFormat(['ban', 'id']);
 		const row = val.parentElement.parentElement.parentElement;
 		const valQty = row.cells[2].children[0].value;
-		const valDisc = row.cells[3].children.item(0).children[0].value;
+		const valDisc = row.cells[4].children.item(0).children[0].value;
 		const idBarang = row.getAttribute("data-id-barang");
 		$.ajax({
 			type: "POST",
@@ -304,7 +309,7 @@
 
 				const hargaBarang = response.harga_beli;
 				const totalDisc = (hargaBarang * valDisc * valQty) / 100;
-				row.cells[4].innerHTML = 'Rp. ' + formatter.format((hargaBarang * valQty) - totalDisc);
+				row.cells[5].innerHTML = 'Rp. ' + formatter.format((hargaBarang * valQty) - totalDisc);
 				printHargaGlobal();
 			}
 		});
@@ -316,7 +321,7 @@
 		var resHargaTotal = 0;
 		const tRow = document.getElementById('detail-barang').children;
 		for (i = 0; i < tRow.length; i++) {
-			var totalHarga = tRow[i].children[4].innerText.replace(/\D/g, "");
+			var totalHarga = tRow[i].children[5].innerText.replace(/\D/g, "");
 			var res = parseInt(totalHarga.replace(/\D/g, ""));
 			resHargaTotal += res;
 		}

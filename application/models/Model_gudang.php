@@ -72,12 +72,13 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function barang_id($id) {
-		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, b.kode_barang, b.harga_beli, b.harga_jual, sum(st.stok_barang) as total_stok');
+		$this->db->select('b.id_barang, s.id_supplier, b.nama_barang, satuan.id_satuan, b.kode_barang,r.id_rak, harga_beli, harga_jual');
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_stok as st', 'st.id_barang = b.id_barang', 'left');
-		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier');
-		$this->db->where('b.id_barang', (int)$id);
-		$this->db->group_by('id_barang');
+		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier', 'left');
+		$this->db->join('tbl_rak as r', 'r.id_rak = b.id_rak', 'left');
+		$this->db->join('tbl_satuan as satuan', 'satuan.id_satuan = b.id_satuan', 'left');
+		$this->db->where('b.id_barang', $id);
 		$query = $this->db->get();
 		return $query->row();
 	}
@@ -105,11 +106,12 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function detail_barang() {
-		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, kode_barang,r.nama_rak, harga_beli, harga_jual, (select sum(stok_barang) from tbl_stok where id_barang = st.id_barang group by id_barang) as total_stok');
+		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, satuan.nama_satuan, kode_barang,r.nama_rak, harga_beli, harga_jual, (select sum(stok_barang) from tbl_stok where id_barang = st.id_barang group by id_barang) as total_stok');
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_stok as st', 'st.id_barang = b.id_barang', 'left');
 		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier', 'left');
 		$this->db->join('tbl_rak as r', 'r.id_rak = b.id_rak', 'left');
+		$this->db->join('tbl_satuan as satuan', 'satuan.id_satuan = b.id_satuan', 'left');
 		$this->db->group_by('id_barang');
 		$query = $this->db->get();
 		return $query->result();
@@ -141,10 +143,11 @@ class Model_gudang extends CI_Model {
 	}
 
 	public function barang_kode($input) {
-		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, b.kode_barang, harga_beli, harga_jual, sum(st.stok_barang) as total_stok');
+		$this->db->select('b.id_barang, s.nama_supplier, b.nama_barang, satuan.nama_satuan, b.kode_barang, harga_beli, harga_jual, sum(st.stok_barang) as total_stok');
 		$this->db->from('tbl_barang as b');
 		$this->db->join('tbl_stok as st', 'st.id_barang = b.id_barang', 'left');
 		$this->db->join('tbl_supplier as s', 's.id_supplier = b.id_supplier', 'left');
+		$this->db->join('tbl_satuan as satuan', 'satuan.id_satuan = b.id_satuan', 'left');
 		$this->db->where('b.kode_barang', $input);
 		$query = $this->db->get();
 		return $query->row();
@@ -330,19 +333,21 @@ class Model_gudang extends CI_Model {
 	
 
 	public function detail_pembelian($id) {
-		$this->db->select('dp.*, (b.harga_beli*dp.jumlah_barang-(dp.discount*b.harga_beli*dp.jumlah_barang/100)) as harga_total_barang, b.nama_barang, b.id_barang');
+		$this->db->select('dp.*, satuan.nama_satuan, (b.harga_beli*dp.jumlah_barang-(dp.discount*b.harga_beli*dp.jumlah_barang/100)) as harga_total_barang, b.nama_barang, b.id_barang');
 		$this->db->from('tbl_detail_pembelian as dp');
 		$this->db->join('tbl_barang as b', 'b.id_barang = dp.id_barang', 'left');
+		$this->db->join('tbl_satuan as satuan', 'satuan.id_satuan = b.id_satuan', 'left');
 		$this->db->where('dp.id_pembelian', $id);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
 	public function detail_pembelian_id($id) {
-		$this->db->select('detail.*, barang.id_barang, barang.nama_barang, barang.kode_barang, supplier.nama_supplier');
+		$this->db->select('detail.*, satuan.nama_satuan, barang.id_barang, barang.nama_barang, barang.kode_barang, supplier.nama_supplier');
 		$this->db->from('tbl_detail_pembelian as detail');
 		$this->db->join('tbl_barang as barang', 'barang.id_barang = detail.id_barang');
 		$this->db->join('tbl_supplier as supplier', 'supplier.id_supplier = barang.id_supplier');
+		$this->db->join('tbl_satuan as satuan', 'satuan.id_satuan = barang.id_satuan');
 		$this->db->where('detail.id_detail_pembelian', $id);
 		$query = $this->db->get();
 		return $query->row();

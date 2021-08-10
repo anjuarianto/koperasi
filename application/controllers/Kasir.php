@@ -14,6 +14,7 @@ class Kasir extends CI_Controller {
         $data['judul'] = 'Tampilan Kasir | Kasir';
         $data['no_struk'] = $this->Model_kasir->last_penjualan();
         $data['barang'] = $this->Model_kasir->barang();
+
         $data['anggota'] = $this->Model_kasir->anggota();
         $this->load->view('kasir/transaksi', $data);
     }
@@ -156,6 +157,7 @@ class Kasir extends CI_Controller {
         $data['judul'] = "Detail Penjualan | Kasir";
         $data['penjualan'] = $this->Model_kasir->penjualan_id($id);
         $data['detail_penjualan'] = $this->Model_kasir->detail_penjualan($id);
+     
         $this->load->view('kasir/detail_penjualan', $data);
     }
 

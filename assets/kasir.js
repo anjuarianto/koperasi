@@ -33,7 +33,7 @@ function detailVoucher(data) {
 function enableForm(data) {
     var info = $(data).data("info");
     if(info == "detail-penjualan") {
-        $(".modal-body .form-control:not(#kode_barang, #nama_barang, #nama_supplier)").prop('disabled', false);
+        $(".modal-body .form-control:not(#kode_barang, #nama_barang, #nama_satuan, #nama_supplier)").prop('disabled', false);
     } else if(info == "penjualan") {
         $(".modal-body .form-control:not(#no_struk)").prop('disabled', false);
         $("#btn-edit-penjualan").prop('disabled', true);
@@ -60,6 +60,7 @@ function modalEditPenjualan(id, baseUrl) {
             $('#kode_voucher').val(response.kode_voucher);
             $('#jenis_pembayaran').val(response.jenis_pembayaran);
             $('#nominal_uang').val(response.nominal_uang);
+            
             // $('#form-edit-penjualan').attr("action", baseUrl+'kasir/update_penjualan/'+id)
             $("#modalEditPenjualan .form-control").prop('disabled', true);
 
@@ -76,12 +77,12 @@ function modalDetailPenjualan(id, baseUrl) {
         url: baseUrl+"kasir/detail_penjualan_id/"+id,
         dataType : "JSON",
         success: function(response) {
-            console.log(response)
             
             $('#nama_barang').val(response.nama_barang);
             $('#kode_barang').val(response.kode_barang);
             $('#nama_supplier').val(response.nama_supplier);
             $('#jumlah_barang').val(response.jumlah_barang);
+            $('#nama_satuan').val(response.nama_satuan);
             
             $('#form-edit').attr("action", baseUrl+'kasir/update_detail_penjualan/'+id)
             $("#modalEdit .form-control").prop('disabled', true);

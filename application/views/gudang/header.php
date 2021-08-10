@@ -24,6 +24,8 @@
 	<link href="<?=base_url()?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="<?=base_url()?>assets/vendorother/datatables/dataTables.dateTime.min.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/vendorother/typeahead/typeahead.css">
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	
 	<style>
 		.typeahead { z-index: 1051; }
 	</style>

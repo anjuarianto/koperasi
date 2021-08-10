@@ -53,6 +53,7 @@
 						<th></th>
 						<th>Nama Barang</th>
 						<th>Qty</th>
+						<th>#</th>
 						<th>Discount</th>
 						<th>Harga</th>
 					</tr>
@@ -63,6 +64,7 @@
 						<td></td>
 						<td><?=$p->nama_barang?></td>
 						<td><?=$p->jumlah_barang?></td>
+						<td><?=$p->nama_satuan?></td>
 						<td><?=$p->discount?> %</td>
 						<td>Rp. <?=number_format($p->harga_total_barang, 0, ',', '.')?></td>
 					</tr>
@@ -70,15 +72,15 @@
 				</tbody>
 				<tfoot>
 					<tr class="table-active">
-						<th colspan="4">Total</th>
+						<th colspan="5">Total</th>
 						<th>Rp. <?=number_format($pembelian->before_ppn, 0, ',', '.')?></th>
 					</tr>
 					<tr>
-						<th colspan="4">PPN</th>
+						<th colspan="5">PPN</th>
 						<th><?=$pembelian->ppn;?> %</th>
 					</tr>
 					<tr class="table-active">
-						<th colspan="4">Grand Total</th>
+						<th colspan="5">Grand Total</th>
 						<th>Rp. <?=number_format($pembelian->total_harga_pembelian, 0, ',','.');?></th>
 					</tr>
 				</tfoot>
@@ -122,6 +124,13 @@
 							<label for="harga_beli">QTY</label>
 
 							<input type="text" name="jumlah_barang" id="jumlah_barang" placeholder="Jumlah Barang"
+								class="form-control" required autocomplete="off">
+
+						</div>
+						<div class="form-group">
+							<label for="harga_beli">Satuan</label>
+
+							<input type="text" id="nama_satuan" placeholder="Nama Satuan"
 								class="form-control" required autocomplete="off">
 
 						</div>

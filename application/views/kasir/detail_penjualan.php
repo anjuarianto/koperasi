@@ -96,6 +96,7 @@
 						<th>Nama Barang</th>
 						<th>Harga Barang</th>
 						<th>Qty</th>
+						<th>Satuan</th>
 						<th>Harga</th>
 					</tr>
 				</thead>
@@ -106,23 +107,24 @@
 						<td><?=$p->nama_barang?></td>
 						<td>Rp. <?=number_format($p->harga_jual, 0, ',','.')?></td>
 						<td><?=$p->jumlah_barang?></td>
+						<td><?=$p->nama_satuan?></td>
 						<td>Rp. <?=number_format($p->harga_total_barang, 0, ',', '.')?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
 				<tfoot>
 					<tr class="table-active">
-						<th colspan="4">Total</th>
+						<th colspan="5">Total</th>
 						<th>Rp. <?=number_format($penjualan->total_harga_penjualan, 0, ',', '.')?></th>
 					</tr>
 					<tr>
-						<th colspan="4">Voucher</th>
+						<th colspan="5">Voucher</th>
 						<th>
                         Rp. <?= $penjualan->kode_voucher != null ? number_format(count(explode(',', $penjualan->kode_voucher))*100000, 0, ',','.') : '0'?>
                 </th>
 					</tr>
 					<tr class="table-active">
-						<th colspan="4">Grand Total</th>
+						<th colspan="5">Grand Total</th>
 						<th colspan="2">Rp. <?=$penjualan->kode_voucher != null ? number_format($penjualan->total_harga_penjualan-count(explode(',', $penjualan->kode_voucher))*100000, 2, ',','.') : number_format($penjualan->total_harga_penjualan,0,',','.');?></th>
 					</tr>
 				</tfoot>
@@ -160,6 +162,14 @@
 								<label for="nama_supplier">Nama Supplier</label>
 								<input type="text" id="nama_supplier" class="form-control" name="nama_supplier"
 									placeholder="Nama Supplier" class="form-control" disabled>
+								<span style="font-size: 10px; color: red"><?=form_error('nama_supplier')?></span>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col">
+								<label for="nama_supplier">Nama Satuan</label>
+								<input type="text" id="nama_satuan" class="form-control"
+									placeholder="Nama Satuan" class="form-control" disabled>
 								<span style="font-size: 10px; color: red"><?=form_error('nama_supplier')?></span>
 							</div>
 						</div>

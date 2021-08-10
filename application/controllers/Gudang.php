@@ -59,7 +59,10 @@ class Gudang extends CI_Controller {
 	public function barang() {
 		$data['judul'] = 'Daftar Barang | Gudang';
 		$data['barang'] = $this->Model_gudang->detail_barang();
+	
+		$data['rak'] = $this->Model_gudang->rak();
 		$data['supplier'] = $this->Model_gudang->supplier();
+		$data['satuan'] = $this->Model_gudang->satuan();
 		$data['stok'] = $this->Model_gudang->stok_barang();
 		$data["script"] = "";
 		$this->load->view('gudang/barang', $data);
@@ -96,7 +99,7 @@ class Gudang extends CI_Controller {
 		// validation start
 		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'required');
 		$this->form_validation->set_rules('kode_barang', 'Kode Barang', 'required');
-		$this->form_validation->set_rules('nama_supplier', 'Nama Supplier', 'required');
+		$this->form_validation->set_rules('supplier', 'Nama Supplier', 'required');
 		$this->form_validation->set_rules('harga_beli', 'Harga Beli', 'required');
 		$this->form_validation->set_rules('harga_jual', 'Harga Jual', 'required');
 		
@@ -107,7 +110,9 @@ class Gudang extends CI_Controller {
 		// variable declaration start
 
 		$nama_barang = $this->input->post('nama_barang');
-		$id_supplier = $this->input->post('nama_supplier');
+		$id_supplier = $this->input->post('supplier');
+		$id_satuan = $this->input->post('satuan');
+		$id_rak = $this->input->post('rak');
 		$kode_barang = $this->input->post('kode_barang');
 		$harga_beli = $this->input->post('harga_beli');
 		$harga_jual = $this->input->post('harga_jual');
@@ -118,16 +123,20 @@ class Gudang extends CI_Controller {
 				"nama_barang"	=> $nama_barang,
 				"kode_barang"	=> $kode_barang,
 				"id_supplier"	=> $id_supplier,
+				"id_rak"	=> $id_rak,
+				"id_satuan"	=> $id_supplier,
 				"harga_beli"	=> $harga_beli,
 				"harga_jual"	=> $harga_jual
 			);
+			
 			$this->Model_gudang->tambah_barang($data);
 			redirect('gudang/barang');
 		} else {
+			
 			$data["barang"] = $this->Model_gudang->barang();
 			$data['supplier'] = $this->Model_gudang->supplier();
 			$data["script"] = "$('#modalInputBarang').modal('show');";
-			$this->load->view('gudang/barang', $data);
+			redirect('gudang/barang');
 		}
 
 	}
@@ -307,8 +316,12 @@ class Gudang extends CI_Controller {
 		$data = array(
 			'nama_barang' => $this->input->post('nama_barang'),
 			'harga_beli' => $this->input->post('harga_beli'),
+			'id_supplier' => $this->input->post('supplier'),
+			'id_rak' => $this->input->post('rak'),
+			'id_satuan' => $this->input->post('satuan'),
 			'harga_jual' => $this->input->post('harga_jual')
 		);
+
 		$this->Model_gudang->update_barang($id, $data);
 		redirect('gudang/barang');
 	}
